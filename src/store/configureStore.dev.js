@@ -1,25 +1,25 @@
-import { createStore, applyMiddleware, compose } from 'redux';
+import { createStore, applyMiddleware, combineReducers, compose } from 'redux';
+import { routerReducer, routerMiddleware } from 'react-router-redux';
 import createLogger from 'redux-logger';
 import thunk from 'redux-thunk';
 
-import rootReducer from '../reducers';
-import DevTools from '../containers/DevTools';
+import reducers from '../reducers';
 
-const logger = createLogger();
+export default function configureStore(initialState, history) {
+	const middlewareWithHistory = routerMiddleware(history);
+	const logger = createLogger();
 
-const finalCreateStore = compose(
-  applyMiddleware(logger, thunk),
-  DevTools.instrument()
-)(createStore);
+	const middleware = [thunk, logger, middlewareWithHistory];
+	const reducer = combineReducers({
+		reducers,
+		routing: routerReducer,
+	});
 
-module.exports = function configureStore(initialState) {
-  const store = finalCreateStore(rootReducer, initialState);
+	const store = createStore(reducer, initialState, compose(applyMiddleware(...middleware)));
 
-  if (module.hot) {
-    module.hot.accept('../reducers', () =>
-      store.replaceReducer(require('../reducers').default)
-    );
-  }
+	if (module.hot) {
+		module.hot.accept('../reducers', () => store.replaceReducer(require('../reducers').default));
+	}
 
-  return store;
-};
+	return store;
+}

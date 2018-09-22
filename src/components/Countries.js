@@ -1,41 +1,41 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
 
-import Country from './Country';
+import Spinner from './Spinner';
+import * as CountriesActions from '../actions/CountriesActions';
+import Countries from './Home';
 
-export default class Countries extends Component {
-  constructor(props){
-    super(props);
-  }
+export class CountriesContainer extends Component {
+	componentDidMount() {
+		this.props.actions.fetchCountries('https://restcountries.eu/rest/v1/all');
+	}
 
-  renderCountry(country) {
-    return <Country key={country.name} country={country} />;
-  }
+	render() {
+		const { countries, actions } = this.props;
 
-  render() {
-    const {data} = this.props.countries;
-
-    return (
-      <div className='tableContainer'>
-        <h1>Countries</h1>
-        <table className='table table-bordered table-striped'>
-          <thead>
-            <tr>
-              <th>Name</th>
-              <th>Capital</th>
-              <th>Population</th>
-              <th>Domain</th>
-            </tr>
-          </thead>
-          <tbody>
-            {data.map(this.renderCountry)}
-          </tbody>
-        </table>
-      </div>
-    );
-  }
+		return <div>{countries.isLoading ? <Spinner /> : <Countries countries={countries} actions={actions} />}</div>;
+	}
 }
 
-Countries.propTypes = {
-  countries: PropTypes.object.isRequired,
-  actions: PropTypes.object.isRequired
+CountriesContainer.propTypes = {
+	countries: PropTypes.object.isRequired,
+	actions: PropTypes.object.isRequired,
 };
+
+function mapStateToProps(state) {
+	return {
+		countries: state.countries,
+	};
+}
+
+function mapDispatchToProps(dispatch) {
+	return {
+		actions: bindActionCreators(CountriesActions, dispatch),
+	};
+}
+
+export default connect(
+	mapStateToProps,
+	mapDispatchToProps
+)(CountriesContainer);

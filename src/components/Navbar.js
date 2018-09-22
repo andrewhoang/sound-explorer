@@ -1,5 +1,5 @@
 import React from 'react';
-import { IndexLink, Link } from 'react-router';
+import { IndexLink, Link } from 'react-router-dom';
 
 const Navbar = () => (
   <nav className='navbar navbar-default navbar-fixed-top'>

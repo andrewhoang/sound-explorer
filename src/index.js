@@ -1,24 +1,23 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+
 import { Provider } from 'react-redux';
-import { Router, hashHistory } from 'react-router';
-import { syncHistoryWithStore } from 'react-router-redux';
-
-import './styles/main.scss';
-
 import { configureStore } from './store/configureStore';
-import DevTools from './containers/DevTools';
-import routes from './routes';
 
-const store = configureStore();
-const history = syncHistoryWithStore(hashHistory, store);
+import { ConnectedRouter } from "react-router-redux";
+import createHistory from "history/createBrowserHistory";
+
+import App from './components/App';
+import './styles/styles.scss';
+
+const history = createHistory();
+const store = configureStore({}, history);
 
 ReactDOM.render(
   <Provider store={store}>
-    <div>
-      <Router history={history} routes={routes} />
-      {process.env.NODE_ENV === 'development' ? <DevTools /> : ''}
-    </div>
+      <ConnectedRouter history={history}>
+      <App/>
+      </ConnectedRouter>
   </Provider>,
   document.getElementById('root')
 );
