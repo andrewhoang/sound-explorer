@@ -38,7 +38,7 @@
 		"eslint-plugin-jsx-a11y": "^2.1.0",
 		"eslint-plugin-react": "^6.2.0",
 		"eventsource-polyfill": "^0.9.6",
-		"express": "^4.13.3",
+		"express": "^4.16.3",
 		"node-sass": "^4.9.3",
 		"redux-devtools": "^3.0.1",
 		"redux-devtools-dock-monitor": "^1.0.1",
