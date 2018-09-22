@@ -12,8 +12,6 @@ class Home extends Component {
 	}
 
 	render() {
-		const { songs, actions } = this.props;
-
 		return (
 			<div>
 				<h1>Hello</h1>
