@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
-import Spinner from './Spinner';
 import * as MusicActions from '../actions/MusicActions';
 
 class Home extends Component {
