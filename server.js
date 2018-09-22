@@ -27,8 +27,6 @@ app.use(
 
 app.use(require('webpack-hot-middleware')(webpackCompiler));
 
-// addApiRoutes(app);
-
 app.get('*', (req, res) => {
 	res.sendFile(path.join(__dirname, 'index.html'));
 });
