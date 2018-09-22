@@ -1,12 +1,24 @@
-import { createStore, applyMiddleware, compose } from 'redux';
+import { createStore, applyMiddleware, combineReducers, compose } from 'redux';
+import { routerReducer, routerMiddleware } from 'react-router-redux';
+
 import thunk from 'redux-thunk';
 
-import rootReducer from '../reducers';
+import reducers from '../reducers';
 
-const finalCreateStore = compose(
-  applyMiddleware(thunk)
-)(createStore);
+module.exports = function configureStore(initialState, history) {
+	const middlewareWithHistory = routerMiddleware(history);
 
-module.exports = function configureStore(initialState) {
-  return finalCreateStore(rootReducer, initialState);
+	const middleware = [thunk, middlewareWithHistory];
+	const reducer = combineReducers({
+		reducers,
+		routing: routerReducer,
+	});
+
+	const store = createStore(reducer, initialState, compose(applyMiddleware(...middleware)));
+
+	if (module.hot) {
+		module.hot.accept('../reducers', () => store.replaceReducer(require('../reducers').default));
+	}
+
+	return store;
 };

@@ -1,11 +1,11 @@
 import { combineReducers } from 'redux';
 import { routerReducer } from 'react-router-redux';
 
-import countries from './countries';
+import songs from './songs';
 
 const rootReducer = combineReducers({
-  countries,
-  routing: routerReducer
+	songs,
+	routing: routerReducer,
 });
 
 export default rootReducer;

@@ -6,7 +6,13 @@ import { connect } from 'react-redux';
 import * as MusicActions from '../actions/MusicActions';
 
 class Home extends Component {
+<<<<<<< HEAD
 	componentDidMount() {}
+=======
+	componentDidMount() {
+		// this.props.actions.authorize();
+	}
+>>>>>>> develop
 
 	render() {
 		return (
