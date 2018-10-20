@@ -1,7 +1,6 @@
 {
 	"spotify": {
-		"baseUrl": "https://accounts.spotify.com",
-		"redirect_uri": "http://localhost:3000/app"
+		"baseUrl": "https://accounts.spotify.com/api"
 	},
 	"api": {
 		"host": "http://localhost",

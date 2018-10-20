@@ -1,18 +1,16 @@
-import React, { Component } from 'react';
-import { Switch, Route } from 'react-router-dom';
+import React from 'react';
+import { Route } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
 
-import Home from '../Home';
+const RouteComponent = ({ component: Component, user, auth, ...rest }) => (
+	<Route {...rest} render={props => <Component {...props} user={user} auth={auth} />} />
+);
 
-class RouteComponent extends Component {
-	render() {
-		return (
-			<Switch>
-				<div>
-					<Route exact path="/" component={Home} />
-				</div>
-			</Switch>
-		);
-	}
+function mapStatesToProps(state) {
+	return {
+		state: state,
+	};
 }
 
-export default RouteComponent;
+export default withRouter(connect(mapStatesToProps)(RouteComponent));

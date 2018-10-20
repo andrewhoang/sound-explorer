@@ -1,11 +1,12 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-
 import { Provider } from 'react-redux';
 import { configureStore } from './store/configureStore';
+import { ConnectedRouter } from 'react-router-redux';
+import createHistory from 'history/createBrowserHistory';
+import axios from 'axios';
 
-import { ConnectedRouter } from "react-router-redux";
-import createHistory from "history/createBrowserHistory";
+import userService from './services/userService';
 
 import App from './components/App';
 import './styles/styles.scss';
@@ -13,11 +14,36 @@ import './styles/styles.scss';
 const history = createHistory();
 const store = configureStore({}, history);
 
+axios.interceptors.request.use(
+	config => {
+		const token = localStorage.getItem('access_token');
+		config.headers.Authorization = `Bearer ${token}`;
+		return config;
+	},
+	error => Promise.reject(error)
+);
+
+axios.interceptors.response.use(
+	response => response,
+	error => {
+		console.log(error);
+		if (error.response.status === 401) {
+			const token = localStorage.getItem('refresh_token');
+			userService.refreshToken(token).then(response => {
+				console.log('token', token);
+				error.config.headers.Authorization = `Bearer ${response.access_token}`;
+				return axios.request(error.config);
+			});
+		}
+		return Promise.reject(error.response);
+	}
+);
+
 ReactDOM.render(
-  <Provider store={store}>
-      <ConnectedRouter history={history}>
-      <App/>
-      </ConnectedRouter>
-  </Provider>,
-  document.getElementById('root')
+	<Provider store={store}>
+		<ConnectedRouter history={history}>
+			<App />
+		</ConnectedRouter>
+	</Provider>,
+	document.getElementById('root')
 );

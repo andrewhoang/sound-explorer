@@ -1,20 +1,30 @@
 const config = require('config');
+const request = require('request');
 
 class SpotifyController {
-	authorize(req, res, next) {
-		const url = `${config.spotify.baseUrl}/authorize?response_type=code&client_id=${
-			config.spotify.clientId
-		}&&redirect_uri=${encodeURIComponent(config.spotify.redirect_uri)}`;
-		console.log('url', url);
-	}
+	refreshToken(req, res, next) {
+		const url = `${config.spotify.baseUrl}/token`;
+		const refresh_token = req.body.refresh_token;
 
-	getToken(req, res, next) {
-		const url = `${
-			config.baseUrl
-		}token?grant_type=authorization_code&code=code"&redirect_uri=https://localhost:3000&client_secret=mysecret&client_id=${
-			config.spotify.clientId
-		}`;
-		console.log('url', url);
+		let authOptions = {
+			url,
+			form: {
+				grant_type: 'refresh_token',
+				refresh_token,
+			},
+			headers: {
+				Authorization:
+					'Basic ' +
+					new Buffer(process.env.SPOTIFY_CLIENT_ID + ':' + process.env.SPOTIFY_CLIENT_SECRET).toString(
+						'base64'
+					),
+			},
+			json: true,
+		};
+
+		request.post(authOptions, (error, response, body) => {
+			res.status(200).json(body);
+		});
 	}
 }
 
