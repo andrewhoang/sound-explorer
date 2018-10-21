@@ -12,7 +12,8 @@
 		"dev": "cross-env NODE_ENV=development npm start",
 		"start": "babel-node server.js",
 		"prod": "cross-env NODE_ENV=production npm run start",
-		"lint": "eslint src"
+		"lint": "eslint src",
+		"postinstall": "npm run build"
 	},
 	"repository": {
 		"type": "git",
