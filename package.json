@@ -17,7 +17,7 @@
 	},
 	"repository": {
 		"type": "git",
-		"url": "git+https://github.com/andrewhoang/sound-explorer.git"
+		"url": "https://github.com/andrewhoang/sound-explorer.git"
 	},
 	"license": "MIT",
 	"homepage": "https://github.com/andrewhoang/sound-explorer",
