@@ -1,7 +1,10 @@
 {
-	"name": "react-redux-starter",
-	"version": "1.0.0",
-	"description": "React Redux Starter",
+	"name": "soundexplorer",
+	"version": "0.0.1",
+	"description": "Sound Explorer",
+	"engines": {
+		"node": "8.12.0npm"
+	},
 	"scripts": {
 		"clean": "rimraf dist",
 		"build:webpack": "cross-env NODE_ENV=production webpack --config webpack.config.prod.js",
@@ -13,10 +16,10 @@
 	},
 	"repository": {
 		"type": "git",
-		"url": "git+https://github.com/xphong/react-redux-starter.git"
+		"url": "git+https://github.com/andrewhoang/sound-explorer.git"
 	},
 	"license": "MIT",
-	"homepage": "https://github.com/xphong/react-redux-starter",
+	"homepage": "https://github.com/andrewhoang/sound-explorer",
 	"devDependencies": {
 		"@babel/cli": "^7.1.0",
 		"@babel/core": "^7.1.0",
