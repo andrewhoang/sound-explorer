@@ -4,7 +4,6 @@ import webpack from 'webpack';
 import addApiRoutes from './api/addApiRoutes';
 import bodyParser from 'body-parser';
 import config from 'config';
-import cors from 'cors';
 import request from 'request';
 import querystring from 'querystring';
 

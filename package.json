@@ -3,7 +3,7 @@
 	"version": "0.0.1",
 	"description": "Sound Explorer",
 	"engines": {
-		"node": "8.12.0npm"
+		"node": "8.12.0"
 	},
 	"scripts": {
 		"clean": "rimraf dist",
