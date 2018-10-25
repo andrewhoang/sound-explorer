@@ -10,10 +10,10 @@
 		"build:webpack": "cross-env NODE_ENV=production webpack --config webpack.config.prod.js  --display-error-details",
 		"build": "npm run clean && npm run build:webpack",
 		"dev": "cross-env NODE_ENV=development npm start",
-		"start": "babel-node server.js",
+		"start": "nodemon --exec babel-node src/server.js",
 		"prod": "cross-env NODE_ENV=production npm run start",
 		"lint": "eslint src",
-		"postinstall": "npm run build"
+		"heroku-postbuild": "npm install"
 	},
 	"repository": {
 		"type": "git",
@@ -47,6 +47,7 @@
 		"file-loader": "^2.0.0",
 		"img-loader": "^3.0.0",
 		"node-sass": "^4.9.3",
+		"nodemon": "^1.18.4",
 		"redux-devtools": "^3.0.1",
 		"redux-devtools-dock-monitor": "^1.0.1",
 		"redux-devtools-log-monitor": "^1.0.2",
@@ -56,6 +57,7 @@
 		"style-loader": "^0.23.0",
 		"url-loader": "^1.1.1",
 		"webpack": "^4.19.1",
+		"webpack-cli": "^3.1.2",
 		"webpack-dev-middleware": "^3.3.0",
 		"webpack-hot-middleware": "^2.24.2"
 	},
@@ -70,6 +72,7 @@
 		"axios": "^0.14.0",
 		"body-parser": "^1.18.3",
 		"comma-number": "^2.0.0",
+		"compression": "^1.7.3",
 		"config": "^2.0.1",
 		"history": "^4.7.2",
 		"lodash": "^4.17.11",

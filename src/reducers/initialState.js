@@ -7,6 +7,6 @@ export default {
 	track: {},
 	tracks: {},
 	albums: {},
-	results: {},
+	results: [],
 	player: {},
 };

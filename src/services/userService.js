@@ -8,6 +8,7 @@ class UserService {
 		let body = { refresh_token: refresh_token };
 		return axios.post(url, body).then(response => {
 			localStorage.setItem('access_token', response.data.access_token);
+			localStorage.setItem('expires_in', response.data.expires_in);
 			return response.data;
 		});
 	}

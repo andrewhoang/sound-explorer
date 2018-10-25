@@ -12,8 +12,6 @@ import Home from '../Home';
 import Search from '../Search';
 import Playlist from '../playlists/Playlist';
 
-import queryString from 'query-string';
-
 class MainRoute extends Component {
 	constructor(props) {
 		super(props);

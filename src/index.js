@@ -26,12 +26,10 @@ axios.interceptors.request.use(
 axios.interceptors.response.use(
 	response => response,
 	error => {
-		console.log(error);
 		if (error.response.status === 401) {
 			const token = localStorage.getItem('refresh_token');
-			userService.refreshToken(token).then(response => {
-				console.log('token', token);
-				error.config.headers.Authorization = `Bearer ${response.access_token}`;
+			return userService.refreshToken(token).then(response => {
+				error.config.headers['Authorization'] = `Bearer ${response.access_token}`;
 				return axios.request(error.config);
 			});
 		}
