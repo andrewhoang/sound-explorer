@@ -5,7 +5,7 @@ import thunk from 'redux-thunk';
 
 import reducers from '../reducers';
 
-module.exports = function configureStore(initialState, history) {
+export default function configureStore(initialState, history) {
 	const middlewareWithHistory = routerMiddleware(history);
 
 	const middleware = [thunk, middlewareWithHistory];
@@ -21,4 +21,4 @@ module.exports = function configureStore(initialState, history) {
 	}
 
 	return store;
-};
+}

@@ -4,7 +4,7 @@ import queryString from 'query-string';
 
 class UserService {
 	static refreshToken(refresh_token) {
-		const url = `http://localhost:3000/api/token`;
+		const url = `https://soundexplorer.herokuapp.com/api/token`;
 		let body = { refresh_token: refresh_token };
 		return axios.post(url, body).then(response => {
 			localStorage.setItem('access_token', response.data.access_token);

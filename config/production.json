@@ -1,10 +1,10 @@
 {
 	"spotify": {
 		"baseUrl": "https://accounts.spotify.com",
-		"redirect_uri": "http://localhost:3000/app"
+		"redirect_uri": "https://soundexplorer.herokuapp.com/"
 	},
 	"api": {
-		"host": "http://localhost",
+		"host": "https://soundexplorer.herokuapp.com/",
 		"port": 3000,
 		"baseUrl": "/api"
 	}
