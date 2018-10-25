@@ -13,7 +13,7 @@
 		"start": "nodemon --exec babel-node src/server.js",
 		"prod": "cross-env NODE_ENV=production npm run start",
 		"lint": "eslint src",
-		"heroku-postbuild": "npm install"
+		"heroku-postbuild": "npm run build"
 	},
 	"repository": {
 		"type": "git",
@@ -32,7 +32,6 @@
 		"@babel/preset-stage-0": "^7.0.0",
 		"@babel/register": "^7.0.0",
 		"autoprefixer": "^6.3.1",
-		"babel-cli": "^6.26.0",
 		"babel-loader": "^8.0.2",
 		"babel-plugin-transform-class-properties": "^6.24.1",
 		"cross-env": "^2.0.1",
