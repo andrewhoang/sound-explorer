@@ -1,10 +1,16 @@
 const path = require('path');
 const webpack = require('webpack');
+const config = require('config');
 
 module.exports = {
 	mode: 'development',
 	devtool: 'cheap-module-eval-source-map',
-	entry: ['@babel/polyfill', 'eventsource-polyfill', 'webpack-hot-middleware/client', './src/index'],
+	entry: [
+		'@babel/polyfill',
+		'eventsource-polyfill',
+		'webpack-hot-middleware/client?path=/__webpack_hmr&timeout=20000',
+		'./src/index',
+	],
 	output: {
 		path: path.join(__dirname, 'dist'),
 		filename: 'bundle.js',
