@@ -97,7 +97,7 @@ export function getAlbums(id) {
 		return musicService
 			.getAlbums(id)
 			.then(response => dispatch(receiveAlbums(response)))
-			.catch(err => console.log(err));
+			.catch(err => console.error(err));
 	};
 }
 
@@ -119,7 +119,7 @@ export function getNewReleases(artists) {
 			.then(response => {
 				dispatch(receiveAlbums(response));
 			})
-			.catch(err => console.log(err));
+			.catch(err => console.error(err));
 	};
 }
 

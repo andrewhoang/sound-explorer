@@ -37,7 +37,9 @@ class MusicService {
 			const url = `${endpoints.BASE_URL}${endpoints.GET_ARTIST}/${artist}/albums`;
 			return axios.get(url).then(response => {
 				let monthOld = moment().subtract(1, 'month');
-				let recentAlbums = response.data.items.filter(album => moment(album.release_date).isAfter(monthOld));
+				let recentAlbums = response.data.items.filter(album =>
+					moment(new Date(album.release_date)).isAfter(monthOld)
+				);
 				return recentAlbums;
 			});
 		});

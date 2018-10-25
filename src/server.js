@@ -1,22 +1,23 @@
 import path from 'path';
 import express from 'express';
 import webpack from 'webpack';
-import addApiRoutes from './api/addApiRoutes';
+import addApiRoutes from '../api/addApiRoutes';
 import bodyParser from 'body-parser';
-import config from 'config';
 import request from 'request';
+import compression from 'compression';
 import querystring from 'querystring';
 
 const app = express();
 app.use(bodyParser.json({ limit: '50mb' }));
 app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }));
+app.use(compression());
 
 let webpackConfig;
 
 if (app.get('env') === 'development') {
-	webpackConfig = require('./webpack.config.dev');
+	webpackConfig = require('../webpack.config.dev');
 } else if (app.get('env') === 'production') {
-	webpackConfig = require('./webpack.config.prod');
+	webpackConfig = require('../webpack.config.prod');
 }
 
 let webpackCompiler = webpack(webpackConfig);
@@ -25,6 +26,7 @@ app.use(
 	require('webpack-dev-middleware')(webpackCompiler, {
 		noInfo: true,
 		publicPath: webpackConfig.output.publicPath,
+		stats: false,
 	})
 );
 

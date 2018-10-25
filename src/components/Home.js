@@ -20,7 +20,6 @@ import debounce from 'lodash/debounce';
 import capitalize from 'lodash/capitalize';
 import uniqBy from 'lodash/uniqBy';
 import minBy from 'lodash/minBy';
-import moment from 'moment';
 
 class Home extends Component {
 	constructor(props) {
@@ -188,6 +187,7 @@ class Home extends Component {
 Home.propTypes = {
 	songs: PropTypes.object,
 	actions: PropTypes.object,
+	results: PropTypes.array,
 };
 
 function mapStateToProps(state) {

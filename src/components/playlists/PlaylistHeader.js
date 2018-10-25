@@ -27,7 +27,7 @@ const PlaylistHeader = ({
 				}}
 			>
 				<h1>
-					<div contenteditable="true" onBlur={onNamePlaylist}>
+					<div contentEditable="true" onBlur={onNamePlaylist}>
 						Playlist
 					</div>
 				</h1>

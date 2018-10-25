@@ -35,21 +35,14 @@ class App extends Component {
 		}
 	};
 
-	componentWillReceiveProps(nextProps) {
-		if (nextProps.user !== this.props.user) {
-			localStorage.setItem('user', JSON.stringify(nextProps.user));
-		}
-	}
-
 	render() {
-		let { user } = this.props;
 		let { isAuth } = this.state;
 
 		return (
 			<div>
 				<Switch>
 					{!isAuth && <RouteComponent exact path="/" component={Login} />}
-					{isAuth && <RouteComponent path="/" component={MainRoute} user={user} auth={isAuth} />}
+					{isAuth && <RouteComponent path="/" component={MainRoute} auth={isAuth} />}
 				</Switch>
 			</div>
 		);
@@ -63,7 +56,7 @@ App.propTypes = {
 
 function mapStateToProps(state) {
 	return {
-		user: state.reducers.user,
+		state: state.reducers,
 	};
 }
 
