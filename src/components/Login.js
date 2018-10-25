@@ -8,7 +8,7 @@ import { Col, Button } from 'react-bootstrap';
 
 const Login = () => {
 	const signIn = () => {
-		window.location = 'http://localhost:3000/login';
+		window.location = 'https://soundexplorer.herokuapp.com/login';
 	};
 
 	return (
