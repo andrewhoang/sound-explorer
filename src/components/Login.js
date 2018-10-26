@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 
-import logo from '../../spotify-icons-logos/icons/01_RGB/02_PNG/Spotify_Icon_RGB_Green.png';
+import logo from '../styles/spotify-icons-logos/icons/01_RGB/02_PNG/Spotify_Icon_RGB_Green.png';
 
 import { Col, Button } from 'react-bootstrap';
 
