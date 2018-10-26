@@ -13,7 +13,7 @@
 		"start": "nodemon --exec babel-node src/server.js",
 		"prod": "cross-env NODE_ENV=production npm run start",
 		"lint": "eslint src",
-		"heroku-postbuild": "npm install && npm run build"
+		"heroku-postbuild": "cd static && npm install && npm run build"
 	},
 	"repository": {
 		"type": "git",
