@@ -126,6 +126,7 @@ class Playlist extends Component {
 						onUploadImage={this.handleUploadImage}
 						onSavePlaylist={this.handleSave}
 						upload={upload}
+						savingPlaylist={this.props.savingPlaylist}
 					/>
 					<TrackList
 						playlist={playlist}
@@ -152,6 +153,7 @@ function mapStateToProps(state) {
 		track: state.reducers.track,
 		tracks: state.reducers.tracks,
 		player: state.reducers.player,
+		savingPlaylist: state.reducers.savingPlaylist,
 	};
 }
 

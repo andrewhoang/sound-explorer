@@ -69,3 +69,12 @@ export const player = (state = initialState.player, action = null) => {
 			return state;
 	}
 };
+
+export const savingPlaylist = (state = initialState.savingPlaylist, action = null) => {
+	switch (action.type) {
+		case types.SAVING_PLAYLIST:
+			return action.savingPlaylist;
+		default:
+			return state;
+	}
+};

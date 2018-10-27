@@ -111,7 +111,7 @@ class Home extends Component {
 				isLoading: false,
 				results: categories,
 			});
-		}, 500);
+		}, 300);
 	};
 
 	handlePlay = track => {
