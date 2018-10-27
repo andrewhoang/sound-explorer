@@ -167,3 +167,5 @@ export default withRouter(
 		mapDispatchToProps
 	)(Playlist)
 );
+t)
+);

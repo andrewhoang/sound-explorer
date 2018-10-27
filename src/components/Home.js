@@ -6,7 +6,7 @@ import { withRouter } from 'react-router-dom';
 import autoBind from 'react-autobind';
 
 import * as userActions from '../actions/userActions';
-import * as musicActions from '../actions/musicActions';
+import * as spotifyActions from '../actions/spotifyActions';
 
 import background from '../styles/wallpaper1.jpeg';
 import 'semantic-ui-css/semantic.min.css';
@@ -199,7 +199,7 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
 	return {
-		actions: bindActionCreators({ ...userActions, ...musicActions }, dispatch),
+		actions: bindActionCreators({ ...userActions, ...spotifyActions }, dispatch),
 	};
 }
 
