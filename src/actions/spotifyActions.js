@@ -70,6 +70,13 @@ function playTrackError() {
 	};
 }
 
+function savingPlaylist(savingPlaylist = false) {
+	return {
+		type: types.SAVING_PLAYLIST,
+		savingPlaylist,
+	};
+}
+
 export function getArtist(id) {
 	return dispatch => {
 		return musicService
@@ -137,12 +144,14 @@ export function createPlaylist(type, selection) {
 
 export function savePlaylist(title, isPublic, tracks, upload) {
 	return dispatch => {
+		dispatch(savingPlaylist(true));
 		return musicService
 			.savePlaylist(title, isPublic)
 			.then(playlist => {
-				console.log(playlist.id);
+				dispatch(savingPlaylist());
 				musicService.addToPlaylist(playlist.id, tracks);
-				return musicService.addCoverImage(playlist.id, upload).then(dispatch(push('/')).catch(err => err));
+				if (upload) musicService.addCoverImage(playlist.id, upload).then(dispatch(push('/')).catch(err => err));
+				dispatch(push('/'));
 			})
 			.catch(err => err);
 	};

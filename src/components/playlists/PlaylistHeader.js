@@ -15,6 +15,7 @@ const PlaylistHeader = ({
 	onUploadImage,
 	onNamePlaylist,
 	onSavePlaylist,
+	savingPlaylist,
 }) => {
 	let image = upload ? upload : playlist[0] && maxBy(playlist[0].album.images, 'height').url;
 	return (
@@ -53,9 +54,9 @@ const PlaylistHeader = ({
 				</Form>
 				<Button onClick={onSavePlaylist}>
 					<FontAwesomeIcon icon={faSpotify} />
-					Save to Spotify
+					{savingPlaylist ? 'Saving to Spotify...' : 'Save to Spotify'}
 				</Button>
-				<p onClick={onUploadImage}>Add Playlist Cover</p>
+				{/* <p onClick={onUploadImage}>Add Playlist Cover</p> */}
 			</Col>
 		</Row>
 	);

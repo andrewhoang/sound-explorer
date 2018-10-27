@@ -14,8 +14,6 @@ app.use(compression());
 
 let webpackConfig;
 
-console.log('ENV', app.get('env'));
-
 if (app.get('env') === 'development') {
 	webpackConfig = require('../webpack.config.dev');
 } else if (app.get('env') === 'production') {
@@ -34,7 +32,7 @@ app.use(
 
 app.use(require('webpack-hot-middleware')(webpackCompiler));
 
-let redirect_uri = process.env.REDIRECT_URI || 'https://soundexplorer.herokuapp.com/callback';
+let redirect_uri = process.env.REDIRECT_URI || 'http://localhost:3000/callback';
 let scope = `playlist-modify-private
 	 playlist-modify-public 
 	 user-read-private 
@@ -79,7 +77,8 @@ app.get('/callback', (req, res) => {
 		let access_token = body.access_token;
 		let refresh_token = body.refresh_token;
 
-		let uri = process.env.FRONTEND_URI || 'https://soundexplorer.herokuapp.com/';
+		let uri = process.env.FRONTEND_URI || 'http://localhost:3000/';
+		console.log('process', process.env);
 		res.redirect(uri + '?access_token=' + access_token + '&refresh_token=' + refresh_token);
 	});
 });
