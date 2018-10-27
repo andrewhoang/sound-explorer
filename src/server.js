@@ -4,7 +4,7 @@ import webpack from 'webpack';
 import addApiRoutes from '../api/addApiRoutes';
 import bodyParser from 'body-parser';
 import compression from 'compression';
-import http from 'http';
+import https from 'https';
 
 const app = express();
 app.use(bodyParser.json({ limit: '50mb' }));
@@ -33,7 +33,7 @@ app.use(require('webpack-hot-middleware')(webpackCompiler));
 
 addApiRoutes(app);
 
-setInterval(() => http.get('https://soundexplorer.herokuapp.com/'), 1500000);
+setInterval(() => https.get('https://soundexplorer.herokuapp.com/'), 1500000);
 
 app.get('*', (req, res) => {
 	res.sendFile(path.join(__dirname, 'index.html'));
