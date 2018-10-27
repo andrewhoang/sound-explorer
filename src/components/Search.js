@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import autoBind from 'react-autobind';
 
-import * as musicActions from '../actions/musicActions';
+import * as spotifyActions from '../actions/spotifyActions';
 
 import ArtistHeader from './artists/ArtistHeader';
 import ArtistList from './artists/ArtistList';
@@ -114,7 +114,7 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
 	return {
-		actions: bindActionCreators({ ...musicActions }, dispatch),
+		actions: bindActionCreators({ ...spotifyActions }, dispatch),
 	};
 }
 
