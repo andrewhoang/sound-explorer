@@ -28,8 +28,13 @@ class Home extends Component {
 			albums: [],
 			playing: false,
 			progress_ms: 0,
+			image: '',
 		};
 		autoBind(this);
+	}
+
+	componentDidMount() {
+		// this.props.actions.getHeroImage();
 	}
 
 	componentWillReceiveProps = nextProps => {
@@ -40,6 +45,10 @@ class Home extends Component {
 
 		if (nextProps.player !== this.props.player) {
 			this.setState({ progress_ms: nextProps.player.progress_ms });
+		}
+
+		if (nextProps.image !== this.props.image) {
+			this.setState({ image: nextProps.image.urls.raw }, () => console.log(this.state));
 		}
 	};
 
@@ -143,7 +152,7 @@ class Home extends Component {
 
 	render() {
 		const { albums } = this.props;
-		const { value, results, isLoading, playing, track } = this.state;
+		const { value, results, isLoading, playing, track, image } = this.state;
 
 		return (
 			<div>
@@ -154,7 +163,7 @@ class Home extends Component {
 							md={12}
 							className="home header"
 							style={{
-								background: `url(${background})`,
+								background: `url(${image || background})`,
 							}}
 						>
 							<Search
@@ -194,6 +203,7 @@ function mapStateToProps(state) {
 	return {
 		results: state.reducers.results,
 		albums: state.reducers.albums,
+		image: state.reducers.image,
 	};
 }
 

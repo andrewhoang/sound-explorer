@@ -2,6 +2,7 @@ export default {
 	isAuth: false,
 	songs: {},
 	user: {},
+	image: {},
 	artist: {},
 	artists: {},
 	track: {},

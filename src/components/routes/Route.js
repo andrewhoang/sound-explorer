@@ -3,8 +3,8 @@ import { Route } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 
-const RouteComponent = ({ component: Component, user, auth, ...rest }) => (
-	<Route {...rest} render={props => <Component {...props} user={user} auth={auth} />} />
+const RouteComponent = ({ component: Component, user, ...rest }) => (
+	<Route {...rest} render={props => <Component {...props} user={user} />} />
 );
 
 function mapStatesToProps(state) {

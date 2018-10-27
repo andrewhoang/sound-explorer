@@ -10,6 +10,9 @@ module.exports = {
 		filename: 'bundle.js',
 		publicPath: '/static/',
 	},
+	node: {
+		fs: 'empty',
+	},
 	plugins: [new webpack.HotModuleReplacementPlugin()],
 	module: {
 		rules: [
