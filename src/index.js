@@ -16,8 +16,10 @@ const store = configureStore({}, history);
 
 axios.interceptors.request.use(
 	config => {
-		const token = localStorage.getItem('access_token');
-		config.headers.Authorization = `Bearer ${token}`;
+		if (!config.url.includes('unsplash')) {
+			const token = localStorage.getItem('access_token');
+			config.headers.Authorization = `Bearer ${token}`;
+		}
 		return config;
 	},
 	error => Promise.reject(error)
@@ -28,10 +30,14 @@ axios.interceptors.response.use(
 	error => {
 		if (error.response.status === 401) {
 			const token = localStorage.getItem('refresh_token');
-			return userService.refreshToken(token).then(response => {
-				error.config.headers['Authorization'] = `Bearer ${response.access_token}`;
-				return axios.request(error.config);
-			});
+			if (token) {
+				return userService.refreshToken(token).then(response => {
+					error.config.headers['Authorization'] = `Bearer ${response.access_token}`;
+					return axios.request(error.config);
+				});
+			} else {
+				return userService.logOut();
+			}
 		}
 		return Promise.reject(error.response);
 	}

@@ -15,7 +15,6 @@ import Playlist from '../playlists/Playlist';
 class MainRoute extends Component {
 	constructor(props) {
 		super(props);
-		this.state = { isAuth: false };
 		autoBind(this);
 	}
 
@@ -25,15 +24,13 @@ class MainRoute extends Component {
 
 	render() {
 		let { user } = this.props;
-		let { isAuth } = this.state;
+
 		return (
-			<div>
-				<Switch>
-					<RouteComponent exact path="/" component={Home} user={user} auth={isAuth} />
-					<RouteComponent path="/search" component={Search} user={user} auth={isAuth} />
-					<RouteComponent path="/playlist" component={Playlist} user={user} auth={isAuth} />
-				</Switch>
-			</div>
+			<Switch>
+				<RouteComponent exact path="/" component={Home} user={user} />
+				<RouteComponent path="/search" component={Search} user={user} />
+				<RouteComponent path="/playlist" component={Playlist} user={user} />
+			</Switch>
 		);
 	}
 }

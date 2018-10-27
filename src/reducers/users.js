@@ -9,3 +9,12 @@ export const user = (state = initialState.user, action) => {
 			return state;
 	}
 };
+
+export const image = (state = initialState.image, action) => {
+	switch (action.type) {
+		case types.GET_IMAGE_SUCCESS:
+			return action.image;
+		default:
+			return state;
+	}
+};

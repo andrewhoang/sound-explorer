@@ -10,8 +10,9 @@ import { faRocket } from '@fortawesome/free-solid-svg-icons';
 
 const Login = () => {
 	const signIn = () => {
-		window.location = 'https://soundexplorer.herokuapp.com/login';
-		// window.location = `http://localhost:3000/login`;
+		window.location = window.location.origin.includes('localhost')
+			? `http://localhost:3000/login`
+			: 'https://soundexplorer.herokuapp.com/login';
 	};
 
 	return (

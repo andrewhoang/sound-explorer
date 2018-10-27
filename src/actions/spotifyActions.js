@@ -57,7 +57,6 @@ function playTrackSuccess() {
 }
 
 function pauseTrackSuccess(progress_ms) {
-	console.log(progress_ms);
 	return {
 		type: types.PAUSE_TRACK_SUCCESS,
 		progress_ms,

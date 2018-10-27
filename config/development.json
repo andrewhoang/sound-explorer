@@ -6,5 +6,8 @@
 		"host": "http://localhost",
 		"port": 3000,
 		"baseUrl": "/api"
+	},
+	"unsplash": {
+		"client_id": "f08820019f6fd1e20d1404824387fa41ea67c5e425129a12fca0a03612055aa2"
 	}
 }
