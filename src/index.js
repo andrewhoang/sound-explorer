@@ -33,7 +33,12 @@ axios.interceptors.response.use(
 			if (token && localStorage.getItem('access_token')) {
 				return userService.refreshToken(token).then(response => {
 					error.config.headers['Authorization'] = `Bearer ${response.access_token}`;
-					return axios.request(error.config);
+					console.log('response', response.access_token);
+					if (response.access_token) {
+						return axios.request(error.config);
+					} else {
+						return userService.logOut();
+					}
 				});
 			} else {
 				return userService.logOut();
