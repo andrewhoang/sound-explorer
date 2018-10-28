@@ -28,6 +28,7 @@ axios.interceptors.request.use(
 axios.interceptors.response.use(
 	response => response,
 	error => {
+		console.log('error', error.response);
 		if (error.response.status === 401) {
 			const token = localStorage.getItem('refresh_token');
 			if (token && localStorage.getItem('access_token')) {

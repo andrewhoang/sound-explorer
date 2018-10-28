@@ -145,7 +145,7 @@ class Home extends Component {
 
 	handleChangeImage = e => {
 		this.getBase64(e.target.files[0]).then(data => {
-			let playlist = '0WpfqC9JGAdgziLibUadHA';
+			let playlist = '5fPLUDlUgloi0eL83MpHW0';
 			this.props.actions.addCoverImage(playlist, data);
 		});
 	};
