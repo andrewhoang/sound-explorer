@@ -26,7 +26,6 @@ const ArtistList = ({ artists, onClickAdd }) => {
 							</Col>
 						)
 				)}
-			)}
 		</Row>
 	);
 };
