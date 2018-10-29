@@ -108,10 +108,7 @@ class MusicService {
 			},
 		};
 
-		return axios.put(url, body, config).then(response => {
-			console.log('response', response);
-			return response.data;
-		});
+		return axios.put(url, body, config).then(response => response.data);
 	}
 
 	static playTrack(uri, position_ms, contexturi) {
