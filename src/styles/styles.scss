@@ -133,9 +133,10 @@ h2 {
 	background: $theme_green;
 	color: $theme_white;
 	margin: 20px auto;
+	&:focus,
 	&:hover {
-		background: darken($theme_green, 5%);
-		color: $theme_white;
+		background: darken($theme_green, 5%) !important;
+		color: $theme_white !important;
 	}
 }
 
