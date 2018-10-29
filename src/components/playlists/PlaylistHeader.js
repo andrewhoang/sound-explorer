@@ -56,7 +56,7 @@ const PlaylistHeader = ({
 					<FontAwesomeIcon icon={faSpotify} />
 					{savingPlaylist ? 'Saving to Spotify...' : 'Save to Spotify'}
 				</Button>
-				{/* <p onClick={onUploadImage}>Add Playlist Cover</p> */}
+				<p onClick={onUploadImage}>Add Playlist Cover</p>
 			</Col>
 		</Row>
 	);

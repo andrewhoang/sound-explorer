@@ -147,10 +147,19 @@ export function savePlaylist(title, isPublic, tracks, upload) {
 		return musicService
 			.savePlaylist(title, isPublic)
 			.then(playlist => {
-				dispatch(savingPlaylist());
-				musicService.addToPlaylist(playlist.id, tracks);
-				if (upload) musicService.addCoverImage(playlist.id, upload).then(dispatch(push('/')).catch(err => err));
-				dispatch(push('/'));
+				musicService.addToPlaylist(playlist.id, tracks).then(() => {
+					if (upload) {
+						return musicService
+							.addCoverImage(playlist.id, upload)
+							.then(() => {
+								dispatch(savingPlaylist());
+								dispatch(push('/'));
+							})
+							.catch(err => err);
+					}
+					dispatch(savingPlaylist());
+					dispatch(push('/'));
+				});
 			})
 			.catch(err => err);
 	};

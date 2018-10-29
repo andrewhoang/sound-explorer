@@ -28,13 +28,11 @@ axios.interceptors.request.use(
 axios.interceptors.response.use(
 	response => response,
 	error => {
-		console.log('error', error.response);
 		if (error.response.status === 401) {
 			const token = localStorage.getItem('refresh_token');
 			if (token && localStorage.getItem('access_token')) {
 				return userService.refreshToken(token).then(response => {
 					error.config.headers['Authorization'] = `Bearer ${response.access_token}`;
-					console.log('response', response.access_token);
 					if (response.access_token) {
 						return axios.request(error.config);
 					} else {

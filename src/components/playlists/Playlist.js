@@ -26,6 +26,7 @@ class Playlist extends Component {
 			title: 'Playlist',
 			isPublic: 'false',
 			progress_ms: 0,
+			error: false,
 		};
 		autoBind(this);
 	}
@@ -101,16 +102,25 @@ class Playlist extends Component {
 	};
 
 	handleChangeImage = e => {
-		this.setState({ upload: URL.createObjectURL(e.target.files[0]) });
-		this.getBase64(e.target.files[0]).then(data => {
-			this.setState({ base64: data });
-		});
+		let file = e.target.files[0];
+		if (file.size <= 256000) {
+			this.getBase64(file).then(data => {
+				this.setState({ upload: URL.createObjectURL(file), base64: data, error: false });
+			});
+		} else {
+			this.setState({ error: true });
+		}
 	};
 
 	render() {
 		let { playlist, playing, track, upload } = this.state;
 		return (
 			<div>
+				<Notification
+					isActive={this.state.error}
+					title={'File is too large!'}
+					message={'Please upload file no larger than 256 KB.'}
+				/>
 				<Notification
 					isActive={this.props.player.error}
 					title={'Player not Found!'}

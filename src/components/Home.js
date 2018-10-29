@@ -48,7 +48,7 @@ class Home extends Component {
 		}
 
 		if (nextProps.image !== this.props.image) {
-			this.setState({ image: nextProps.image.urls.raw }, () => console.log(this.state));
+			this.setState({ image: nextProps.image.urls.raw });
 		}
 	};
 
@@ -134,22 +134,6 @@ class Home extends Component {
 		this.props.actions.pauseTrack(track);
 	};
 
-	getBase64 = file => {
-		return new Promise((resolve, reject) => {
-			let reader = new FileReader();
-			reader.readAsDataURL(file);
-			reader.onload = () => resolve(reader.result);
-			reader.onerror = error => reject(error);
-		});
-	};
-
-	handleChangeImage = e => {
-		this.getBase64(e.target.files[0]).then(data => {
-			let playlist = '5fPLUDlUgloi0eL83MpHW0';
-			this.props.actions.addCoverImage(playlist, data);
-		});
-	};
-
 	render() {
 		const { albums } = this.props;
 		const { value, results, isLoading, playing, track, image } = this.state;
@@ -178,7 +162,6 @@ class Home extends Component {
 						</Col>
 					</Row>
 					<Row>
-						<input ref="upload" type="file" onChange={e => this.handleChangeImage(e)} />
 						<NewReleasesList
 							albums={albums}
 							onClickPlay={this.handlePlay}
