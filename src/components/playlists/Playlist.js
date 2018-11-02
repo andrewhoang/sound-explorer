@@ -10,6 +10,7 @@ import * as spotifyActions from '../../actions/spotifyActions';
 import PlaylistHeader from './PlaylistHeader';
 import TrackList from './TrackList';
 import { Notification } from 'react-notification';
+import FlipMove from 'react-flip-move';
 
 import findIndex from 'lodash/findIndex';
 import find from 'lodash/find';
@@ -97,8 +98,6 @@ class Playlist extends Component {
 			playlist.splice(trackIdx + 1, 0, track);
 		}
 
-		console.log(playlist);
-
 		this.setState({ playlist });
 	};
 
@@ -131,6 +130,11 @@ class Playlist extends Component {
 		}
 	};
 
+	formatEasing = () => {
+		let arr = ['0.39', '0', '0.45', '1.4'];
+		return `cubic-bezier(${arr.join(',')})`;
+	};
+
 	render() {
 		let { playlist, playing, track, upload } = this.state;
 		return (
@@ -157,15 +161,23 @@ class Playlist extends Component {
 						upload={upload}
 						savingPlaylist={this.props.savingPlaylist}
 					/>
-					<TrackList
-						playlist={playlist}
-						track={track}
-						playing={playing}
-						onClickPlay={this.handlePlay}
-						onClickPause={this.handlePause}
-						onClickRemove={this.handleRemove}
-						onClickMove={this.handleMove}
-					/>
+					<FlipMove
+						duration={500}
+						delay={0}
+						easing={this.formatEasing()}
+						staggerDurationBy={22}
+						staggerDelayBy={0}
+					>
+						<TrackList
+							playlist={playlist}
+							track={track}
+							playing={playing}
+							onClickPlay={this.handlePlay}
+							onClickPause={this.handlePause}
+							onClickRemove={this.handleRemove}
+							onClickMove={this.handleMove}
+						/>
+					</FlipMove>
 				</div>
 			</div>
 		);
