@@ -120,7 +120,7 @@ class Home extends Component {
 				isLoading: false,
 				results: categories,
 			});
-		}, 300);
+		}, 800);
 	};
 
 	handlePlay = track => {

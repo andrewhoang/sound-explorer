@@ -84,14 +84,16 @@ class Search extends Component {
 	};
 
 	render() {
-		let { artist } = this.props;
+		let { artist, savingPlaylist } = this.props;
 		let { artists, selectedArtists } = this.state;
 
 		return (
 			<div className="container">
 				<ArtistHeader artist={artist} selectedArtists={selectedArtists} onClickRemove={this.handleRemove} />
 				<ArtistList artists={artists} onClickAdd={this.handleAdd} />
-				<Button onClick={this.createPlaylist}>Create Playlist</Button>
+				<Button onClick={this.createPlaylist}>
+					{savingPlaylist ? 'Creating Playlist...' : 'Create Playlist'}
+				</Button>
 			</div>
 		);
 	}
@@ -102,6 +104,7 @@ Search.propTypes = {
 	results: PropTypes.object,
 	artist: PropTypes.object,
 	artists: PropTypes.object,
+	savingPlaylist: PropTypes.bool,
 };
 
 function mapStateToProps(state) {
@@ -109,6 +112,7 @@ function mapStateToProps(state) {
 		results: state.reducers.results,
 		artist: state.reducers.artist,
 		artists: state.reducers.artists,
+		savingPlaylist: state.reducers.savingPlaylist,
 	};
 }
 

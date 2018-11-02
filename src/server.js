@@ -23,27 +23,29 @@ let webpackCompiler = webpack(webpackConfig);
 
 app.use(
 	require('webpack-dev-middleware')(webpackCompiler, {
+		hot: true,
 		noInfo: true,
 		publicPath: webpackConfig.output.publicPath,
-		stats: false,
+		stats: {
+			colors: true,
+		},
 	})
 );
 
-app.use(require('webpack-hot-middleware')(webpackCompiler));
+app.use(
+	require('webpack-hot-middleware')(webpackCompiler, {
+		log: console.log,
+		path: '/__webpack_hmr',
+		heartbeat: 10 * 1000,
+	})
+);
+
+app.use(express.static(__dirname + '/dist/'));
 
 addApiRoutes(app);
 
 setInterval(() => https.get('https://soundexplorer.herokuapp.com/'), 1500000);
 
-app.get('*', (req, res) => {
-	res.sendFile(path.join(__dirname, 'index.html'));
-});
+app.get('*', (req, res) => res.sendFile(path.join(__dirname, 'index.html')));
 
-app.listen(process.env.PORT || 3000, err => {
-	if (err) {
-		console.log('Error', err);
-		return;
-	}
-
-	console.log(`Listening at http://localhost:${process.env.PORT || 3000}`);
-});
+app.listen(process.env.PORT || 3000, () => console.log(`Listening at http://localhost:${process.env.PORT || 3000}`));

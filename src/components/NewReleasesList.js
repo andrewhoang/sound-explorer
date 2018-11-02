@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
-import { withRouter } from 'react-router-dom';
 import autoBind from 'react-autobind';
 
-import { Row, Col, Button } from 'react-bootstrap';
+import { Col } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPlay, faEllipsisV, faPause, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { faPlayCircle, faPauseCircle } from '@fortawesome/free-regular-svg-icons';
+import { faInfoCircle } from '@fortawesome/free-solid-svg-icons';
+import ReactTooltip from 'react-tooltip';
 
 import maxBy from 'lodash/maxBy';
 import orderBy from 'lodash/orderBy';
@@ -18,12 +18,24 @@ class NewReleasesList extends Component {
 		autoBind(this);
 	}
 
+	hoverInfo = () => {
+		// this.setState({showInfo: })
+	};
+
 	render() {
 		let { albums, playing, track } = this.props;
 
 		return (
 			<Col md={12}>
-				<h2>New Releases</h2>
+				<h2>
+					Latest Releases
+					<a data-tip data-for="info" className="info-tooltip">
+						<FontAwesomeIcon icon={faInfoCircle} />
+					</a>
+				</h2>
+				<ReactTooltip id="info" place="top" globalEventOff="click">
+					<p>Based on artists you follow.</p>
+				</ReactTooltip>
 				{albums &&
 					uniqBy(orderBy(albums, 'release_date', 'desc'), 'name').map(album => {
 						return (

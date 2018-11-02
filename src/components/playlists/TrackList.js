@@ -4,13 +4,24 @@ import 'react-table/react-table.css';
 
 import ReactTable from 'react-table';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPlay, faPause, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { faPlay, faPause, faTrash, faChevronUp, faChevronDown } from '@fortawesome/free-solid-svg-icons';
 
 import minBy from 'lodash/minBy';
 import moment from 'moment';
 
-const TrackList = ({ playlist, playing, track, onClickPlay, onClickPause, onClickRemove }) => {
+const TrackList = ({ playlist, playing, track, onClickPlay, onClickPause, onClickRemove, onClickMove }) => {
 	const columns = [
+		{
+			accessor: 'id',
+			sortable: false,
+			maxWidth: 60,
+			Cell: row => (
+				<span style={{ color: '#999' }}>
+					<FontAwesomeIcon icon={faChevronUp} onClick={() => onClickMove('up', row.value)} />
+					<FontAwesomeIcon icon={faChevronDown} onClick={() => onClickMove('down', row.value)} />
+				</span>
+			),
+		},
 		{
 			accessor: 'album',
 			sortable: false,
@@ -65,6 +76,7 @@ const TrackList = ({ playlist, playing, track, onClickPlay, onClickPause, onClic
 				return {
 					style: {
 						color: isPlaying ? '#1db954' : '#fff',
+						background: isPlaying ? '#282828' : '#333',
 						fontWeight: isPlaying ? 700 : 400,
 					},
 				};
@@ -73,7 +85,14 @@ const TrackList = ({ playlist, playing, track, onClickPlay, onClickPause, onClic
 	};
 
 	return (
-		<ReactTable data={playlist} columns={columns} className="-highlight" showPagination={false} {...playingProps} />
+		<ReactTable
+			data={playlist}
+			columns={columns}
+			className="-highlight"
+			showPagination={false}
+			draggable="true"
+			{...playingProps}
+		/>
 	);
 };
 

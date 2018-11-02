@@ -12,6 +12,7 @@ import TrackList from './TrackList';
 import { Notification } from 'react-notification';
 
 import findIndex from 'lodash/findIndex';
+import find from 'lodash/find';
 import isEmpty from 'lodash/isEmpty';
 import shuffle from 'lodash/shuffle';
 import uniqBy from 'lodash/uniqBy';
@@ -83,6 +84,24 @@ class Playlist extends Component {
 		this.props.actions.pauseTrack(track);
 	};
 
+	handleMove = (direction, id) => {
+		let playlist = this.state.playlist;
+
+		let trackIdx = findIndex(playlist, { id: id });
+		let track = find(playlist, { id: id });
+
+		playlist.splice(trackIdx, 1);
+		if (direction == 'up') {
+			playlist.splice(trackIdx - 1, 0, track);
+		} else if (direction == 'down') {
+			playlist.splice(trackIdx + 1, 0, track);
+		}
+
+		console.log(playlist);
+
+		this.setState({ playlist });
+	};
+
 	handleSave = () => {
 		let { title, isPublic, playlist, base64 } = this.state;
 		this.props.actions.savePlaylist(title, isPublic, playlist, base64);
@@ -145,6 +164,7 @@ class Playlist extends Component {
 						onClickPlay={this.handlePlay}
 						onClickPause={this.handlePause}
 						onClickRemove={this.handleRemove}
+						onClickMove={this.handleMove}
 					/>
 				</div>
 			</div>
