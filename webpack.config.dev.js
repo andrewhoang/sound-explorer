@@ -1,19 +1,31 @@
 const path = require('path');
 const webpack = require('webpack');
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
 module.exports = {
 	mode: 'development',
-	devtool: 'cheap-module-eval-source-map',
-	entry: ['@babel/polyfill', 'eventsource-polyfill', 'webpack-hot-middleware/client', './src/index'],
+	devtool: 'source-map',
+	entry: [
+		'@babel/polyfill',
+		'eventsource-polyfill',
+		'webpack-hot-middleware/client?path=/__webpack_hmr&timeout=20000',
+		'./src/index',
+	],
 	output: {
-		path: path.join(__dirname, 'dist'),
+		path: path.join(__dirname, '/dist/'),
 		filename: 'bundle.js',
 		publicPath: '/static/',
 	},
 	node: {
 		fs: 'empty',
 	},
-	plugins: [new webpack.HotModuleReplacementPlugin()],
+	plugins: [
+		new webpack.HotModuleReplacementPlugin({
+			multiStep: true,
+		}),
+		new webpack.optimize.OccurrenceOrderPlugin(),
+		// new BundleAnalyzerPlugin(),
+	],
 	module: {
 		rules: [
 			{
@@ -28,30 +40,7 @@ module.exports = {
 			},
 			{
 				test: /\.(jpe?g|png|gif|svg)$/i,
-				use: [
-					'url-loader?limit=10000',
-					{
-						loader: 'img-loader',
-						options: {
-							enabled: process.env.NODE_ENV === 'production',
-							gifsicle: {
-								interlaced: false,
-							},
-							mozjpeg: {
-								progressive: true,
-								arithmetic: false,
-							},
-							optipng: false, // disabled
-							pngquant: {
-								floyd: 0.5,
-								speed: 2,
-							},
-							svgo: {
-								plugins: [{ removeTitle: true }, { convertPathData: false }],
-							},
-						},
-					},
-				],
+				use: ['url-loader?limit=10000'],
 			},
 			{
 				test: /\.(woff|woff2)$/,

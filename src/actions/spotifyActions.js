@@ -131,10 +131,12 @@ export function getNewReleases(artists) {
 
 export function createPlaylist(type, selection) {
 	return dispatch => {
+		dispatch(savingPlaylist(true));
 		return musicService
 			.createPlaylist(type, selection)
 			.then(response => {
 				dispatch(receiveTracks(response));
+				dispatch(savingPlaylist());
 				dispatch(push('/playlist'));
 			})
 			.catch(err => err);

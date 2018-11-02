@@ -10,8 +10,10 @@ import * as spotifyActions from '../../actions/spotifyActions';
 import PlaylistHeader from './PlaylistHeader';
 import TrackList from './TrackList';
 import { Notification } from 'react-notification';
+import FlipMove from 'react-flip-move';
 
 import findIndex from 'lodash/findIndex';
+import find from 'lodash/find';
 import isEmpty from 'lodash/isEmpty';
 import shuffle from 'lodash/shuffle';
 import uniqBy from 'lodash/uniqBy';
@@ -83,6 +85,22 @@ class Playlist extends Component {
 		this.props.actions.pauseTrack(track);
 	};
 
+	handleMove = (direction, id) => {
+		let playlist = this.state.playlist;
+
+		let trackIdx = findIndex(playlist, { id: id });
+		let track = find(playlist, { id: id });
+
+		playlist.splice(trackIdx, 1);
+		if (direction == 'up') {
+			playlist.splice(trackIdx - 1, 0, track);
+		} else if (direction == 'down') {
+			playlist.splice(trackIdx + 1, 0, track);
+		}
+
+		this.setState({ playlist });
+	};
+
 	handleSave = () => {
 		let { title, isPublic, playlist, base64 } = this.state;
 		this.props.actions.savePlaylist(title, isPublic, playlist, base64);
@@ -112,6 +130,11 @@ class Playlist extends Component {
 		}
 	};
 
+	formatEasing = () => {
+		let arr = ['0.39', '0', '0.45', '1.4'];
+		return `cubic-bezier(${arr.join(',')})`;
+	};
+
 	render() {
 		let { playlist, playing, track, upload } = this.state;
 		return (
@@ -138,14 +161,23 @@ class Playlist extends Component {
 						upload={upload}
 						savingPlaylist={this.props.savingPlaylist}
 					/>
-					<TrackList
-						playlist={playlist}
-						track={track}
-						playing={playing}
-						onClickPlay={this.handlePlay}
-						onClickPause={this.handlePause}
-						onClickRemove={this.handleRemove}
-					/>
+					<FlipMove
+						duration={500}
+						delay={0}
+						easing={this.formatEasing()}
+						staggerDurationBy={22}
+						staggerDelayBy={0}
+					>
+						<TrackList
+							playlist={playlist}
+							track={track}
+							playing={playing}
+							onClickPlay={this.handlePlay}
+							onClickPause={this.handlePause}
+							onClickRemove={this.handleRemove}
+							onClickMove={this.handleMove}
+						/>
+					</FlipMove>
 				</div>
 			</div>
 		);
