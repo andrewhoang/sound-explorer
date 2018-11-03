@@ -4,6 +4,7 @@ import { Form, Radio } from 'semantic-ui-react';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSpotify } from '@fortawesome/free-brands-svg-icons';
+import { faPencilAlt } from '@fortawesome/free-solid-svg-icons';
 
 import maxBy from 'lodash/maxBy';
 
@@ -75,7 +76,10 @@ class PlaylistHeader extends Component {
 						<FontAwesomeIcon icon={faSpotify} />
 						{savingPlaylist ? 'Saving to Spotify...' : 'Save to Spotify'}
 					</Button>
-					<p onClick={onUploadImage}>Add Playlist Cover</p>
+					<p onClick={onUploadImage}>
+						<FontAwesomeIcon icon={faPencilAlt} />
+						Edit Cover Image
+					</p>
 				</Col>
 			</Row>
 		);

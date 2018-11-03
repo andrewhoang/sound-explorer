@@ -33,7 +33,7 @@ class NewReleasesList extends Component {
 						<FontAwesomeIcon icon={faInfoCircle} />
 					</a>
 				</h2>
-				<ReactTooltip id="info" place="top" globalEventOff="click">
+				<ReactTooltip id="info" place="top">
 					<p>Based on artists you follow.</p>
 				</ReactTooltip>
 				{albums &&
