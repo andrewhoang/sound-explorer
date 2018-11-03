@@ -30,6 +30,14 @@ h2 {
 	justify-content: center;
 }
 
+h6 {
+	font-size: 15px;
+	margin-bottom: 35px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
 .row {
 	margin-bottom: 25px;
 }
@@ -145,6 +153,13 @@ h2 {
 
 svg {
 	margin: 0 5px;
+	&.fa-chevron-down,
+	&.fa-chevron-up {
+		&:hover,
+		&:focus {
+			color: #fff;
+		}
+	}
 }
 
 .header {
@@ -156,15 +171,19 @@ svg {
 	align-items: center;
 	flex-direction: column;
 	justify-content: center;
+
 	h1 {
 		text-align: left;
+		text-align: center;
+		text-transform: capitalize;
 		margin-bottom: 15px;
 	}
 	p {
-		font-size: 15px;
 		span {
 			margin: 0 15px;
 			font-weight: 700;
+			font-size: 15px;
+			text-align: center;
 			&:nth-child(1) {
 				margin-left: 0;
 			}
@@ -216,7 +235,7 @@ svg {
 .item-container {
 	text-align: center;
 	padding: 0;
-	margin: 5px auto;
+	margin: 10px auto;
 	.artist-dp {
 		height: 150px;
 		width: 150px;
@@ -265,10 +284,16 @@ svg {
 	margin: 0 auto;
 }
 
+.artist-list {
+	margin-bottom: 50px;
+	overflow: hidden;
+}
+
 .selected-row {
 	margin: 0;
 	display: flex;
 	width: 100%;
+	min-height: 45px;
 	overflow-x: auto;
 	list-style: none;
 	&::-webkit-scrollbar {
@@ -344,24 +369,66 @@ input[type='file'] {
 	display: none;
 }
 
-.artist-appear {
+.fade-appear {
 	opacity: 0;
 	z-index: 1;
 }
-.artist-appear-active {
+.fade-appear-active {
 	opacity: 1;
 	transition: opacity 1000ms linear;
 }
-.artist-exit {
+.fade-exit {
 	opacity: 1;
 	// transform: scale(1) translateY(0%);
 }
-.artist-exit.artist-exit-active {
+.fade-exit.fade-exit-active {
 	opacity: 0.01;
 	transform: scale(0.9) translateY(50%);
 	transition: all 300ms ease-out;
 }
 
-.artist-exit-done {
+.fade-exit-done {
 	opacity: 0;
+}
+
+.fade-entering {
+	animation: fadeOut 5000ms linear;
+}
+
+.fade-entered {
+	opacity: 1;
+	animation: fadeIn 5000ms linear;
+}
+
+.fade-enter-active {
+	opacity: 1;
+	transition: opacity 500ms ease-in;
+}
+.fade-exit {
+	opacity: 1;
+}
+.fade-exit-active {
+	opacity: 0.01;
+	transition: opacity 500ms ease-in;
+}
+
+@keyframes fadeOut {
+	0% {
+		opacity: 1;
+	}
+	90% {
+		opacity: 1;
+	}
+	100% {
+		opacity: 0.1;
+	}
+}
+
+@keyframes fadeIn {
+	0% {
+		opacity: 0;
+	}
+	100% {
+		opacity: 1;
+	}
 }

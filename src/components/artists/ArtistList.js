@@ -19,16 +19,9 @@ class ArtistList extends Component {
 		let { artists, onClickAdd } = this.props;
 
 		return (
-			<Row>
-				<h2>Select artists</h2>
+			<Row className="artist-list">
 				{artists && (
-					<FlipMove
-						duration={500}
-						delay={0}
-						easing={this.formatEasing()}
-						staggerDurationBy={22}
-						staggerDelayBy={0}
-					>
+					<FlipMove duration={700} delay={150} easing={'ease'} staggerDurationBy={15} staggerDelayBy={20}>
 						{artists.map(
 							artist =>
 								!isEmpty(artist.images) && (

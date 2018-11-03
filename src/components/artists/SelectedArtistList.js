@@ -17,7 +17,7 @@ const SelectedArtistList = ({ artists, parent, onClickRemove }) => {
 							/>
 						</a>
 					)}
-					<ReactTooltip id={`${artist.id}`} place="top" type="error">
+					<ReactTooltip id={`${artist.id}`} place="top">
 						<span>{artist.name}</span>
 					</ReactTooltip>
 				</li>

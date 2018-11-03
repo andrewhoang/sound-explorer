@@ -66,10 +66,9 @@ class Playlist extends Component {
 		let playlist = this.state.playlist;
 
 		let trackIdx = findIndex(playlist, { id: id });
-
-		playlist.splice(trackIdx, 1);
 		let newTrack = shuffle(tracks).slice(0, 1);
-		playlist.push(...newTrack);
+
+		playlist[trackIdx] = newTrack[0];
 
 		this.setState({ tracks, playlist });
 	};

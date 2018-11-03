@@ -22,7 +22,7 @@ class UserService {
 	static getUserProfile() {
 		const url = `${endpoints.SPOTIFY_BASE_URL}${endpoints.GET_USER}`;
 		return axios.get(url).then(user => {
-			const url = `${endpoints.SPOTIFY_BASE_URL}${endpoints.GET_USER}/following?type=artist`;
+			const url = `${endpoints.SPOTIFY_BASE_URL}${endpoints.GET_USER}/following?type=artist&limit=50`;
 			return axios.get(url).then(response => ({ ...user.data, following: response.data.artists.items }));
 		});
 	}
