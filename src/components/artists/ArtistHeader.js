@@ -17,7 +17,6 @@ class ArtistHeader extends Component {
 	}
 
 	componentDidMount() {
-		console.log('mounted');
 		setTimeout(() => this.setState({ show: true }), 100);
 	}
 

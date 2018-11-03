@@ -173,7 +173,6 @@ svg {
 	justify-content: center;
 
 	h1 {
-		text-align: left;
 		text-align: center;
 		text-transform: capitalize;
 		margin-bottom: 15px;
@@ -367,6 +366,10 @@ svg {
 
 input[type='file'] {
 	display: none;
+}
+
+.fade {
+	text-align: center;
 }
 
 .fade-appear {

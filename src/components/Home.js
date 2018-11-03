@@ -35,6 +35,10 @@ class Home extends Component {
 
 	componentDidMount() {
 		// this.props.actions.getHeroImage();
+		if (this.props.user && this.props.user.following) {
+			let artists = this.props.user.following.map(artist => artist.id);
+			this.props.actions.getNewReleases(artists);
+		}
 	}
 
 	componentWillReceiveProps = nextProps => {
