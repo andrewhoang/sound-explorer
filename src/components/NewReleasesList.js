@@ -41,6 +41,7 @@ class NewReleasesList extends Component {
 						return (
 							<Col
 								md={length % 4 == 0 ? 3 : length % 3 == 0 ? 4 : 3}
+								sm={4}
 								key={album.id}
 								className="item-container"
 							>

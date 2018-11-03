@@ -39,7 +39,7 @@ module.exports = {
 				use: ['style-loader', 'css-loader', 'sass-loader'],
 			},
 			{
-				test: /\.(jpe?g|png|gif|svg)$/i,
+				test: /\.(jpe?g|png|gif|svg|ico)$/i,
 				use: ['url-loader?limit=10000'],
 			},
 			{
