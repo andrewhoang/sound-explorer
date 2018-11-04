@@ -12,12 +12,12 @@ class ArtistHeader extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			entered: false,
+			show: false,
 		};
 	}
 
 	componentDidMount() {
-		setTimeout(() => this.setState({ show: true }), 100);
+		setTimeout(() => this.setState({ show: true }), 300);
 	}
 
 	render() {
@@ -38,7 +38,6 @@ class ArtistHeader extends Component {
 					>
 						<Transition in={show} timeout={5000}>
 							{state => {
-								console.log('state', state);
 								switch (state) {
 									case 'entering':
 										return (
@@ -54,7 +53,7 @@ class ArtistHeader extends Component {
 												<span>
 													{artist.followers && commaNumber(artist.followers.total)} Followers
 												</span>{' '}
-												|
+												{artist.genres && <span>|</span>}
 												<span>
 													{artist.genres &&
 														artist.genres
@@ -70,9 +69,9 @@ class ArtistHeader extends Component {
 											</p>
 										);
 									case 'exiting':
-										return 'Exiting…';
+										return <span />;
 									case 'exited':
-										return 'Exited!';
+										return <span />;
 								}
 							}}
 						</Transition>

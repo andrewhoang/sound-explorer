@@ -18,10 +18,6 @@ class NewReleasesList extends Component {
 		autoBind(this);
 	}
 
-	hoverInfo = () => {
-		// this.setState({showInfo: })
-	};
-
 	render() {
 		let { albums, playing, track } = this.props;
 
@@ -36,12 +32,12 @@ class NewReleasesList extends Component {
 				<ReactTooltip id="info" place="top">
 					<p>Based on artists you follow.</p>
 				</ReactTooltip>
-				{albums &&
+				{albums ? (
 					uniqBy(orderBy(albums, 'release_date', 'desc'), 'name').map(album => {
 						return (
 							<Col
 								md={length % 4 == 0 ? 3 : length % 3 == 0 ? 4 : 3}
-								sm={4}
+								sm={6}
 								key={album.id}
 								className="item-container"
 							>
@@ -92,7 +88,10 @@ class NewReleasesList extends Component {
 								</h6>
 							</Col>
 						);
-					})}
+					})
+				) : (
+					<h3>No new releases</h3>
+				)}
 			</Col>
 		);
 	}

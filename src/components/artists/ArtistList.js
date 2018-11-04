@@ -27,7 +27,7 @@ class ArtistList extends Component {
 								!isEmpty(artist.images) && (
 									<Col
 										md={length % 4 == 0 ? 3 : length % 3 == 0 ? 4 : 3}
-										sm={4}
+										sm={6}
 										key={artist.id}
 										className="item-container"
 									>

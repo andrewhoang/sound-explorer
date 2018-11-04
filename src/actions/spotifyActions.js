@@ -63,9 +63,10 @@ function pauseTrackSuccess(progress_ms) {
 	};
 }
 
-function playTrackError() {
+function playTrackError(error) {
 	return {
 		type: types.PLAY_TRACK_ERROR,
+		error,
 	};
 }
 
@@ -131,12 +132,10 @@ export function getNewReleases(artists) {
 
 export function createPlaylist(type, selection) {
 	return dispatch => {
-		dispatch(savingPlaylist(true));
 		return musicService
 			.createPlaylist(type, selection)
 			.then(response => {
 				dispatch(receiveTracks(response));
-				dispatch(savingPlaylist());
 				dispatch(push('/playlist'));
 			})
 			.catch(err => err);
@@ -185,7 +184,10 @@ export function playTrack(uri, progress_ms, contexturi = false) {
 			})
 			.catch(err => {
 				if (err.status == 404) {
-					dispatch(playTrackError());
+					dispatch(playTrackError(404));
+				}
+				if (err.status == 403) {
+					dispatch(playTrackError(403));
 				}
 			});
 	};
