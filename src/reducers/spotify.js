@@ -62,7 +62,11 @@ export const player = (state = initialState.player, action = null) => {
 		case types.PLAY_TRACK_SUCCESS:
 			return Object.assign({}, state, { error: false });
 		case types.PLAY_TRACK_ERROR:
-			return Object.assign({}, state, { error: true });
+			let message = (action.error = 404
+				? 'Please open up Spotify to continue.'
+				: 'Unable to access player for non-premium account.');
+			let title = (action.error = 404 ? 'Player not Found!' : 'Upgrade to Premium');
+			return Object.assign({}, state, { error: { status: true, title, message } });
 		case types.PAUSE_TRACK_SUCCESS:
 			return Object.assign({}, state, { error: false, progress_ms: action.progress_ms });
 		default:

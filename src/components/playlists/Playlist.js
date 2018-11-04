@@ -135,7 +135,9 @@ class Playlist extends Component {
 	};
 
 	render() {
+		let { player } = this.props;
 		let { playlist, playing, track, upload } = this.state;
+
 		return (
 			<div>
 				<Notification
@@ -143,11 +145,13 @@ class Playlist extends Component {
 					title={'File is too large!'}
 					message={'Please upload file no larger than 256 KB.'}
 				/>
-				<Notification
-					isActive={this.props.player.error}
-					title={'Player not Found!'}
-					message={'Please open up Spotify to continue.'}
-				/>
+				{player.error && (
+					<Notification
+						isActive={player.error.status}
+						title={player.error.title}
+						message={player.error.title}
+					/>
+				)}
 				<div className="container">
 					<input ref="upload" type="file" onChange={e => this.handleChangeImage(e)} />
 					<PlaylistHeader

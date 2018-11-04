@@ -5,7 +5,7 @@ import * as endpoints from './apiEndpoints';
 class MusicService {
 	static search(types, value) {
 		let responses = types.map(type => {
-			const url = `${endpoints.SPOTIFY_BASE_URL}${endpoints.SEARCH}?q=${value}&type=${type}&limit=10`;
+			const url = `${endpoints.SPOTIFY_BASE_URL}${endpoints.SEARCH}?q=${value}*&type=${type}&limit=10`;
 			return axios.get(url).then(response => response.data);
 		});
 
@@ -53,9 +53,9 @@ class MusicService {
 		switch (type) {
 			case 'artist':
 				let tracks = selection.map(artist => {
-					const url = `${endpoints.SPOTIFY_BASE_URL}${endpoints.SEARCH}?q=${type}:${
+					const url = `${endpoints.SPOTIFY_BASE_URL}${endpoints.SEARCH}?q=${type}:"${
 						artist.name
-					}&type=track&market=US&limit=50`;
+					}"&type=track&market=US&limit=50`;
 					return axios.get(url).then(response => response.data.tracks.items);
 				});
 

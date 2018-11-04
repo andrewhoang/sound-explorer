@@ -11,13 +11,12 @@ class AlertMessage extends Component {
 
 	render() {
 		let { player } = this.props;
+		let { error } = player;
 
-		return (
-			<Notification
-				isActive={player.error}
-				title={'Player not Found!'}
-				message={'Please open up Spotify to continue.'}
-			/>
+		return player.error ? (
+			<Notification isActive={error.status} title={error.title} message={error.message} />
+		) : (
+			<div />
 		);
 	}
 }
