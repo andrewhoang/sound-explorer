@@ -10,7 +10,7 @@ module.exports = {
 	performance: {
 		hints: false,
 	},
-	entry: ['@babel/polyfill', './src/index'],
+	entry: ['@babel/polyfill', './src/client/index'],
 	output: {
 		path: path.join(__dirname, 'dist'),
 		filename: 'bundle.js',
@@ -43,6 +43,7 @@ module.exports = {
 					{
 						loader: 'img-loader',
 						options: {
+							name: 'images/[name].[ext]',
 							enabled: process.env.NODE_ENV === 'production',
 							gifsicle: {
 								interlaced: false,
@@ -64,28 +65,13 @@ module.exports = {
 				],
 			},
 			{
-				test: /\.(woff|woff2)$/,
-				use: [
-					{
-						loader: 'url-loader',
-						options: {
-							prefix: 'font',
-							limit: 5000,
-						},
+				test: /\.(ttf|eot|woff|woff2|svg)$/,
+				use: {
+					loader: 'file-loader',
+					options: {
+						name: 'fonts/[name].[ext]',
 					},
-				],
-			},
-			{
-				test: /\.(ttf|otf|eot)(\?v=\d+\.\d+\.\d+)?$/,
-				use: [
-					{
-						loader: 'url-loader',
-						options: {
-							limit: 10000,
-							mimetype: 'application/octet-stream',
-						},
-					},
-				],
+				},
 			},
 		],
 	},

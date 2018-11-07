@@ -1,7 +1,7 @@
 import request from 'request';
 import querystring from 'query-string';
 
-function AddApiRoutes(app) {
+function routes(app) {
 	app.use(require('./index.js'));
 
 	const redirect_uri = process.env.REDIRECT_URI || 'http://localhost:3000/callback';
@@ -57,5 +57,5 @@ function AddApiRoutes(app) {
 }
 
 module.exports = function(app) {
-	return new AddApiRoutes(app);
+	return new routes(app);
 };
