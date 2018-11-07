@@ -9,8 +9,8 @@ import axios from 'axios';
 import userService from './services/userService';
 
 import App from './components/App';
-import './styles/styles.scss';
-import './favicon-rocket.ico';
+import './assets/styles/styles.scss';
+import './assets/favicon-rocket.ico';
 
 const history = createHistory();
 const store = configureStore({}, history);

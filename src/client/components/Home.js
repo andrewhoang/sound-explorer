@@ -8,7 +8,7 @@ import autoBind from 'react-autobind';
 import * as userActions from '../actions/userActions';
 import * as spotifyActions from '../actions/spotifyActions';
 
-import background from '../styles/wallpaper1.jpeg';
+import background from '../assets/styles/wallpaper1.jpeg';
 import 'semantic-ui-css/semantic.min.css';
 
 import { Row, Col } from 'react-bootstrap';

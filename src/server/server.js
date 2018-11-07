@@ -1,7 +1,7 @@
 import path from 'path';
 import express from 'express';
 import webpack from 'webpack';
-import addApiRoutes from '../api/addApiRoutes';
+import routes from '../server/routes';
 import bodyParser from 'body-parser';
 import compression from 'compression';
 import https from 'https';
@@ -14,9 +14,9 @@ app.use(compression());
 let webpackConfig;
 
 if (app.get('env') === 'development') {
-	webpackConfig = require('../webpack.config.dev');
+	webpackConfig = require('../../webpack.config.dev');
 } else if (app.get('env') === 'production') {
-	webpackConfig = require('../webpack.config.prod');
+	webpackConfig = require('../../webpack.config.prod');
 }
 
 let webpackCompiler = webpack(webpackConfig);
@@ -42,10 +42,10 @@ app.use(
 
 app.use(express.static(__dirname + '/dist/'));
 
-addApiRoutes(app);
+routes(app);
 
 setInterval(() => https.get('https://soundexplorer.herokuapp.com/'), 1500000);
 
-app.get('/*', (req, res) => res.sendFile(path.join(__dirname, 'index.html')));
+app.get('/*', (req, res) => res.sendFile(path.join(__dirname, '../index.html')));
 
 app.listen(process.env.PORT || 3000, () => console.log(`Listening at http://localhost:${process.env.PORT || 3000}`));
