@@ -5,18 +5,18 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import autoBind from 'react-autobind';
 
-import * as spotifyActions from '../actions/spotifyActions';
+import * as spotifyActions from '../../actions/spotifyActions';
 
-import ArtistHeader from './artists/ArtistHeader';
-import ArtistList from './artists/ArtistList';
-import { Button } from 'react-bootstrap';
+import ArtistHeader from './ArtistHeader';
+import ArtistList from './ArtistList';
+import Button from 'react-bootstrap/lib/Button';
 
 import find from 'lodash/find';
 import findIndex from 'lodash/findIndex';
 import uniqBy from 'lodash/uniqBy';
 import queryString from 'query-string';
 
-class Search extends Component {
+class ArtistsPage extends Component {
 	constructor(props) {
 		super(props);
 		this.state = { artists: [], selectedArtists: [] };
@@ -99,7 +99,7 @@ class Search extends Component {
 	}
 }
 
-Search.propTypes = {
+ArtistsPage.propTypes = {
 	actions: PropTypes.object,
 	results: PropTypes.object,
 	artist: PropTypes.object,
@@ -126,5 +126,5 @@ export default withRouter(
 	connect(
 		mapStateToProps,
 		mapDispatchToProps
-	)(Search)
+	)(ArtistsPage)
 );

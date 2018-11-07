@@ -132,7 +132,7 @@ export function getNewReleases(artists) {
 
 export function createPlaylist(type, selection) {
 	return dispatch => {
-		return dispatch(savingPlaylist(true));
+		dispatch(savingPlaylist(true));
 		return spotifyService
 			.createPlaylist(type, selection)
 			.then(response => {

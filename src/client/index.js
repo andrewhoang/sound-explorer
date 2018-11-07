@@ -54,7 +54,7 @@ ReactDOM.render(
 			<App />
 		</ConnectedRouter>
 	</Provider>,
-	document.getElementById('root')
+	document.getElementById('app')
 );
 
 if (module.hot) {
@@ -65,7 +65,7 @@ if (module.hot) {
 					<App />
 				</ConnectedRouter>
 			</Provider>,
-			document.getElementById('root')
+			document.getElementById('app')
 		);
 	});
 }
