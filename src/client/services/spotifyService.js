@@ -2,7 +2,7 @@ import axios from 'axios';
 import moment from 'moment';
 import * as endpoints from './apiEndpoints';
 
-class MusicService {
+class SpotifyService {
 	static search(types, value) {
 		let responses = types.map(type => {
 			const url = `${endpoints.SPOTIFY_BASE_URL}${endpoints.SEARCH}?q=${value}*&type=${type}&limit=10`;
@@ -131,4 +131,4 @@ class MusicService {
 	}
 }
 
-export default MusicService;
+export default SpotifyService;
