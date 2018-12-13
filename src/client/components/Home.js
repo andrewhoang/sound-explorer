@@ -20,6 +20,7 @@ import debounce from 'lodash/debounce';
 import capitalize from 'lodash/capitalize';
 import uniqBy from 'lodash/uniqBy';
 import minBy from 'lodash/minBy';
+import Loading from './common/LoadingWrapper';
 
 class Home extends Component {
 	constructor(props) {
@@ -29,6 +30,7 @@ class Home extends Component {
 			playing: false,
 			progress_ms: 0,
 			image: '',
+			rendered: false,
 		};
 		autoBind(this);
 	}
@@ -39,6 +41,8 @@ class Home extends Component {
 			let artists = this.props.user.following.map(artist => artist.id);
 			this.props.actions.getNewReleases(artists);
 		}
+
+		// setTimeout(() => this.setState({ rendered: true }), 3500);
 	}
 
 	componentWillReceiveProps = nextProps => {
@@ -82,29 +86,33 @@ class Home extends Component {
 			if (this.state.value.length < 1) return this.resetComponent();
 
 			let artists = uniqBy(
-				this.props.results[0].artists.items.filter(artist => minBy(artist.images, 'height')).map(artist => ({
-					type: 'artist',
-					id: artist.id,
-					title: artist.name,
-					image: minBy(artist.images, 'height').url,
-					description: artist.genres
-						.slice(0, 3)
-						.map((genre, i) => (i == 0 ? `${capitalize(genre)}` : ` ${capitalize(genre)}`))
-						.toString(),
-				})),
+				this.props.results[0].artists.items
+					.filter(artist => minBy(artist.images, 'height'))
+					.map(artist => ({
+						type: 'artist',
+						id: artist.id,
+						title: artist.name,
+						image: minBy(artist.images, 'height').url,
+						description: artist.genres
+							.slice(0, 3)
+							.map((genre, i) => (i == 0 ? `${capitalize(genre)}` : ` ${capitalize(genre)}`))
+							.toString(),
+					})),
 				'title'
 			);
 
 			let tracks = uniqBy(
-				this.props.results[1].tracks.items.filter(track => minBy(track.album.images, 'height')).map(track => ({
-					type: 'track',
-					id: track.id,
-					title: track.name,
-					image: minBy(track.album.images, 'height').url,
-					description: track.artists
-						.map((artist, i) => (i == 0 ? artist.name : ` ${artist.name}`))
-						.toString(),
-				})),
+				this.props.results[1].tracks.items
+					.filter(track => minBy(track.album.images, 'height'))
+					.map(track => ({
+						type: 'track',
+						id: track.id,
+						title: track.name,
+						image: minBy(track.album.images, 'height').url,
+						description: track.artists
+							.map((artist, i) => (i == 0 ? artist.name : ` ${artist.name}`))
+							.toString(),
+					})),
 				'title'
 			);
 
@@ -139,13 +147,13 @@ class Home extends Component {
 	};
 
 	render() {
-		const { albums } = this.props;
+		const { albums, user } = this.props;
 		const { value, results, isLoading, playing, track, image } = this.state;
 
 		return (
 			<div>
 				<AlertMessage />
-				<div className="container">
+				<div className="container animated fadeIn">
 					<Row>
 						<Col
 							md={12}
@@ -156,6 +164,7 @@ class Home extends Component {
 						>
 							<Search
 								category
+								// open={true}
 								loading={isLoading}
 								placeholder="Search by favorite artist or track"
 								onResultSelect={this.handleResultSelect}
@@ -172,6 +181,7 @@ class Home extends Component {
 							onClickPause={this.handlePause}
 							track={track}
 							playing={playing}
+							isPremium={user.product == 'premium'}
 						/>
 					</Row>
 				</div>

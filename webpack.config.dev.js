@@ -1,5 +1,6 @@
 const path = require('path');
 const webpack = require('webpack');
+// const HtmlWebpackPlugin = require('html-webpack-plugin');
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
 module.exports = {
@@ -14,7 +15,7 @@ module.exports = {
 	output: {
 		path: path.join(__dirname, '/dist/'),
 		filename: 'bundle.js',
-		publicPath: '/static/',
+		publicPath: '/',
 	},
 	node: {
 		fs: 'empty',
@@ -23,6 +24,7 @@ module.exports = {
 		new webpack.HotModuleReplacementPlugin({
 			multiStep: true,
 		}),
+		// new HtmlWebpackPlugin({ template: './src/index.html' }),
 		new webpack.optimize.OccurrenceOrderPlugin(),
 		// new BundleAnalyzerPlugin(),
 	],
@@ -30,17 +32,26 @@ module.exports = {
 		rules: [
 			{
 				test: /\.js?/,
-				exclude: [/node_modules/, /styles/],
-				use: ['babel-loader'],
+				exclude: /node_modules/,
+				use: 'babel-loader',
 				include: path.join(__dirname, 'src'),
 			},
 			{
 				test: /\.(s*)css$/,
 				use: ['style-loader', 'css-loader', 'sass-loader'],
 			},
+			// {
+			// 	test: /\.(jpe?g|png|gif|svg|ico)$/i,
+			// 	use: ['url-loader?limit=10000'],
+			// },
 			{
 				test: /\.(jpe?g|png|gif|svg|ico)$/i,
-				use: ['url-loader?limit=10000'],
+				use: {
+					loader: 'file-loader',
+					options: {
+						name: 'images/[name].[ext]',
+					},
+				},
 			},
 			{
 				test: /\.(woff|woff2)$/,

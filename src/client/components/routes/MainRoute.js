@@ -9,28 +9,35 @@ import * as userActions from '../../actions/userActions';
 
 import RouteComponent from './Route';
 import Home from '../Home';
-import Search from '../Search';
+import ArtistsPage from '../artists/ArtistsPage';
 import Playlist from '../playlists/Playlist';
+import LoadingWrapper from '../common/LoadingWrapper';
 
 class MainRoute extends Component {
 	constructor(props) {
 		super(props);
+		this.state = { rendered: false };
 		autoBind(this);
 	}
 
 	componentDidMount = () => {
 		this.props.actions.getUserProfile();
+		setTimeout(() => this.setState({ rendered: true }), 3500);
 	};
 
 	render() {
 		let { user } = this.props;
 
 		return (
-			<Switch>
-				<RouteComponent exact path="/" component={Home} user={user} />
-				<RouteComponent path="/search" component={Search} user={user} />
-				<RouteComponent path="/playlist" component={Playlist} user={user} />
-			</Switch>
+			<div>
+				<LoadingWrapper rendered={this.state.rendered}>
+					<Switch>
+						<RouteComponent exact path="/" component={Home} user={user} />
+						<RouteComponent path="/search" component={ArtistsPage} user={user} />
+						<RouteComponent path="/playlist" component={Playlist} user={user} />
+					</Switch>
+				</LoadingWrapper>
+			</div>
 		);
 	}
 }

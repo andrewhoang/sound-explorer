@@ -10,6 +10,7 @@ import userService from './services/userService';
 
 import App from './components/App';
 import './assets/styles/styles.scss';
+import 'animate.css';
 import './assets/favicon-rocket.ico';
 
 const history = createHistory();
@@ -54,7 +55,7 @@ ReactDOM.render(
 			<App />
 		</ConnectedRouter>
 	</Provider>,
-	document.getElementById('root')
+	document.getElementById('app')
 );
 
 if (module.hot) {
@@ -65,7 +66,7 @@ if (module.hot) {
 					<App />
 				</ConnectedRouter>
 			</Provider>,
-			document.getElementById('root')
+			document.getElementById('app')
 		);
 	});
 }

@@ -1,5 +1,6 @@
 export default {
 	isAuth: false,
+	modal: {},
 	songs: {},
 	user: {},
 	image: {},
@@ -7,6 +8,7 @@ export default {
 	artists: {},
 	track: {},
 	tracks: {},
+	playlists: [],
 	albums: {},
 	results: [],
 	player: {},

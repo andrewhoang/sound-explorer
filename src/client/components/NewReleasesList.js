@@ -4,7 +4,7 @@ import autoBind from 'react-autobind';
 import { Col } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlayCircle, faPauseCircle } from '@fortawesome/free-regular-svg-icons';
-import { faInfoCircle } from '@fortawesome/free-solid-svg-icons';
+import { faPlay, faPause, faInfoCircle } from '@fortawesome/free-solid-svg-icons';
 import ReactTooltip from 'react-tooltip';
 
 import maxBy from 'lodash/maxBy';
@@ -19,12 +19,12 @@ class NewReleasesList extends Component {
 	}
 
 	render() {
-		let { albums, playing, track } = this.props;
+		let { albums, playing, track, isPremium } = this.props;
 
 		return (
 			<Col md={12}>
 				<h2>
-					Latest Releases
+					New Releases
 					<a data-tip data-for="info" className="info-tooltip">
 						<FontAwesomeIcon icon={faInfoCircle} />
 					</a>
@@ -34,6 +34,11 @@ class NewReleasesList extends Component {
 				</ReactTooltip>
 				{albums ? (
 					uniqBy(orderBy(albums, 'release_date', 'desc'), 'name').map(album => {
+						const premiumProps = isPremium && {
+							onMouseEnter: () => this.setState({ album: album.id }),
+							onMouseLeave: () => this.setState({ album: '' }),
+						};
+
 						return (
 							<Col
 								md={length % 4 == 0 ? 3 : length % 3 == 0 ? 4 : 3}
@@ -41,15 +46,12 @@ class NewReleasesList extends Component {
 								key={album.id}
 								className="item-container"
 							>
-								<div
-									className="album-container"
-									onMouseEnter={() => this.setState({ album: album.id })}
-									onMouseLeave={() => this.setState({ album: '' })}
-								>
+								<div className="album-container" {...premiumProps}>
 									{album.images && (
 										<img
 											src={maxBy(album.images, 'height').url}
 											className="album-dp"
+											onClick={() => this.props.onClickPlay(album.uri)}
 											style={{
 												filter: this.state.album == album.id ? 'brightness(80%)' : '',
 											}}
@@ -63,20 +65,18 @@ class NewReleasesList extends Component {
 													onClick={() => this.props.onClickPlay(album.uri)}
 												/>
 											)}
-											{playing &&
-												track == album.uri && (
-													<FontAwesomeIcon
-														icon={faPauseCircle}
-														onClick={() => this.props.onClickPause(album.uri)}
-													/>
-												)}
-											{playing &&
-												track !== album.uri && (
-													<FontAwesomeIcon
-														icon={faPlayCircle}
-														onClick={() => this.props.onClickPlay(album.uri)}
-													/>
-												)}
+											{playing && track == album.uri && (
+												<FontAwesomeIcon
+													icon={faPauseCircle}
+													onClick={() => this.props.onClickPause(album.uri)}
+												/>
+											)}
+											{playing && track !== album.uri && (
+												<FontAwesomeIcon
+													icon={faPlayCircle}
+													onClick={() => this.props.onClickPlay(album.uri)}
+												/>
+											)}
 										</div>
 									)}
 									<h5>{album.name}</h5>

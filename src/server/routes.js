@@ -6,16 +6,15 @@ function routes(app) {
 
 	const redirect_uri = process.env.REDIRECT_URI || 'http://localhost:3000/callback';
 	const scope = `playlist-modify-private
-	 playlist-modify-public 
+	 playlist-modify-public
+	 playlist-read-private
 	 user-read-private 
 	 user-read-email 
 	 user-modify-playback-state
 	 user-read-playback-state
 	 user-top-read
 	 user-follow-read
-	 ugc-image-upload
-	 playlist-modify-public
-	 playlist-modify-private`;
+	 ugc-image-upload`;
 
 	app.get('/login', (req, res) =>
 		res.redirect(

@@ -1,6 +1,6 @@
 import * as types from '../constants/ActionTypes';
 import { push } from 'react-router-redux';
-import musicService from '../services/musicService';
+import spotifyService from '../services/spotifyService';
 
 function receiveArtist(artist) {
 	return {
@@ -27,6 +27,13 @@ function receiveTracks(tracks) {
 	return {
 		type: types.RECEIVE_TRACKS,
 		tracks,
+	};
+}
+
+function receivePlaylists(playlists) {
+	return {
+		type: types.RECEIVE_PLAYLISTS,
+		playlists,
 	};
 }
 
@@ -79,7 +86,7 @@ function savingPlaylist(savingPlaylist = false) {
 
 export function getArtist(id) {
 	return dispatch => {
-		return musicService
+		return spotifyService
 			.getArtist(id)
 			.then(response => {
 				dispatch(receiveArtist(response));
@@ -90,7 +97,7 @@ export function getArtist(id) {
 
 export function getTrack(id) {
 	return dispatch => {
-		return musicService
+		return spotifyService
 			.getTrack(id)
 			.then(response => {
 				dispatch(receiveTrack(response));
@@ -101,7 +108,7 @@ export function getTrack(id) {
 
 export function getAlbums(id) {
 	return dispatch => {
-		return musicService
+		return spotifyService
 			.getAlbums(id)
 			.then(response => dispatch(receiveAlbums(response)))
 			.catch(err => console.error(err));
@@ -110,7 +117,7 @@ export function getAlbums(id) {
 
 export function getRelatedArtists(id) {
 	return dispatch => {
-		return musicService
+		return spotifyService
 			.getRelatedArtists(id)
 			.then(response => {
 				dispatch(receiveArtists(response));
@@ -121,7 +128,7 @@ export function getRelatedArtists(id) {
 
 export function getNewReleases(artists) {
 	return dispatch => {
-		return musicService
+		return spotifyService
 			.getNewReleases(artists)
 			.then(response => {
 				dispatch(receiveAlbums(response));
@@ -130,13 +137,46 @@ export function getNewReleases(artists) {
 	};
 }
 
+export function getPlaylists(id) {
+	return dispatch => {
+		return spotifyService
+			.getPlaylists(id)
+			.then(response => dispatch(receivePlaylists(response)))
+			.catch(err => err);
+	};
+}
+
 export function createPlaylist(type, selection) {
 	return dispatch => {
-		return musicService
+		dispatch(savingPlaylist(true));
+		return spotifyService
 			.createPlaylist(type, selection)
 			.then(response => {
 				dispatch(receiveTracks(response));
+				dispatch(savingPlaylist());
 				dispatch(push('/playlist'));
+			})
+			.catch(err => err);
+	};
+}
+
+export function updatePlaylist(id, tracks, upload) {
+	return dispatch => {
+		dispatch(savingPlaylist(true));
+		return spotifyService
+			.addToPlaylist(id, tracks)
+			.then(() => {
+				if (upload) {
+					return spotifyService
+						.addCoverImage(id, upload)
+						.then(() => {
+							dispatch(savingPlaylist());
+							dispatch(push('/'));
+						})
+						.catch(err => err);
+				}
+				dispatch(savingPlaylist());
+				dispatch(push('/'));
 			})
 			.catch(err => err);
 	};
@@ -145,12 +185,12 @@ export function createPlaylist(type, selection) {
 export function savePlaylist(title, isPublic, tracks, upload) {
 	return dispatch => {
 		dispatch(savingPlaylist(true));
-		return musicService
+		return spotifyService
 			.savePlaylist(title, isPublic)
 			.then(playlist => {
-				musicService.addToPlaylist(playlist.id, tracks).then(() => {
+				spotifyService.addToPlaylist(playlist.id, tracks).then(() => {
 					if (upload) {
-						return musicService
+						return spotifyService
 							.addCoverImage(playlist.id, upload)
 							.then(() => {
 								dispatch(savingPlaylist());
@@ -168,7 +208,7 @@ export function savePlaylist(title, isPublic, tracks, upload) {
 
 export function addCoverImage(playlist, upload) {
 	return dispatch => {
-		return musicService
+		return spotifyService
 			.addCoverImage(playlist, upload)
 			.then(response => console.log(response))
 			.catch(err => err);
@@ -177,7 +217,7 @@ export function addCoverImage(playlist, upload) {
 
 export function playTrack(uri, progress_ms, contexturi = false) {
 	return dispatch => {
-		return musicService
+		return spotifyService
 			.playTrack(uri, progress_ms, contexturi)
 			.then(() => {
 				dispatch(playTrackSuccess());
@@ -195,7 +235,7 @@ export function playTrack(uri, progress_ms, contexturi = false) {
 
 export function pauseTrack(uri) {
 	return dispatch => {
-		return musicService
+		return spotifyService
 			.pauseTrack(uri)
 			.then(response => dispatch(pauseTrackSuccess(response.progress_ms)))
 			.catch(err => err);
@@ -205,7 +245,7 @@ export function pauseTrack(uri) {
 export function search(type, value) {
 	return dispatch => {
 		dispatch(requestSearch());
-		return musicService
+		return spotifyService
 			.search(type, value)
 			.then(response => dispatch(receiveSearchResults(response)))
 			.catch(err => err);

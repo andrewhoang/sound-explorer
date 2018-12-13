@@ -2,7 +2,7 @@ import axios from 'axios';
 import moment from 'moment';
 import * as endpoints from './apiEndpoints';
 
-class MusicService {
+class SpotifyService {
 	static search(types, value) {
 		let responses = types.map(type => {
 			const url = `${endpoints.SPOTIFY_BASE_URL}${endpoints.SEARCH}?q=${value}*&type=${type}&limit=10`;
@@ -47,6 +47,11 @@ class MusicService {
 
 		let albumPromise = Promise.all(albums).then(response => response.reduce((prev, curr) => prev.concat(curr)));
 		return albumPromise;
+	}
+
+	static getPlaylists(id) {
+		const url = `${endpoints.SPOTIFY_BASE_URL}${endpoints.GET_USER}/${id}/playlists`;
+		return axios.get(url).then(response => response.data.items);
 	}
 
 	static createPlaylist(type, selection) {
@@ -131,4 +136,4 @@ class MusicService {
 	}
 }
 
-export default MusicService;
+export default SpotifyService;
