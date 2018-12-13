@@ -30,6 +30,13 @@ function receiveTracks(tracks) {
 	};
 }
 
+function receivePlaylists(playlists) {
+	return {
+		type: types.RECEIVE_PLAYLISTS,
+		playlists,
+	};
+}
+
 function requestSearch() {
 	return {
 		type: types.REQUEST_SEARCH,
@@ -130,6 +137,15 @@ export function getNewReleases(artists) {
 	};
 }
 
+export function getPlaylists(id) {
+	return dispatch => {
+		return spotifyService
+			.getPlaylists(id)
+			.then(response => dispatch(receivePlaylists(response)))
+			.catch(err => err);
+	};
+}
+
 export function createPlaylist(type, selection) {
 	return dispatch => {
 		dispatch(savingPlaylist(true));
@@ -139,6 +155,28 @@ export function createPlaylist(type, selection) {
 				dispatch(receiveTracks(response));
 				dispatch(savingPlaylist());
 				dispatch(push('/playlist'));
+			})
+			.catch(err => err);
+	};
+}
+
+export function updatePlaylist(id, tracks, upload) {
+	return dispatch => {
+		dispatch(savingPlaylist(true));
+		return spotifyService
+			.addToPlaylist(id, tracks)
+			.then(() => {
+				if (upload) {
+					return spotifyService
+						.addCoverImage(id, upload)
+						.then(() => {
+							dispatch(savingPlaylist());
+							dispatch(push('/'));
+						})
+						.catch(err => err);
+				}
+				dispatch(savingPlaylist());
+				dispatch(push('/'));
 			})
 			.catch(err => err);
 	};

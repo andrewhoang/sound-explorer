@@ -1,16 +1,15 @@
-@import url('https://fonts.googleapis.com/css?family=Source+Sans+Pro|Montserrat:400,700');
+@import url('https://fonts.googleapis.com/css?family=Source+Sans+Pro|Montserrat:400,700|Nunito:400,700');
 
 $theme_green: #1db954;
 $theme_white: #fff;
-$theme_black: #262626;
-$theme_light_grey: #1a1a1a;
+$theme_black: #1a1a1a;
 $theme_navy: #2b2f3d;
 
 body {
 	height: 100%;
 	color: $theme_white;
 	background-color: $theme_black;
-	font-family: 'Source Sans Pro', sans-serif;
+	font-family: 'Nunito', sans-serif;
 }
 
 h1,
@@ -41,12 +40,22 @@ h3 {
 	font-family: 'Montserrat';
 	text-transform: lowercase;
 }
+
 h6 {
 	font-size: 15px;
 	margin-bottom: 35px;
 	display: flex;
 	align-items: center;
 	justify-content: center;
+}
+
+a {
+	color: #fff;
+	&:focus,
+	&:hover {
+		color: #eee;
+		cursor: pointer;
+	}
 }
 
 .row {
@@ -68,29 +77,41 @@ h6 {
 	}
 }
 
+.login-page {
+	background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('./wallpaper2.jpeg');
+	background-size: cover;
+	min-height: 100vh;
+	width: 100%;
+	background-position: center !important;
+	background-blend-mode: darken;
+	transition: background 300ms ease-in 200ms;
+}
+
 .login-container {
 	position: absolute;
 	top: 50%;
 	left: 50%;
 	transform: translate(-50%, -50%);
-	background: lighten($theme_black, 5%);
 	padding: 50px;
-	width: 500px;
 	height: 40vh;
 	display: flex;
 	align-items: center;
 	border-radius: 4px;
 	h1 {
 		text-transform: uppercase;
-		font-size: 32px;
+		font-size: 50px;
 		white-space: nowrap;
 		letter-spacing: 1px;
 		svg {
-			font-size: 25px;
+			font-size: 45px;
 		}
 	}
 	.btn {
 		width: 100%;
+		font-size: 18px;
+		&:hover {
+			cursor: pointer;
+		}
 	}
 }
 
@@ -99,6 +120,20 @@ h6 {
 	align-items: center;
 	justify-content: center;
 	height: 100vh;
+}
+
+.pull-center {
+	display: block;
+	text-align: center;
+}
+
+.flex-row {
+	display: flex;
+	align-items: center;
+	flex-direction: row;
+	.btn {
+		margin: 20px 10px;
+	}
 }
 
 /* Home */
@@ -246,16 +281,26 @@ svg {
 	text-align: center;
 	padding: 0;
 	margin: 10px auto;
-	.artist-dp {
-		height: 150px;
-		width: 150px;
+	.playlist-dp,
+	.artist-dp,
+	.album-dp {
+		height: 160px;
+		width: 160px;
 		object-fit: cover;
-		box-shadow: 0px 4px 15px rgba(34, 34, 34, 0.5);
-		filter: brightness(90%) contrast(90%) grayscale(10%);
+		border-radius: 5px;
 		&:hover {
 			opacity: 0.8;
+			cursor: pointer !important;
+		}
+		&.main {
+			height: 100%;
+			width: 100%;
+		}
+	}
+	.artist-dp {
+		filter: brightness(90%) contrast(90%) grayscale(10%);
+		&:hover {
 			filter: brightness(120%);
-			cursor: pointer;
 		}
 		&.main {
 			height: 100%;
@@ -263,34 +308,31 @@ svg {
 		}
 	}
 	.album-dp {
-		height: 150px;
-		width: 150px;
-		object-fit: cover;
-		box-shadow: 0px 4px 15px rgba(34, 34, 34, 0.5);
 		filter: brightness(90%) contrast(90%) grayscale(10%);
-		&:hover {
-			opacity: 0.8;
-			// filter: brightness(40%);
-			cursor: pointer;
-		}
-		&.main {
-			height: 100%;
-			width: 100%;
-		}
+		// box-shadow: 0 0px 1px rgba(255, 255, 255, 0.2);
 	}
 	h5 {
 		margin: 10px auto 0px auto;
 		text-overflow: ellipsis;
 		overflow: hidden;
+		font-weight: 700;
+		font-family: 'Nunito';
 		white-space: nowrap;
 	}
 	h6 {
-		margin-bottom: 20px;
+		font-size: 12px;
+		opacity: 0.7;
+		width: 160px;
+		margin: 10px auto;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+		overflow: hidden;
+		display: block;
 	}
 }
 
 .album-container {
-	width: 150px;
+	width: 160px;
 	margin: 0 auto;
 }
 
@@ -340,9 +382,9 @@ svg {
 		text-align: left;
 		font-weight: 700;
 		padding: 15px 0 !important;
-		color: lighten($theme_navy, 60%);
 	}
 	.rt-tr-group {
+		background: transparent !important;
 		border-bottom: 1px solid rgba(255, 255, 255, 0.05) !important;
 		.rt-td {
 			display: flex;
@@ -358,16 +400,61 @@ svg {
 
 .actions {
 	position: absolute;
-	top: 45%;
+	top: 49%;
 	left: 50%;
 	transform: translate(-50%, -100%);
 	svg {
 		font-size: 50px;
-		transition: 0.3s;
-		opacity: 0.9;
+		transition: 5s;
+		opacity: 0.8;
 		&:hover {
 			cursor: pointer;
 		}
+	}
+}
+
+// MODAL
+#savePlaylistModal {
+	div {
+		outline: none;
+	}
+	.view-modal ~ div {
+		background-color: #222 !important;
+	}
+	.view-modal > div {
+		background: transparent !important;
+	}
+}
+.view-modal {
+	width: auto !important;
+}
+.modal-md {
+	background: $theme_black;
+	outline: none !important;
+	padding: 40px 40px 20px 40px;
+	height: 80vh;
+	overflow-y: scroll;
+	.modal-header {
+		border: 0;
+		h2 {
+			white-space: nowrap;
+		}
+	}
+	.modal-body {
+		background: $theme_black !important;
+		padding: 0;
+		.modal-actions {
+			display: flex;
+			align-items: center;
+			flex-direction: row;
+			button {
+				margin: 5px;
+				width: 100%;
+			}
+		}
+	}
+	.modal-footer {
+		border: 0;
 	}
 }
 
@@ -377,6 +464,11 @@ svg {
 
 input[type='file'] {
 	display: none;
+}
+
+.line-scale-pulse-out-rapid > div {
+	height: 55px !important;
+	width: 8px !important;
 }
 
 .fade {
@@ -447,7 +539,12 @@ input[type='file'] {
 	}
 }
 
-@media (max-width: 989px) {
+@media screen and (max-width: 989px) {
+	.header {
+		h1 {
+			font-size: 40px !important;
+		}
+	}
 	.login-container {
 		position: relative !important;
 		left: 0 !important;
@@ -457,7 +554,10 @@ input[type='file'] {
 		transform: none;
 		justify-content: center;
 		h1 {
-			font-size: 62px;
+			font-size: 25px;
+			svg {
+				font-size: 30px;
+			}
 		}
 	}
 	.info-tooltip {
@@ -479,26 +579,26 @@ input[type='file'] {
 	}
 	.ui.input {
 		width: 80% !important;
-		.results {
-			.image {
-				width: auto !important;
-			}
-			&.visible {
-				display: block;
-				position: relative !important;
-				margin: 10px auto;
-				width: 80% !important;
-			}
-			.category {
-				.results {
-					width: 100% !important;
-				}
+	}
+	.results {
+		.image {
+			width: auto !important;
+		}
+		&.visible {
+			display: block;
+			position: relative !important;
+			margin: 10px auto;
+			width: 80% !important;
+		}
+		.category {
+			.results {
+				width: 100% !important;
 			}
 		}
 	}
 	.item-container {
 		margin: 15px auto;
-		padding: 0 30px;
+		padding: 0 30px !important;
 		&:nth-child(odd) {
 			padding-right: 15px;
 		}

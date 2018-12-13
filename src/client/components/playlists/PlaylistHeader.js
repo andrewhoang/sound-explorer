@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
+import autoBind from 'react-autobind';
+
 import { Row, Col, Button } from 'react-bootstrap';
 import { Form, Radio } from 'semantic-ui-react';
-
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSpotify } from '@fortawesome/free-brands-svg-icons';
 import { faPencilAlt } from '@fortawesome/free-solid-svg-icons';
@@ -9,28 +10,33 @@ import { faPencilAlt } from '@fortawesome/free-solid-svg-icons';
 import maxBy from 'lodash/maxBy';
 
 class PlaylistHeader extends Component {
-	constructor(props) {
-		super(props);
+	constructor(props, context) {
+		super(props, context);
+		this.state = { new: false };
+		autoBind(this);
 	}
 
 	componentDidMount() {
+		let name = this.props.owner && this.props.owner.split(' ');
+
 		this.name.focus();
-		this.name.innerHTML = 'New Playlist';
+		this.name.innerHTML = `${name[0]}'s Playlist`;
 		var sel = window.getSelection();
 		sel.collapse(this.name.firstChild, this.name.innerHTML.length);
 	}
 
+	savePlaylist = () => {
+		this.props.onSavePlaylist();
+		this.setState({ newPlaylist: true });
+	};
+
+	updatePlaylist = () => {
+		this.props.onUpdatePlaylist();
+		this.setState({ newPlaylist: false });
+	};
+
 	render() {
-		let {
-			playlist,
-			upload,
-			isPublic,
-			onChangeStatus,
-			onUploadImage,
-			onNamePlaylist,
-			onSavePlaylist,
-			savingPlaylist,
-		} = this.props;
+		let { playlist, upload, isPublic, onChangeStatus, onUploadImage, onNamePlaylist, savingPlaylist } = this.props;
 
 		let image = upload ? upload : playlist[0] && maxBy(playlist[0].album.images, 'height').url;
 
@@ -72,10 +78,15 @@ class PlaylistHeader extends Component {
 							/>
 						</Form.Field>
 					</Form>
-					<Button onClick={onSavePlaylist}>
-						<FontAwesomeIcon icon={faSpotify} />
-						{savingPlaylist ? 'Saving to Spotify...' : 'Save to Spotify'}
-					</Button>
+					<div className="flex-row">
+						<Button onClick={this.savePlaylist}>
+							{/* <FontAwesomeIcon icon={faSpotify} /> */}
+							{savingPlaylist && this.state.newPlaylist ? 'Saving to Spotify...' : 'Create Playlist'}
+						</Button>
+						<Button onClick={this.updatePlaylist}>
+							{savingPlaylist && !this.state.newPlaylist ? 'Updating Playlist...' : 'Update Playlist'}
+						</Button>
+					</div>
 					<p onClick={onUploadImage}>
 						<FontAwesomeIcon icon={faPencilAlt} />
 						Edit Cover Image

@@ -10,6 +10,7 @@ import userService from './services/userService';
 
 import App from './components/App';
 import './assets/styles/styles.scss';
+import 'animate.css';
 import './assets/favicon-rocket.ico';
 
 const history = createHistory();

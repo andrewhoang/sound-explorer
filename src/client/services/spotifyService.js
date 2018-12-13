@@ -49,6 +49,11 @@ class SpotifyService {
 		return albumPromise;
 	}
 
+	static getPlaylists(id) {
+		const url = `${endpoints.SPOTIFY_BASE_URL}${endpoints.GET_USER}/${id}/playlists`;
+		return axios.get(url).then(response => response.data.items);
+	}
+
 	static createPlaylist(type, selection) {
 		switch (type) {
 			case 'artist':

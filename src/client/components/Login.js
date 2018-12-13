@@ -13,17 +13,19 @@ const Login = () => {
 	};
 
 	return (
-		<div className="login-container">
-			<Col md={12}>
-				<div className="logo-container">
-					<h1>
-						Sound <FontAwesomeIcon icon={faRocket} /> Explorer
-					</h1>
-				</div>
-				<Button className="login" onClick={signIn}>
-					Sign In
-				</Button>
-			</Col>
+		<div className="login-page">
+			<div className="login-container">
+				<Col md={12}>
+					<div className="logo-container">
+						<h1>
+							Sound <FontAwesomeIcon icon={faRocket} /> Explorer
+						</h1>
+					</div>
+					<Button className="login" onClick={signIn}>
+						Sign In
+					</Button>
+				</Col>
+			</div>
 		</div>
 	);
 };

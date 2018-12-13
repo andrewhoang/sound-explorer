@@ -2,15 +2,17 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { withRouter } from 'react-router-dom';
+import { withRouter, Link } from 'react-router-dom';
 import autoBind from 'react-autobind';
 
 import * as spotifyActions from '../../actions/spotifyActions';
+import * as modalActions from '../../actions/modalActions';
 
 import PlaylistHeader from './PlaylistHeader';
+import UserPlaylists from './UserPlaylists';
+import Modal from '../common/Modal';
 import TrackList from './TrackList';
 import { Notification } from 'react-notification';
-import FlipMove from 'react-flip-move';
 
 import findIndex from 'lodash/findIndex';
 import find from 'lodash/find';
@@ -100,9 +102,20 @@ class Playlist extends Component {
 		this.setState({ playlist });
 	};
 
-	handleSave = () => {
+	handleCreate = () => {
 		let { title, isPublic, playlist, base64 } = this.state;
 		this.props.actions.savePlaylist(title, isPublic, playlist, base64);
+	};
+
+	onUpdatePlaylist = async () => {
+		await this.props.actions.getPlaylists(this.props.user.id);
+		await this.props.actions.showModal('savePlaylistModal');
+	};
+
+	handleUpdate = async id => {
+		let { playlist, base64 } = this.state;
+		await this.props.actions.updatePlaylist(id, playlist, base64);
+		await this.props.actions.hideModal('savePlaylistModal');
 	};
 
 	handleUploadImage = () => {
@@ -129,14 +142,11 @@ class Playlist extends Component {
 		}
 	};
 
-	formatEasing = () => {
-		let arr = ['0.39', '0', '0.45', '1.4'];
-		return `cubic-bezier(${arr.join(',')})`;
-	};
-
 	render() {
-		let { player } = this.props;
+		let { player, playlists } = this.props;
 		let { playlist, playing, track, upload } = this.state;
+
+		let modalBody = <UserPlaylists playlists={playlists} onClickUpdate={this.handleUpdate} />;
 
 		return (
 			<div>
@@ -156,32 +166,40 @@ class Playlist extends Component {
 					<input ref="upload" type="file" onChange={e => this.handleChangeImage(e)} />
 					<PlaylistHeader
 						playlist={playlist}
-						onNamePlaylist={this.handleNamePlaylist}
+						owner={this.props.user.display_name}
 						isPublic={this.state.isPublic}
+						onNamePlaylist={this.handleNamePlaylist}
 						onChangeStatus={this.handleChangeStatus}
 						onUploadImage={this.handleUploadImage}
-						onSavePlaylist={this.handleSave}
+						onSavePlaylist={this.handleCreate}
+						onUpdatePlaylist={this.onUpdatePlaylist}
 						upload={upload}
 						savingPlaylist={this.props.savingPlaylist}
 					/>
-					<FlipMove
-						duration={500}
-						delay={0}
-						easing={this.formatEasing()}
-						staggerDurationBy={22}
-						staggerDelayBy={0}
+					<TrackList
+						playlist={playlist}
+						track={track}
+						playing={playing}
+						onClickPlay={this.handlePlay}
+						onClickPause={this.handlePause}
+						onClickRemove={this.handleRemove}
+						onClickMove={this.handleMove}
+					/>
+					<Link
+						to={'/'}
+						className="pull-center"
+						style={{ margin: '30px auto', textTransform: 'uppercase', fontWeight: 700 }}
 					>
-						<TrackList
-							playlist={playlist}
-							track={track}
-							playing={playing}
-							onClickPlay={this.handlePlay}
-							onClickPause={this.handlePause}
-							onClickRemove={this.handleRemove}
-							onClickMove={this.handleMove}
-						/>
-					</FlipMove>
+						Back to Home
+					</Link>
 				</div>
+				<Modal
+					id="savePlaylistModal"
+					title="Add to Playlist"
+					body={modalBody}
+					modal={this.props.modal}
+					close={this.props.actions.hideModal}
+				/>
 			</div>
 		);
 	}
@@ -194,17 +212,20 @@ Playlist.propTypes = {
 
 function mapStateToProps(state) {
 	return {
+		user: state.reducers.user,
 		results: state.reducers.results,
 		track: state.reducers.track,
 		tracks: state.reducers.tracks,
+		playlists: state.reducers.playlists,
 		player: state.reducers.player,
 		savingPlaylist: state.reducers.savingPlaylist,
+		modal: state.reducers.modal,
 	};
 }
 
 function mapDispatchToProps(dispatch) {
 	return {
-		actions: bindActionCreators({ ...spotifyActions }, dispatch),
+		actions: bindActionCreators({ ...spotifyActions, ...modalActions }, dispatch),
 	};
 }
 

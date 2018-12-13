@@ -37,6 +37,15 @@ export const artists = (state = initialState.artists, action = null) => {
 	}
 };
 
+export const playlists = (state = initialState.playlists, action = null) => {
+	switch (action.type) {
+		case types.RECEIVE_PLAYLISTS:
+			return action.playlists;
+		default:
+			return state;
+	}
+};
+
 export const albums = (state = initialState.albums, action = null) => {
 	switch (action.type) {
 		case types.RECEIVE_ALBUMS:

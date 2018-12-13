@@ -20,9 +20,9 @@ class UserService {
 	}
 
 	static getUserProfile() {
-		const url = `${endpoints.SPOTIFY_BASE_URL}${endpoints.GET_USER}`;
+		const url = `${endpoints.SPOTIFY_BASE_URL}${endpoints.GET_ME}`;
 		return axios.get(url).then(user => {
-			const url = `${endpoints.SPOTIFY_BASE_URL}${endpoints.GET_USER}/following?type=artist&limit=50`;
+			const url = `${endpoints.SPOTIFY_BASE_URL}${endpoints.GET_ME}/following?type=artist&limit=50`;
 			return axios.get(url).then(response => ({ ...user.data, following: response.data.artists.items }));
 		});
 	}

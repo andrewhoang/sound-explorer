@@ -1,6 +1,6 @@
 const path = require('path');
 const webpack = require('webpack');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
+// const HtmlWebpackPlugin = require('html-webpack-plugin');
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
 module.exports = {
@@ -24,7 +24,7 @@ module.exports = {
 		new webpack.HotModuleReplacementPlugin({
 			multiStep: true,
 		}),
-		new HtmlWebpackPlugin({ template: './src/index.html' }),
+		// new HtmlWebpackPlugin({ template: './src/index.html' }),
 		new webpack.optimize.OccurrenceOrderPlugin(),
 		// new BundleAnalyzerPlugin(),
 	],
