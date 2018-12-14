@@ -12,6 +12,7 @@ import PlaylistHeader from './PlaylistHeader';
 import UserPlaylists from './UserPlaylists';
 import Modal from '../common/Modal';
 import TrackList from './TrackList';
+import MobileTrackList from './MobileTrackList';
 import { Notification } from 'react-notification';
 
 import findIndex from 'lodash/findIndex';
@@ -148,6 +149,16 @@ class Playlist extends Component {
 
 		let modalBody = <UserPlaylists playlists={playlists} onClickUpdate={this.handleUpdate} />;
 
+		let playlistProps = {
+			playlist: playlist,
+			track: track,
+			playing: playing,
+			onClickPlay: this.handlePlay,
+			onClickPause: this.handlePause,
+			onClickRemove: this.handleRemove,
+			onClickMove: this.handleMove,
+		};
+
 		return (
 			<div>
 				<Notification
@@ -176,15 +187,8 @@ class Playlist extends Component {
 						upload={upload}
 						savingPlaylist={this.props.savingPlaylist}
 					/>
-					<TrackList
-						playlist={playlist}
-						track={track}
-						playing={playing}
-						onClickPlay={this.handlePlay}
-						onClickPause={this.handlePause}
-						onClickRemove={this.handleRemove}
-						onClickMove={this.handleMove}
-					/>
+					<TrackList {...playlistProps} />
+					<MobileTrackList {...playlistProps} />
 					<Link
 						to={'/'}
 						className="pull-center"

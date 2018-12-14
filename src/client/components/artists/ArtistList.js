@@ -19,15 +19,22 @@ class ArtistList extends Component {
 		let { artists, onClickAdd } = this.props;
 
 		return (
-			<Row className="artist-list">
+			<Row>
 				{artists && (
-					<FlipMove duration={700} delay={150} easing={'ease'} staggerDurationBy={15} staggerDelayBy={20}>
+					<FlipMove
+						duration={700}
+						delay={150}
+						easing={'ease'}
+						staggerDurationBy={15}
+						staggerDelayBy={20}
+						className="artist-list"
+					>
 						{artists.map(
 							artist =>
 								!isEmpty(artist.images) && (
 									<Col
 										md={length % 4 == 0 ? 3 : length % 3 == 0 ? 4 : 3}
-										sm={6}
+										xs={6}
 										key={artist.id}
 										className="item-container"
 									>

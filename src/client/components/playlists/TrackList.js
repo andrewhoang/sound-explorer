@@ -85,14 +85,16 @@ const TrackList = ({ playlist, playing, track, onClickPlay, onClickPause, onClic
 	};
 
 	return (
-		<ReactTable
-			data={playlist}
-			columns={columns}
-			className="-highlight"
-			showPagination={false}
-			draggable="true"
-			{...playingProps}
-		/>
+		<div className="desktop">
+			<ReactTable
+				data={playlist}
+				columns={columns}
+				className="-highlight"
+				showPagination={false}
+				draggable="true"
+				{...playingProps}
+			/>
+		</div>
 	);
 };
 

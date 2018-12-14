@@ -10,7 +10,7 @@ import * as userActions from '../../actions/userActions';
 import RouteComponent from './Route';
 import Home from '../Home';
 import ArtistsPage from '../artists/ArtistsPage';
-import Playlist from '../playlists/Playlist';
+import PlaylistPage from '../playlists/PlaylistPage';
 import LoadingWrapper from '../common/LoadingWrapper';
 
 class MainRoute extends Component {
@@ -34,7 +34,7 @@ class MainRoute extends Component {
 					<Switch>
 						<RouteComponent exact path="/" component={Home} user={user} />
 						<RouteComponent path="/search" component={ArtistsPage} user={user} />
-						<RouteComponent path="/playlist" component={Playlist} user={user} />
+						<RouteComponent path="/playlist" component={PlaylistPage} user={user} />
 					</Switch>
 				</LoadingWrapper>
 			</div>
