@@ -32,66 +32,69 @@ class NewReleasesList extends Component {
 				<ReactTooltip id="info" place="top">
 					<p>Based on artists you follow.</p>
 				</ReactTooltip>
-				{albums ? (
-					uniqBy(orderBy(albums, 'release_date', 'desc'), 'name').map(album => {
-						const premiumProps = isPremium && {
-							onMouseEnter: () => this.setState({ album: album.id }),
-							onMouseLeave: () => this.setState({ album: '' }),
-						};
 
-						return (
-							<Col
-								md={length % 4 == 0 ? 3 : length % 3 == 0 ? 4 : 3}
-								sm={6}
-								key={album.id}
-								className="item-container"
-							>
-								<div className="album-container" {...premiumProps}>
-									{album.images && (
-										<img
-											src={maxBy(album.images, 'height').url}
-											className="album-dp"
-											onClick={() => this.props.onClickPlay(album.uri)}
-											style={{
-												filter: this.state.album == album.id ? 'brightness(80%)' : '',
-											}}
-										/>
-									)}
-									{(this.state.album == album.id || track == album.uri) && (
-										<div className="actions">
-											{!playing && (
-												<FontAwesomeIcon
-													icon={faPlayCircle}
-													onClick={() => this.props.onClickPlay(album.uri)}
-												/>
-											)}
-											{playing && track == album.uri && (
-												<FontAwesomeIcon
-													icon={faPauseCircle}
-													onClick={() => this.props.onClickPause(album.uri)}
-												/>
-											)}
-											{playing && track !== album.uri && (
-												<FontAwesomeIcon
-													icon={faPlayCircle}
-													onClick={() => this.props.onClickPlay(album.uri)}
-												/>
-											)}
-										</div>
-									)}
-									<h5>{album.name}</h5>
-								</div>
-								<h6>
-									{album.artists
-										.map((artist, i) => (i == 0 ? artist.name : ` ${artist.name}`))
-										.toString()}
-								</h6>
-							</Col>
-						);
-					})
-				) : (
-					<h3>No new releases</h3>
-				)}
+				<div className="album-list">
+					{albums ? (
+						uniqBy(orderBy(albums, 'release_date', 'desc'), 'name').map(album => {
+							const premiumProps = isPremium && {
+								onMouseEnter: () => this.setState({ album: album.id }),
+								onMouseLeave: () => this.setState({ album: '' }),
+							};
+
+							return (
+								<Col
+									md={length % 4 == 0 ? 3 : length % 3 == 0 ? 4 : 3}
+									sm={6}
+									key={album.id}
+									className="item-container"
+								>
+									<div className="album-container" {...premiumProps}>
+										{album.images && (
+											<img
+												src={maxBy(album.images, 'height').url}
+												className="album-dp"
+												onClick={() => this.props.onClickPlay(album.uri)}
+												style={{
+													filter: this.state.album == album.id ? 'brightness(80%)' : '',
+												}}
+											/>
+										)}
+										{(this.state.album == album.id || track == album.uri) && (
+											<div className="actions">
+												{!playing && (
+													<FontAwesomeIcon
+														icon={faPlayCircle}
+														onClick={() => this.props.onClickPlay(album.uri)}
+													/>
+												)}
+												{playing && track == album.uri && (
+													<FontAwesomeIcon
+														icon={faPauseCircle}
+														onClick={() => this.props.onClickPause(album.uri)}
+													/>
+												)}
+												{playing && track !== album.uri && (
+													<FontAwesomeIcon
+														icon={faPlayCircle}
+														onClick={() => this.props.onClickPlay(album.uri)}
+													/>
+												)}
+											</div>
+										)}
+										<h5>{album.name}</h5>
+									</div>
+									<h6>
+										{album.artists
+											.map((artist, i) => (i == 0 ? artist.name : ` ${artist.name}`))
+											.toString()}
+									</h6>
+								</Col>
+							);
+						})
+					) : (
+						<h3>No new releases</h3>
+					)}
+				</div>
 			</Col>
 		);
 	}

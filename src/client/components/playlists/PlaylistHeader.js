@@ -16,14 +16,14 @@ class PlaylistHeader extends Component {
 		autoBind(this);
 	}
 
-	componentDidMount() {
+	componentDidMount = () => {
 		let name = this.props.owner && this.props.owner.split(' ');
 
 		this.name.focus();
 		this.name.innerHTML = `${name[0]}'s Playlist`;
 		var sel = window.getSelection();
 		sel.collapse(this.name.firstChild, this.name.innerHTML.length);
-	}
+	};
 
 	savePlaylist = () => {
 		this.props.onSavePlaylist();
@@ -41,7 +41,7 @@ class PlaylistHeader extends Component {
 		let image = upload ? upload : playlist[0] && maxBy(playlist[0].album.images, 'height').url;
 
 		return (
-			<Row>
+			<Row className="playlist-header">
 				<Col
 					md={12}
 					className="header custom"
@@ -84,7 +84,7 @@ class PlaylistHeader extends Component {
 							{savingPlaylist && this.state.newPlaylist ? 'Saving to Spotify...' : 'Create Playlist'}
 						</Button>
 						<Button onClick={this.updatePlaylist}>
-							{savingPlaylist && !this.state.newPlaylist ? 'Updating Playlist...' : 'Update Playlist'}
+							{savingPlaylist && !this.state.newPlaylist ? 'Adding to Playlist...' : 'Add To Playlist'}
 						</Button>
 					</div>
 					<p onClick={onUploadImage}>

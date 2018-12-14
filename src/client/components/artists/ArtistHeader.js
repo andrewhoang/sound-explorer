@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
+
+import SelectedArtistList from './SelectedArtistList';
+import { Transition } from 'react-transition-group';
 import { Row, Col } from 'react-bootstrap';
 
 import maxBy from 'lodash/maxBy';
 import startCase from 'lodash/startCase';
 import commaNumber from 'comma-number';
-
-import SelectedArtistList from './SelectedArtistList';
-import { Transition } from 'react-transition-group';
 
 class ArtistHeader extends Component {
 	constructor(props) {
@@ -52,17 +52,14 @@ class ArtistHeader extends Component {
 												<h1>{artist.name}</h1>
 												<span>
 													{artist.followers && commaNumber(artist.followers.total)} Followers
-												</span>{' '}
+												</span>
 												{artist.genres && <span>|</span>}
 												<span>
 													{artist.genres &&
 														artist.genres
 															.slice(0, 3)
-															.map(
-																(genre, i) =>
-																	i == 0
-																		? `${startCase(genre)}`
-																		: ` ${startCase(genre)}`
+															.map((genre, i) =>
+																i == 0 ? `${startCase(genre)}` : ` ${startCase(genre)}`
 															)
 															.toString()}
 												</span>

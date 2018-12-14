@@ -21,13 +21,9 @@ export function hideModalSuccess(id) {
 }
 
 export function showModal(id) {
-	return dispatch => {
-		dispatch(showModalSuccess(id));
-	};
+	return dispatch => dispatch(showModalSuccess(id));
 }
 
 export function hideModal(id) {
-	return dispatch => {
-		dispatch(hideModalSuccess(id));
-	};
+	return dispatch => dispatch(hideModalSuccess(id));
 }

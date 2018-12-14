@@ -30,6 +30,13 @@ function receiveTracks(tracks) {
 	};
 }
 
+function receiveAlbums(albums) {
+	return {
+		type: types.RECEIVE_ALBUMS,
+		albums,
+	};
+}
+
 function receivePlaylists(playlists) {
 	return {
 		type: types.RECEIVE_PLAYLISTS,
@@ -47,13 +54,6 @@ function receiveSearchResults(results) {
 	return {
 		type: types.RECEIVE_SEARCH_RESULTS,
 		results,
-	};
-}
-
-function receiveAlbums(albums) {
-	return {
-		type: types.RECEIVE_ALBUMS,
-		albums,
 	};
 }
 
@@ -85,65 +85,51 @@ function savingPlaylist(savingPlaylist = false) {
 }
 
 export function getArtist(id) {
-	return dispatch => {
-		return spotifyService
+	return dispatch =>
+		spotifyService
 			.getArtist(id)
-			.then(response => {
-				dispatch(receiveArtist(response));
-			})
+			.then(response => dispatch(receiveArtist(response)))
 			.catch(err => err);
-	};
 }
 
 export function getTrack(id) {
-	return dispatch => {
-		return spotifyService
+	return dispatch =>
+		spotifyService
 			.getTrack(id)
-			.then(response => {
-				dispatch(receiveTrack(response));
-			})
+			.then(response => dispatch(receiveTrack(response)))
 			.catch(err => err);
-	};
 }
 
 export function getAlbums(id) {
-	return dispatch => {
-		return spotifyService
+	return dispatch =>
+		spotifyService
 			.getAlbums(id)
 			.then(response => dispatch(receiveAlbums(response)))
 			.catch(err => console.error(err));
-	};
 }
 
 export function getRelatedArtists(id) {
-	return dispatch => {
-		return spotifyService
+	return dispatch =>
+		spotifyService
 			.getRelatedArtists(id)
-			.then(response => {
-				dispatch(receiveArtists(response));
-			})
+			.then(response => dispatch(receiveArtists(response)))
 			.catch(err => getRelatedArtists(id));
-	};
 }
 
 export function getNewReleases(artists) {
-	return dispatch => {
-		return spotifyService
+	return dispatch =>
+		spotifyService
 			.getNewReleases(artists)
-			.then(response => {
-				dispatch(receiveAlbums(response));
-			})
+			.then(response => dispatch(receiveAlbums(response)))
 			.catch(err => console.error(err));
-	};
 }
 
 export function getPlaylists(id) {
-	return dispatch => {
-		return spotifyService
+	return dispatch =>
+		spotifyService
 			.getPlaylists(id)
 			.then(response => dispatch(receivePlaylists(response)))
 			.catch(err => err);
-	};
 }
 
 export function createPlaylist(type, selection) {
@@ -207,21 +193,18 @@ export function savePlaylist(title, isPublic, tracks, upload) {
 }
 
 export function addCoverImage(playlist, upload) {
-	return dispatch => {
-		return spotifyService
+	return dispatch =>
+		spotifyService
 			.addCoverImage(playlist, upload)
 			.then(response => console.log(response))
 			.catch(err => err);
-	};
 }
 
 export function playTrack(uri, progress_ms, contexturi = false) {
-	return dispatch => {
-		return spotifyService
+	return dispatch =>
+		spotifyService
 			.playTrack(uri, progress_ms, contexturi)
-			.then(() => {
-				dispatch(playTrackSuccess());
-			})
+			.then(() => dispatch(playTrackSuccess()))
 			.catch(err => {
 				if (err.status == 404) {
 					dispatch(playTrackError(404));
@@ -230,16 +213,14 @@ export function playTrack(uri, progress_ms, contexturi = false) {
 					dispatch(playTrackError(403));
 				}
 			});
-	};
 }
 
 export function pauseTrack(uri) {
-	return dispatch => {
-		return spotifyService
+	return dispatch =>
+		spotifyService
 			.pauseTrack(uri)
 			.then(response => dispatch(pauseTrackSuccess(response.progress_ms)))
 			.catch(err => err);
-	};
 }
 
 export function search(type, value) {
