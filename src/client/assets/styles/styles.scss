@@ -370,6 +370,9 @@ svg {
 			}
 		}
 	}
+	&:empty {
+		display: none;
+	}
 }
 
 .ReactTable {
@@ -434,6 +437,7 @@ svg {
 }
 .view-modal {
 	width: auto !important;
+	-webkit-overflow-scrolling: touch;
 }
 .modal-md {
 	background: $theme_black;
@@ -587,6 +591,7 @@ input[type='file'] {
 		display: none;
 	}
 	.container {
+		-webkit-overflow-scrolling: touch;
 		width: 100vw !important;
 		overflow-x: hidden;
 		background: transparent !important;
@@ -628,7 +633,11 @@ input[type='file'] {
 			&:nth-child(even) {
 				padding-right: 30px;
 			}
+			&::-webkit-scrollbar {
+				width: 0px;
+			}
 		}
+		-webkit-overflow-scrolling: touch;
 	}
 	.album-list {
 		display: flex;
@@ -640,6 +649,7 @@ input[type='file'] {
 		&::-webkit-scrollbar {
 			height: 0px;
 		}
+		-webkit-overflow-scrolling: touch;
 	}
 	.item-container {
 		.artist-dp,
@@ -651,7 +661,7 @@ input[type='file'] {
 			object-fit: cover !important;
 		}
 		h5 {
-			font-size: 1.1rem;
+			font-size: 1rem;
 		}
 		h6 {
 			font-size: 1rem;
@@ -669,12 +679,23 @@ input[type='file'] {
 		margin-bottom: 0;
 	}
 	.track-list {
+		display: flex !important;
+		align-items: center;
 		padding: 15px;
 		width: 95%;
 		margin: 0px auto;
 		border-bottom: 1px solid #444;
 		p {
 			font-size: 0.9rem;
+			color: #ddd;
+		}
+		svg {
+			font-size: 1.2rem;
+		}
+	}
+	.playlist-list {
+		.item-container {
+			margin: 15px 0;
 		}
 	}
 }
