@@ -81,3 +81,4 @@ class ArtistHeader extends Component {
 }
 
 export default ArtistHeader;
+;
