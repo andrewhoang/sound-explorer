@@ -89,7 +89,13 @@ class ArtistsPage extends Component {
 
 		return (
 			<div className="container">
-				<ArtistHeader artist={artist} selectedArtists={selectedArtists} onClickRemove={this.handleRemove} />
+				<ArtistHeader
+					artist={artist}
+					selectedArtists={selectedArtists}
+					onClickRemove={this.handleRemove}
+					onClickCreate={this.createPlaylist}
+					savingPlaylist={savingPlaylist}
+				/>
 				<ArtistList artists={artists} onClickAdd={this.handleAdd} />
 				<Button onClick={this.createPlaylist}>
 					{savingPlaylist ? 'Creating Playlist...' : 'Create Playlist'}
@@ -101,7 +107,7 @@ class ArtistsPage extends Component {
 
 ArtistsPage.propTypes = {
 	actions: PropTypes.object,
-	results: PropTypes.object,
+	results: PropTypes.array,
 	artist: PropTypes.object,
 	artists: PropTypes.object,
 	savingPlaylist: PropTypes.bool,

@@ -16,6 +16,7 @@ const Login = () => {
 		<div className="login-page">
 			<div className="login-container">
 				<Col md={12}>
+					<h5>Discover New Sound</h5>
 					<div className="logo-container">
 						<h1>
 							Sound <FontAwesomeIcon icon={faRocket} /> Explorer

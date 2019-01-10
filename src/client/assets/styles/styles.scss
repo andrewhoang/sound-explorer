@@ -70,9 +70,10 @@ a {
 }
 
 .container {
-	position: absolute;
+	position: fixed;
 	top: 50%;
 	left: 50%;
+	bottom: 0;
 	height: 100vh;
 	overflow-y: scroll;
 	transform: translate(-50%, -50%);
@@ -112,6 +113,14 @@ a {
 		svg {
 			font-size: 45px;
 		}
+	}
+	h5 {
+		font-size: 18px !important;
+		text-transform: uppercase;
+		letter-spacing: 8px;
+		margin-top: 0;
+		text-align: center;
+		opacity: 0.8;
 	}
 	.btn {
 		width: 100%;
@@ -202,6 +211,11 @@ a {
 		background: darken($theme_green, 5%) !important;
 		color: $theme_white !important;
 	}
+	&.fixed {
+		position: absolute;
+		bottom: 0;
+		right: 0;
+	}
 }
 
 svg {
@@ -224,25 +238,16 @@ svg {
 	align-items: center;
 	flex-direction: column;
 	justify-content: center;
-
 	h1 {
 		text-align: center;
 		text-transform: capitalize;
-		margin-bottom: 15px;
+		margin-bottom: 0px;
 	}
-	p {
-		span {
-			margin: 0 10px;
-			font-weight: 700;
-			font-size: 15px;
-			text-align: center;
-			&:nth-child(1) {
-				margin-left: 0;
-			}
-			&:nth-child(2) {
-				color: $theme_green;
-			}
-		}
+	.subtext {
+		margin-bottom: 5px;
+		font-size: 13px;
+		text-align: center;
+		letter-spacing: 2px;
 	}
 	&.home {
 		display: block;
@@ -344,7 +349,7 @@ svg {
 }
 
 .artist-list {
-	margin-bottom: 50px;
+	margin-bottom: 30px;
 	overflow: hidden;
 }
 
@@ -579,9 +584,14 @@ input[type='file'] {
 		justify-content: center;
 		h1 {
 			font-size: 25px;
+			margin-top: 5px !important;
 			svg {
 				font-size: 30px;
 			}
+		}
+		h5 {
+			font-size: 11px !important;
+			letter-spacing: 5px;
 		}
 	}
 	.info-tooltip {
