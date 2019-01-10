@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 
 import SelectedArtistList from './SelectedArtistList';
 import { Transition } from 'react-transition-group';
-import { Row, Col } from 'react-bootstrap';
+import { Row, Col, Button } from 'react-bootstrap';
 
 import maxBy from 'lodash/maxBy';
 import startCase from 'lodash/startCase';
@@ -21,7 +21,7 @@ class ArtistHeader extends Component {
 	}
 
 	render() {
-		let { artist, selectedArtists, onClickRemove } = this.props;
+		let { artist, selectedArtists, onClickRemove, onClickCreate, savingPlaylist } = this.props;
 		let { show } = this.state;
 
 		return (
@@ -41,29 +41,27 @@ class ArtistHeader extends Component {
 								switch (state) {
 									case 'entering':
 										return (
-											<p className={`fade fade-${state}`}>
+											<span className={`fade fade-${state}`}>
 												<h1>Personalize your sound</h1>
-												<span>Select artists related to the ones you like.</span>
-											</p>
+												<p className="subtext">Select artists related to the ones you like.</p>
+											</span>
 										);
 									case 'entered':
 										return (
-											<p className={`fade fade-${state}`}>
+											<span className={`fade fade-${state}`}>
 												<h1>{artist.name}</h1>
-												<span>
+												<p className="subtext">
 													{artist.followers && commaNumber(artist.followers.total)} Followers
-												</span>
-												{artist.genres && <span>|</span>}
-												<span>
+													{artist.genres && ' | '}
 													{artist.genres &&
 														artist.genres
-															.slice(0, 3)
+															.slice(0, 4)
 															.map((genre, i) =>
 																i == 0 ? `${startCase(genre)}` : ` ${startCase(genre)}`
 															)
 															.toString()}
-												</span>
-											</p>
+												</p>
+											</span>
 										);
 									case 'exiting':
 										return <span />;
@@ -72,6 +70,9 @@ class ArtistHeader extends Component {
 								}
 							}}
 						</Transition>
+						<Button onClick={onClickCreate}>
+							{savingPlaylist ? 'Creating Playlist...' : 'Create Playlist'}
+						</Button>
 					</Col>
 				)}
 				<SelectedArtistList artists={selectedArtists} parent={artist} onClickRemove={onClickRemove} />
@@ -81,4 +82,3 @@ class ArtistHeader extends Component {
 }
 
 export default ArtistHeader;
-;
