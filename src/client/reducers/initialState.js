@@ -9,6 +9,7 @@ export default {
 	track: {},
 	tracks: {},
 	playlists: [],
+	album: {},
 	albums: {},
 	results: [],
 	player: {},

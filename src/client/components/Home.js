@@ -41,8 +41,6 @@ class Home extends Component {
 			let artists = this.props.user.following.map(artist => artist.id);
 			this.props.actions.getNewReleases(artists);
 		}
-
-		// setTimeout(() => this.setState({ rendered: true }), 3500);
 	}
 
 	componentWillReceiveProps = nextProps => {
@@ -135,19 +133,19 @@ class Home extends Component {
 		}, 800);
 	};
 
-	handlePlay = track => {
+	handlePlay = (track, id) => {
 		let progress_ms = track == this.state.track ? this.state.progress_ms : 0;
-		this.setState({ playing: true, track });
-		this.props.actions.playTrack(track, progress_ms, true);
+		this.setState({ track });
+		this.props.playTrack(track, id, progress_ms);
 	};
 
 	handlePause = track => {
-		this.setState({ playing: false, track });
-		this.props.actions.pauseTrack(track);
+		this.setState({ track });
+		this.props.pauseTrack();
 	};
 
 	render() {
-		const { albums, user } = this.props;
+		const { albums, user, player } = this.props;
 		const { value, results, isLoading, playing, track, image } = this.state;
 
 		return (
@@ -180,7 +178,7 @@ class Home extends Component {
 							onClickPlay={this.handlePlay}
 							onClickPause={this.handlePause}
 							track={track}
-							playing={playing}
+							playing={player.playing}
 							isPremium={user.product == 'premium'}
 						/>
 					</Row>
@@ -201,6 +199,7 @@ function mapStateToProps(state) {
 		results: state.reducers.results,
 		albums: state.reducers.albums,
 		image: state.reducers.image,
+		player: state.reducers.player,
 	};
 }
 

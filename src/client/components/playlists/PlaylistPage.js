@@ -76,15 +76,16 @@ class Playlist extends Component {
 		this.setState({ tracks, playlist });
 	};
 
-	handlePlay = track => {
+	handlePlay = (track, id) => {
 		let progress_ms = track == this.state.track ? this.state.progress_ms : 0;
 		this.setState({ playing: true, track });
-		this.props.actions.playTrack(track, progress_ms);
+		console.log('track', track);
+		this.props.playTrack(track, id, progress_ms);
 	};
 
 	handlePause = track => {
 		this.setState({ playing: false, track });
-		this.props.actions.pauseTrack(track);
+		this.props.pauseTrack();
 	};
 
 	handleMove = (direction, id) => {
@@ -119,6 +120,27 @@ class Playlist extends Component {
 		await this.props.actions.hideModal('savePlaylistModal');
 	};
 
+	onAddTrack = async track => {
+		this.setState({ addingTrack: track, single: true }, () => console.log('track', this.state.addingTrack));
+		await this.props.actions.getPlaylists(this.props.user.id);
+		await this.props.actions.showModal('savePlaylistModal');
+	};
+
+	handleAdd = async id => {
+		let { addingTrack, playlist, tracks, base64 } = this.state;
+
+		await this.props.actions.updatePlaylist(id, [addingTrack], base64, false);
+		await this.props.actions.hideModal('savePlaylistModal');
+
+		let trackIdx = findIndex(playlist, { id: addingTrack.id });
+
+		let newTrack = shuffle(tracks).slice(0, 1);
+
+		playlist[trackIdx] = newTrack[0];
+
+		this.setState({ tracks, playlist });
+	};
+
 	handleUploadImage = () => {
 		this.refs.upload.click();
 	};
@@ -145,9 +167,11 @@ class Playlist extends Component {
 
 	render() {
 		let { player, playlists } = this.props;
-		let { playlist, playing, track, upload } = this.state;
+		let { playlist, playing, track, upload, single } = this.state;
 
-		let modalBody = <UserPlaylists playlists={playlists} onClickUpdate={this.handleUpdate} />;
+		let modalBody = (
+			<UserPlaylists playlists={playlists} onClickUpdate={!single ? this.handleUpdate : this.handleAdd} />
+		);
 
 		let playlistProps = {
 			playlist: playlist,
@@ -155,6 +179,7 @@ class Playlist extends Component {
 			playing: playing,
 			onClickPlay: this.handlePlay,
 			onClickPause: this.handlePause,
+			onClickAdd: this.onAddTrack,
 			onClickRemove: this.handleRemove,
 			onClickMove: this.handleMove,
 		};

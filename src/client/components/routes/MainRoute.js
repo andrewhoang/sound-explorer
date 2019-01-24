@@ -26,15 +26,15 @@ class MainRoute extends Component {
 	};
 
 	render() {
-		let { user } = this.props;
+		let { user, playTrack, pauseTrack } = this.props;
 
 		return (
 			<div>
 				<LoadingWrapper rendered={this.state.rendered}>
 					<Switch>
-						<RouteComponent exact path="/" component={Home} user={user} />
-						<RouteComponent path="/search" component={ArtistsPage} user={user} />
-						<RouteComponent path="/playlist" component={PlaylistPage} user={user} />
+						<RouteComponent {...this.props} exact path="/" component={Home} />
+						<RouteComponent {...this.props} path="/playlist" component={PlaylistPage} />
+						<RouteComponent {...this.props} path="/search" component={ArtistsPage} />
 					</Switch>
 				</LoadingWrapper>
 			</div>

@@ -28,6 +28,11 @@ class SpotifyService {
 		return axios.get(url).then(response => response.data);
 	}
 
+	static getAlbum(id) {
+		const url = `${endpoints.SPOTIFY_BASE_URL}${endpoints.GET_ALBUM}/${id}`;
+		return axios.get(url).then(response => response.data);
+	}
+
 	static getAlbums(id) {
 		const url = `${endpoints.SPOTIFY_BASE_URL}${endpoints.GET_ARTIST}/${id}/albums`;
 		return axios.get(url).then(response => response.data);
@@ -95,6 +100,7 @@ class SpotifyService {
 	static addToPlaylist(id, tracks) {
 		const url = `${endpoints.SPOTIFY_BASE_URL}${endpoints.PLAYLISTS}/${id}/tracks`;
 		let uris = tracks.map(track => track.uri);
+
 		const body = {
 			uris,
 		};
@@ -116,19 +122,33 @@ class SpotifyService {
 		return axios.put(url, body, config).then(response => response.data);
 	}
 
-	static playTrack(uri, position_ms, contexturi) {
+	static playTrack(uri, id, position_ms) {
 		const url = `${endpoints.SPOTIFY_BASE_URL}/me${endpoints.PLAYER}/play`;
 		const body = {
 			position_ms: position_ms,
 		};
 
-		contexturi ? (body[`context_uri`] = uri) : (body[`uris`] = [uri]);
-
-		return axios.put(url, body).then(response => response.data);
+		console.log('uri', uri);
+		if (uri && uri.includes('album')) {
+			body[`context_uri`] = uri;
+			// contexturi ? (body[`context_uri`] = uri) : (body[`uris`] = [uri]);
+			return this.getAlbum(id).then(album => axios.put(url, body).then(response => album.tracks.items[0]));
+		} else {
+			body[`uris`] = [uri];
+			return this.getTrack(id).then(track => axios.put(url, body).then(response => track));
+		}
 	}
 
 	static pauseTrack() {
 		const url = `${endpoints.SPOTIFY_BASE_URL}/me${endpoints.PLAYER}/pause`;
+		return axios.put(url).then(() => {
+			const url = `${endpoints.SPOTIFY_BASE_URL}/me${endpoints.PLAYER}`;
+			return axios.get(url).then(response => response.data);
+		});
+	}
+
+	static seekTrack(position_ms) {
+		const url = `${endpoints.SPOTIFY_BASE_URL}/me${endpoints.PLAYER}/seek?position_ms=${position_ms}`;
 		return axios.put(url).then(() => {
 			const url = `${endpoints.SPOTIFY_BASE_URL}/me${endpoints.PLAYER}`;
 			return axios.get(url).then(response => response.data);

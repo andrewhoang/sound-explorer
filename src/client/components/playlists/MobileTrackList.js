@@ -21,10 +21,10 @@ const MobileTrackList = ({ playlist, playing, track, onClickPlay, onClickPause, 
 					}}
 					onClick={() =>
 						!playing
-							? onClickPlay(item.uri)
+							? onClickPlay(item.uri, item.id)
 							: playing && track === item.uri
 							? onClickPause(item.uri)
-							: playing && track !== item.uri && onClickPlay(item.uri)
+							: playing && track !== item.uri && onClickPlay(item.uri, item.id)
 					}
 				>
 					<strong>{item.name}</strong>

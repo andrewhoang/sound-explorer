@@ -53,7 +53,7 @@ class NewReleasesList extends Component {
 											<img
 												src={maxBy(album.images, 'height').url}
 												className="album-dp"
-												onClick={() => this.props.onClickPlay(album.uri)}
+												onClick={() => this.props.onClickPlay(album.uri, album.id)}
 												style={{
 													filter: this.state.album == album.id ? 'brightness(80%)' : '',
 												}}
@@ -64,7 +64,7 @@ class NewReleasesList extends Component {
 												{!playing && (
 													<FontAwesomeIcon
 														icon={faPlayCircle}
-														onClick={() => this.props.onClickPlay(album.uri)}
+														onClick={() => this.props.onClickPlay(album.uri, album.id)}
 													/>
 												)}
 												{playing && track == album.uri && (
@@ -76,7 +76,7 @@ class NewReleasesList extends Component {
 												{playing && track !== album.uri && (
 													<FontAwesomeIcon
 														icon={faPlayCircle}
-														onClick={() => this.props.onClickPlay(album.uri)}
+														onClick={() => this.props.onClickPlay(album.uri, album.id)}
 													/>
 												)}
 											</div>
