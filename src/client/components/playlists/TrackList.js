@@ -4,12 +4,12 @@ import 'react-table/react-table.css';
 
 import ReactTable from 'react-table';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPlay, faPause, faTrash, faChevronUp, faChevronDown } from '@fortawesome/free-solid-svg-icons';
+import { faPlay, faPause, faPlus, faTrash, faChevronUp, faChevronDown } from '@fortawesome/free-solid-svg-icons';
 
 import minBy from 'lodash/minBy';
 import moment from 'moment';
 
-const TrackList = ({ playlist, playing, track, onClickPlay, onClickPause, onClickRemove, onClickMove }) => {
+const TrackList = ({ playlist, playing, track, onClickPlay, onClickPause, onClickAdd, onClickRemove, onClickMove }) => {
 	const columns = [
 		{
 			accessor: 'id',
@@ -53,17 +53,32 @@ const TrackList = ({ playlist, playing, track, onClickPlay, onClickPause, onClic
 			maxWidth: 80,
 			Cell: row => (
 				<span>
-					{!playing ? (
-						<FontAwesomeIcon icon={faPlay} onClick={() => onClickPlay(row.original.uri)} />
+					{/* {!playing ? (
+						<FontAwesomeIcon icon={faPlay} onClick={() => onClickPlay(row.original.uri, row.value)} />
 					) : playing && track === row.original.uri ? (
-						<FontAwesomeIcon icon={faPause} onClick={() => onClickPause(row.original.uri)} />
+						<FontAwesomeIcon icon={faPause} onClick={() => onClickPause(row.original.uri, row.value)} />
 					) : (
 						playing &&
 						track !== row.original.uri && (
-							<FontAwesomeIcon icon={faPlay} onClick={() => onClickPlay(row.original.uri)} />
+							<FontAwesomeIcon icon={faPlay} onClick={() => onClickPlay(row.original.uri, row.value)} />
 						)
-					)}
-					<FontAwesomeIcon icon={faTrash} onClick={() => onClickRemove(row.value)} />
+					)} */}
+					<FontAwesomeIcon
+						icon={faPlus}
+						className="table-action"
+						onClick={e => {
+							e.preventDefault();
+							onClickAdd(row.original);
+						}}
+					/>
+					<FontAwesomeIcon
+						icon={faTrash}
+						className="table-action"
+						onClick={e => {
+							e.preventDefault();
+							onClickRemove(row.value);
+						}}
+					/>
 				</span>
 			),
 		},
@@ -93,6 +108,21 @@ const TrackList = ({ playlist, playing, track, onClickPlay, onClickPause, onClic
 				showPagination={false}
 				draggable="true"
 				{...playingProps}
+				getTdProps={(state, rowInfo, column) => {
+					return {
+						onClick: () => {
+							if (column.id !== 'id') {
+								return !playing
+									? onClickPlay(rowInfo.original.uri, rowInfo.original.id)
+									: playing && track === rowInfo.original.uri
+									? onClickPause(rowInfo.original.uri, rowInfo.original.id)
+									: playing &&
+									  track !== rowInfo.original.uri &&
+									  onClickPlay(rowInfo.original.uri, rowInfo.original.id);
+							} else return {};
+						},
+					};
+				}}
 			/>
 		</div>
 	);

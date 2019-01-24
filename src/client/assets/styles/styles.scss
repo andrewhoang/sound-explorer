@@ -78,7 +78,7 @@ a {
 	overflow-y: scroll;
 	transform: translate(-50%, -50%);
 	background: lighten($theme_black, 5%);
-	// padding: 50px;
+	padding-bottom: 35px;
 	border-radius: 4px;
 	&::-webkit-scrollbar {
 		width: 0px;
@@ -149,6 +149,57 @@ a {
 	flex-direction: row;
 	.btn {
 		margin: 20px 10px;
+	}
+}
+
+.audio-player {
+	position: fixed;
+	display: flex;
+	width: 100%;
+	margin: 0;
+	bottom: 0;
+	padding: 5px;
+	// height: 25px;
+	background: #000;
+	svg {
+		font-size: 10px;
+	}
+	p {
+		&.title {
+			margin-right: 40px;
+		}
+		&.time {
+			margin-left: 40px;
+		}
+		margin: 0;
+		font-size: 11px;
+		line-height: normal;
+		white-space: nowrap;
+	}
+	.col-md-1 {
+		margin-right: 20px;
+		width: auto;
+	}
+	.col-md-11 {
+		padding: 0;
+	}
+	.track {
+		position: relative;
+		width: 100%;
+		height: 8px;
+		display: flex;
+		border: 1px solid #fff;
+		opacity: 0.8;
+		overflow: hidden;
+		.toggle {
+			transition: width 1000ms linear;
+			position: absolute;
+			height: 7px;
+			background: #fff;
+		}
+		&:hover {
+			cursor: pointer;
+		}
 	}
 }
 
@@ -405,10 +456,18 @@ svg {
 			display: flex;
 			align-items: center;
 		}
+		&:hover {
+			cursor: pointer;
+		}
 	}
 	.rt-td {
 		&:last-child {
 			justify-content: center;
+		}
+	}
+	.table-action {
+		&:hover {
+			cursor: pointer;
 		}
 	}
 }
@@ -599,6 +658,9 @@ input[type='file'] {
 	}
 	.notification-bar {
 		// display: none;
+	}
+	.audio-player {
+		display: none;
 	}
 	.container {
 		-webkit-overflow-scrolling: touch;

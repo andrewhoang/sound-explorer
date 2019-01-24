@@ -30,6 +30,13 @@ function receiveTracks(tracks) {
 	};
 }
 
+function receiveAlbum(album) {
+	return {
+		type: types.RECEIVE_ALBUM,
+		album,
+	};
+}
+
 function receiveAlbums(albums) {
 	return {
 		type: types.RECEIVE_ALBUMS,
@@ -57,9 +64,10 @@ function receiveSearchResults(results) {
 	};
 }
 
-function playTrackSuccess() {
+function playTrackSuccess(track) {
 	return {
 		type: types.PLAY_TRACK_SUCCESS,
+		track,
 	};
 }
 
@@ -67,6 +75,13 @@ function pauseTrackSuccess(progress_ms) {
 	return {
 		type: types.PAUSE_TRACK_SUCCESS,
 		progress_ms,
+	};
+}
+
+function seekTrackSuccess(position_ms) {
+	return {
+		type: types.SEEK_TRACK_SUCCESS,
+		progress_ms: position_ms,
 	};
 }
 
@@ -98,6 +113,14 @@ export function getTrack(id) {
 			.getTrack(id)
 			.then(response => dispatch(receiveTrack(response)))
 			.catch(err => err);
+}
+
+export function getAlbum(id) {
+	return dispatch =>
+		spotifyService
+			.getAlbum(id)
+			.then(response => dispatch(receiveAlbum(response)))
+			.catch(err => console.error(err));
 }
 
 export function getAlbums(id) {
@@ -146,7 +169,7 @@ export function createPlaylist(type, selection) {
 	};
 }
 
-export function updatePlaylist(id, tracks, upload) {
+export function updatePlaylist(id, tracks, upload, REDIRECT = true) {
 	return dispatch => {
 		dispatch(savingPlaylist(true));
 		return spotifyService
@@ -157,12 +180,12 @@ export function updatePlaylist(id, tracks, upload) {
 						.addCoverImage(id, upload)
 						.then(() => {
 							dispatch(savingPlaylist());
-							dispatch(push('/'));
+							REDIRECT && dispatch(push('/'));
 						})
 						.catch(err => err);
 				}
 				dispatch(savingPlaylist());
-				dispatch(push('/'));
+				REDIRECT && dispatch(push('/'));
 			})
 			.catch(err => err);
 	};
@@ -200,11 +223,11 @@ export function addCoverImage(playlist, upload) {
 			.catch(err => err);
 }
 
-export function playTrack(uri, progress_ms, contexturi = false) {
+export function playTrack(uri, id, progress_ms) {
 	return dispatch =>
 		spotifyService
-			.playTrack(uri, progress_ms, contexturi)
-			.then(() => dispatch(playTrackSuccess()))
+			.playTrack(uri, id, progress_ms)
+			.then(track => dispatch(playTrackSuccess(track)))
 			.catch(err => {
 				if (err.status == 404) {
 					dispatch(playTrackError(404));
@@ -220,6 +243,16 @@ export function pauseTrack(uri) {
 		spotifyService
 			.pauseTrack(uri)
 			.then(response => dispatch(pauseTrackSuccess(response.progress_ms)))
+			.catch(err => err);
+}
+
+export function seekTrack(position_ms) {
+	return dispatch =>
+		spotifyService
+			.seekTrack(position_ms)
+			.then(response => {
+				dispatch(seekTrackSuccess(position_ms));
+			})
 			.catch(err => err);
 }
 
