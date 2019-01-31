@@ -44,7 +44,7 @@ app.use(express.static(__dirname + '/dist/'));
 
 routes(app);
 
-setInterval(() => https.get('https://soundexplorer.herokuapp.com/'), 1500000);
+setInterval(() => https.get('https://soundexplorer.herokuapp.com/'), 3600000);
 
 app.get('/*', (req, res) => res.sendFile(path.join(__dirname, '../index.html')));
 
