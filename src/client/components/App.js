@@ -11,12 +11,9 @@ import * as spotifyActions from '../actions/spotifyActions';
 import RouteComponent from './routes/Route';
 import MainRoute from './routes/MainRoute';
 import Login from './Login';
-import { Row, Col } from 'react-bootstrap';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPlay, faPause, faForward, faBackward } from '@fortawesome/free-solid-svg-icons';
+import AudioPlayer from './AudioPlayer';
 
 import querystring from 'query-string';
-import isEmpty from 'lodash/isEmpty';
 import moment from 'moment';
 
 class App extends Component {
@@ -38,6 +35,7 @@ class App extends Component {
 		this.setState({ isAuth });
 	};
 
+	// Simulate time remaining
 	tick = () => {
 		let { player } = this.props;
 		let timeLapsed = this.timeLapsed;
@@ -45,7 +43,7 @@ class App extends Component {
 		this.setState({ time: timeLapsed });
 
 		if (timeLapsed >= player.track.duration_ms) {
-			this.setState({ time: 0 }, () => console.log('this.state.time', this.state.time));
+			this.setState({ time: 0 });
 			this.props.actions.pauseTrack();
 			clearInterval(this.setTimer);
 		}
@@ -55,34 +53,38 @@ class App extends Component {
 		}
 	};
 
-	pauseTrack = () => {
-		this.props.actions.pauseTrack();
-		clearInterval(this.setTimer);
-	};
-
 	playTrack = (track, id, progress_ms) => {
 		clearInterval(this.setTimer);
 		this.setTimer = setInterval(this.tick, 1000);
-		console.log('progress_ms', progress_ms);
 		this.props.actions.playTrack(track, id, progress_ms);
 
 		this.timeLapsed = progress_ms || 0;
 	};
 
-	prevTrack = () => {};
+	pauseTrack = () => {
+		this.props.actions.pauseTrack();
+		clearInterval(this.setTimer);
+	};
 
-	nextTrack = () => {};
-
-	seekTrack = e => {
+	// Allow user to skip around track
+	seekTrack = (e, player) => {
 		let time = e.nativeEvent.offsetX;
-		let length = this.player.clientWidth;
+		let length = player.clientWidth;
 
 		let timeLapsed = parseInt((time / length) * this.props.player.track.duration_ms);
 		this.setState({ time: timeLapsed });
 
-		console.log('timeLapsed', timeLapsed);
 		this.timeLapsed = timeLapsed;
 		this.props.actions.seekTrack(timeLapsed);
+	};
+
+	displayTime = () => {
+		let time =
+			this.props.player &&
+			`${moment(this.state.time).format('mm:ss')} | ${moment(this.props.player.track.duration_ms).format(
+				'mm:ss'
+			)}`;
+		return time;
 	};
 
 	render() {
@@ -107,31 +109,14 @@ class App extends Component {
 					)}
 				</Switch>
 				{player && player.track && (
-					<Row className="audio-player">
-						<Col md={1}>
-							{/* <FontAwesomeIcon icon={faBackward} onClick={() => this.prevTrack()} /> */}
-							{player.playing ? (
-								<FontAwesomeIcon icon={faPause} onClick={() => this.pauseTrack()} />
-							) : (
-								<FontAwesomeIcon
-									icon={faPlay}
-									onClick={() =>
-										this.playTrack(player.track.uri, player.track.id, player.progress_ms)
-									}
-								/>
-							)}
-							{/* <FontAwesomeIcon icon={faForward} onClick={e => this.nextTrack(e)} /> */}
-						</Col>
-						<Col md={11} style={{ display: 'flex', alignItems: 'center', width: '100%', margin: '0 15px' }}>
-							<p className="title">{player.track.name}</p>
-							<div ref={e => (this.player = e)} className="track" onClick={this.seekTrack}>
-								<div className="toggle" style={{ width: toggleWidth }} />
-							</div>
-							<p className="time">{`${moment(this.state.time).format('mm:ss')} | ${moment(
-								player.track.duration_ms
-							).format('mm:ss')}`}</p>
-						</Col>
-					</Row>
+					<AudioPlayer
+						player={player}
+						pauseTrack={this.pauseTrack}
+						playTrack={this.playTrack}
+						time={this.displayTime()}
+						toggleWidth={toggleWidth}
+						seekTrack={this.seekTrack}
+					/>
 				)}
 			</div>
 		);
@@ -141,6 +126,7 @@ class App extends Component {
 App.propTypes = {
 	actions: PropTypes.object,
 	user: PropTypes.object,
+	player: PropTypes.object,
 };
 
 function mapStateToProps(state) {

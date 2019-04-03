@@ -51,6 +51,12 @@ function receivePlaylists(playlists) {
 	};
 }
 
+export function clearTracks() {
+	return {
+		type: types.CLEAR_TRACKS,
+	};
+}
+
 function requestSearch() {
 	return {
 		type: types.REQUEST_SEARCH,

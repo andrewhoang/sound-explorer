@@ -14,6 +14,8 @@ export const tracks = (state = initialState.tracks, action = null) => {
 	switch (action.type) {
 		case types.RECEIVE_TRACKS:
 			return action.tracks;
+		case types.CLEAR_TRACKS:
+			return [];
 		default:
 			return state;
 	}

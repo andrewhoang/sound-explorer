@@ -4,7 +4,7 @@ import 'react-table/react-table.css';
 
 import ReactTable from 'react-table';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPlay, faPause, faPlus, faTrash, faChevronUp, faChevronDown } from '@fortawesome/free-solid-svg-icons';
+import { faPlus, faTrash, faChevronUp, faChevronDown } from '@fortawesome/free-solid-svg-icons';
 
 import minBy from 'lodash/minBy';
 import moment from 'moment';
@@ -53,16 +53,6 @@ const TrackList = ({ playlist, playing, track, onClickPlay, onClickPause, onClic
 			maxWidth: 80,
 			Cell: row => (
 				<span>
-					{/* {!playing ? (
-						<FontAwesomeIcon icon={faPlay} onClick={() => onClickPlay(row.original.uri, row.value)} />
-					) : playing && track === row.original.uri ? (
-						<FontAwesomeIcon icon={faPause} onClick={() => onClickPause(row.original.uri, row.value)} />
-					) : (
-						playing &&
-						track !== row.original.uri && (
-							<FontAwesomeIcon icon={faPlay} onClick={() => onClickPlay(row.original.uri, row.value)} />
-						)
-					)} */}
 					<FontAwesomeIcon
 						icon={faPlus}
 						className="table-action"
@@ -119,7 +109,7 @@ const TrackList = ({ playlist, playing, track, onClickPlay, onClickPause, onClic
 									: playing &&
 									  track !== rowInfo.original.uri &&
 									  onClickPlay(rowInfo.original.uri, rowInfo.original.id);
-							} else return {};
+							}
 						},
 					};
 				}}

@@ -55,6 +55,10 @@ class Playlist extends Component {
 		}
 	};
 
+	componentWillUnmount = () => {
+		this.props.actions.clearTracks();
+	};
+
 	handleNamePlaylist = e => {
 		let title = e.target.innerHTML;
 		this.setState({ title });
@@ -109,23 +113,27 @@ class Playlist extends Component {
 		this.props.actions.savePlaylist(title, isPublic, playlist, base64);
 	};
 
+	// Display user's existing Spotify's playlists - updating
 	onUpdatePlaylist = async () => {
 		await this.props.actions.getPlaylists(this.props.user.id);
 		await this.props.actions.showModal('savePlaylistModal');
 	};
 
+	// Add tracks to user's selected playlist
 	handleUpdate = async id => {
 		let { playlist, base64 } = this.state;
 		await this.props.actions.updatePlaylist(id, playlist, base64);
 		await this.props.actions.hideModal('savePlaylistModal');
 	};
 
+	// Display user's existing Spotify's playlists - adding
 	onAddTrack = async track => {
-		this.setState({ addingTrack: track, single: true }, () => console.log('track', this.state.addingTrack));
+		this.setState({ addingTrack: track, single: true });
 		await this.props.actions.getPlaylists(this.props.user.id);
 		await this.props.actions.showModal('savePlaylistModal');
 	};
 
+	// Add single track to user's selected playlist
 	handleAdd = async id => {
 		let { addingTrack, playlist, tracks, base64 } = this.state;
 
