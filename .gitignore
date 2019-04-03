@@ -5,4 +5,4 @@ npm-debug.log
 lib
 coverage
 dist
-/vscode
+.vscode
