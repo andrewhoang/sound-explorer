@@ -5,6 +5,7 @@ class Loading extends Component {
 	constructor(props, context) {
 		super(props, context);
 	}
+
 	render() {
 		if (!this.props.rendered) {
 			return (

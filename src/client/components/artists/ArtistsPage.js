@@ -16,6 +16,11 @@ import findIndex from 'lodash/findIndex';
 import uniqBy from 'lodash/uniqBy';
 import queryString from 'query-string';
 
+/* Displays user's selected artist and related artists
+ * Clicking on artists will add them to queue for playlist curation
+ * Related artists of the selected artists will populate
+ */
+
 class ArtistsPage extends Component {
 	constructor(props) {
 		super(props);
@@ -55,7 +60,7 @@ class ArtistsPage extends Component {
 		}
 	};
 
-	handleAdd = id => {
+	handleAddArtist = id => {
 		let artists = this.state.artists;
 		let selectedArtists = this.state.selectedArtists;
 
@@ -67,7 +72,7 @@ class ArtistsPage extends Component {
 		this.setState({ artists, selectedArtists }, () => this.props.actions.getRelatedArtists(id));
 	};
 
-	handleRemove = id => {
+	handleRemoveArtist = id => {
 		let artists = this.state.artists;
 		let selectedArtists = this.state.selectedArtists;
 
@@ -92,11 +97,11 @@ class ArtistsPage extends Component {
 				<ArtistHeader
 					artist={artist}
 					selectedArtists={selectedArtists}
-					onClickRemove={this.handleRemove}
+					onClickRemove={this.handleRemoveArtist}
 					onClickCreate={this.createPlaylist}
 					savingPlaylist={savingPlaylist}
 				/>
-				<ArtistList artists={artists} onClickAdd={this.handleAdd} />
+				<ArtistList artists={artists} onClickAdd={this.handleAddArtist} />
 				<Button onClick={this.createPlaylist}>
 					{savingPlaylist ? 'Creating Playlist...' : 'Create Playlist'}
 				</Button>

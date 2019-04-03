@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
@@ -16,7 +16,7 @@ import LoadingWrapper from '../common/LoadingWrapper';
 class MainRoute extends Component {
 	constructor(props) {
 		super(props);
-		this.state = { rendered: false };
+		this.state = { rendered: true };
 		autoBind(this);
 	}
 
@@ -26,10 +26,8 @@ class MainRoute extends Component {
 	};
 
 	render() {
-		let { user, playTrack, pauseTrack } = this.props;
-
 		return (
-			<div>
+			<Fragment>
 				<LoadingWrapper rendered={this.state.rendered}>
 					<Switch>
 						<RouteComponent {...this.props} exact path="/" component={Home} />
@@ -37,7 +35,7 @@ class MainRoute extends Component {
 						<RouteComponent {...this.props} path="/search" component={ArtistsPage} />
 					</Switch>
 				</LoadingWrapper>
-			</div>
+			</Fragment>
 		);
 	}
 }
