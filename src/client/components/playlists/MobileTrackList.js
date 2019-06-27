@@ -4,21 +4,23 @@ import 'react-table/react-table.css';
 
 import ReactTable from 'react-table';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPlay, faPause, faTimes, faChevronUp, faChevronDown } from '@fortawesome/free-solid-svg-icons';
+import { faTimes } from '@fortawesome/free-solid-svg-icons';
 
-import { Row, Col } from 'react-bootstrap';
+import { Col } from 'react-bootstrap';
+import minBy from 'lodash/minBy';
 
 const MobileTrackList = ({ playlist, playing, track, onClickPlay, onClickPause, onClickRemove, onClickMove }) => {
-	return playlist.map(item => {
+	return playlist.map((item, i) => {
 		const isPlaying = playing && track === item.uri;
 		return (
-			<Row className="track-list mobile">
+			<div key={i} className="track mobile">
 				<Col
 					xs={10}
 					style={{
 						color: isPlaying ? '#1db954' : '#fff',
 						fontWeight: isPlaying ? 700 : 400,
 					}}
+					className="item-container"
 					onClick={() =>
 						!playing
 							? onClickPlay(item.uri, item.id)
@@ -27,16 +29,21 @@ const MobileTrackList = ({ playlist, playing, track, onClickPlay, onClickPause, 
 							: playing && track !== item.uri && onClickPlay(item.uri, item.id)
 					}
 				>
-					<strong>{item.name}</strong>
-					<p>
-						{item.artists.map((artist, i) => (i == 0 ? `${artist.name}` : ` ${artist.name}`)).toString()} •{' '}
-						{item.album.name}
-					</p>
+					<img src={minBy(item.album.images, 'height').url} className="display-pic" />
+					<div className="card-detail">
+						<strong>{item.name}</strong>
+						<p>
+							{item.artists
+								.map((artist, i) => (i == 0 ? `${artist.name}` : ` ${artist.name}`))
+								.toString()}{' '}
+							• {item.album.name}
+						</p>
+					</div>
 				</Col>
 				<Col xs={2}>
 					<FontAwesomeIcon style={{ float: 'right' }} icon={faTimes} onClick={() => onClickRemove(item.id)} />
 				</Col>
-			</Row>
+			</div>
 		);
 	});
 };

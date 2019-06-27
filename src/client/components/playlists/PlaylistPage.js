@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { withRouter, Link } from 'react-router-dom';
-import autoBind from 'react-autobind';
 
 import * as spotifyActions from '../../actions/spotifyActions';
 import * as modalActions from '../../actions/modalActions';
@@ -33,7 +32,6 @@ class Playlist extends Component {
 			progress_ms: 0,
 			error: false,
 		};
-		autoBind(this);
 	}
 
 	componentDidMount = () => {
@@ -173,7 +171,7 @@ class Playlist extends Component {
 		}
 	};
 
-	render() {
+	render = () => {
 		let { player, playlists } = this.props;
 		let { playlist, playing, track, upload, single } = this.state;
 
@@ -203,7 +201,7 @@ class Playlist extends Component {
 					<Notification
 						isActive={player.error.status}
 						title={player.error.title}
-						message={player.error.title}
+						message={player.error.message}
 					/>
 				)}
 				<div className="container">
@@ -239,7 +237,7 @@ class Playlist extends Component {
 				/>
 			</div>
 		);
-	}
+	};
 }
 
 Playlist.propTypes = {

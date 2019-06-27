@@ -14,7 +14,8 @@ function routes(app) {
 	 user-read-playback-state
 	 user-top-read
 	 user-follow-read
-	 ugc-image-upload`;
+	 ugc-image-upload
+	 user-read-recently-played`;
 
 	app.get('/login', (req, res) =>
 		res.redirect(
@@ -40,7 +41,7 @@ function routes(app) {
 			headers: {
 				Authorization:
 					'Basic ' +
-					new Buffer(process.env.SPOTIFY_CLIENT_ID + ':' + process.env.SPOTIFY_CLIENT_SECRET).toString(
+					Buffer.from(process.env.SPOTIFY_CLIENT_ID + ':' + process.env.SPOTIFY_CLIENT_SECRET).toString(
 						'base64'
 					),
 			},

@@ -7,7 +7,7 @@ export default {
 	artist: {},
 	artists: {},
 	track: {},
-	tracks: {},
+	tracks: [],
 	playlists: [],
 	album: {},
 	albums: {},

@@ -28,6 +28,7 @@ class Home extends Component {
 			albums: [],
 			playing: false,
 			progress_ms: 0,
+			image: '',
 			rendered: false,
 		};
 	}
@@ -39,19 +40,22 @@ class Home extends Component {
 			this.props.actions.getNewReleases(artists);
 		}
 
-		this.props.actions.getRecommendedTrack();
+		this.props.actions.getLastPlayed();
 		setTimeout(() => this.setState({ rendered: true }), 3500);
 	};
 
 	componentWillReceiveProps = nextProps => {
-		let { user, player, tracks } = nextProps;
-		if (user !== this.props.user) {
-			let artists = user.following.map(artist => artist.id);
+		if (nextProps.user !== this.props.user) {
+			let artists = nextProps.user.following.map(artist => artist.id);
 			this.props.actions.getNewReleases(artists);
 		}
 
-		if (player !== this.props.player) {
-			this.setState({ progress_ms: player.progress_ms });
+		if (nextProps.player !== this.props.player) {
+			this.setState({ progress_ms: nextProps.player.progress_ms });
+		}
+
+		if (nextProps.image !== this.props.image) {
+			this.setState({ image: nextProps.image.urls.raw });
 		}
 	};
 
@@ -143,7 +147,7 @@ class Home extends Component {
 
 	render = () => {
 		const { albums, user, player } = this.props;
-		const { value, results, isLoading, rendered, track } = this.state;
+		const { value, results, isLoading, rendered, track, image } = this.state;
 
 		return (
 			<Loading rendered={rendered}>
@@ -154,7 +158,7 @@ class Home extends Component {
 							md={12}
 							className="home header"
 							style={{
-								background: `url(${background})`,
+								background: `url(${image || background})`,
 							}}
 						>
 							<Search
@@ -195,7 +199,6 @@ function mapStateToProps(state) {
 	return {
 		results: state.reducers.results,
 		albums: state.reducers.albums,
-		track: state.reducers.track,
 		image: state.reducers.image,
 		player: state.reducers.player,
 	};

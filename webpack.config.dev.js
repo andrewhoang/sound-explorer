@@ -5,13 +5,14 @@ const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPl
 
 module.exports = {
 	mode: 'development',
-	devtool: 'source-map',
+	devtool: 'cheap-module-eval-source-map',
 	entry: [
 		'@babel/polyfill',
 		'eventsource-polyfill',
 		'webpack-hot-middleware/client?path=/__webpack_hmr&timeout=20000',
 		'./src/client/index',
 	],
+	stats: 'errors-only',
 	output: {
 		path: path.join(__dirname, '/dist/'),
 		filename: 'bundle.js',

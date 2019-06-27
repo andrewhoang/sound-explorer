@@ -16,9 +16,9 @@ class ArtistHeader extends Component {
 		};
 	}
 
-	componentDidMount() {
+	componentDidMount = () => {
 		setTimeout(() => this.setState({ show: true }), 300);
-	}
+	};
 
 	render() {
 		let { artist, selectedArtists, onClickRemove, onClickCreate, savingPlaylist } = this.props;

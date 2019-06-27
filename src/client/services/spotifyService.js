@@ -1,5 +1,6 @@
 import axios from 'axios';
 import moment from 'moment';
+import shuffle from 'lodash/shuffle';
 import * as endpoints from './apiEndpoints';
 
 class SpotifyService {
@@ -52,6 +53,19 @@ class SpotifyService {
 
 		let albumPromise = Promise.all(albums).then(response => response.reduce((prev, curr) => prev.concat(curr)));
 		return albumPromise;
+	}
+
+	static async getRecommendedTrack() {
+		// Get last played tracks
+		const lastPlayedUrl = `${endpoints.SPOTIFY_BASE_URL}/me${endpoints.PLAYER}/recently-played`;
+		const lastTracks = await axios.get(lastPlayedUrl).then(response => response.data.items);
+
+		let lastTrack = await shuffle(lastTracks)[0].track;
+
+		const params = `seed_tracks=${lastTrack.id}&seed_artists=${lastTrack.artists.map(artist => artist.id)}`;
+
+		const recommendedUrl = `${endpoints.SPOTIFY_BASE_URL}/recommendations?limit=1&${params}`;
+		return axios.get(recommendedUrl).then(response => response.data.tracks[0]);
 	}
 
 	static getPlaylists(id) {

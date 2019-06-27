@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
 import autoBind from 'react-autobind';
 
-import { Col } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlayCircle, faPauseCircle } from '@fortawesome/free-regular-svg-icons';
-import { faPlay, faPause, faInfoCircle } from '@fortawesome/free-solid-svg-icons';
+import { faInfoCircle } from '@fortawesome/free-solid-svg-icons';
 import ReactTooltip from 'react-tooltip';
 
 import maxBy from 'lodash/maxBy';
@@ -22,7 +21,7 @@ class NewReleasesList extends Component {
 		let { albums, playing, track, isPremium } = this.props;
 
 		return (
-			<Col md={12}>
+			<>
 				<h2>
 					New Releases
 					<a data-tip data-for="info" className="info-tooltip">
@@ -32,8 +31,7 @@ class NewReleasesList extends Component {
 				<ReactTooltip id="info" place="top">
 					<p>Based on artists you follow.</p>
 				</ReactTooltip>
-
-				<div className="album-list">
+				<div className="list">
 					{albums ? (
 						uniqBy(orderBy(albums, 'release_date', 'desc'), 'name').map(album => {
 							const premiumProps = isPremium && {
@@ -42,24 +40,19 @@ class NewReleasesList extends Component {
 							};
 
 							return (
-								<Col
-									md={length % 4 == 0 ? 3 : length % 3 == 0 ? 4 : 3}
-									sm={6}
-									key={album.id}
-									className="item-container"
-								>
+								<div key={album.id} className="item-container">
 									<div className="album-container" {...premiumProps}>
 										{album.images && (
 											<img
 												src={maxBy(album.images, 'height').url}
-												className="album-dp"
+												className="display-pic"
 												onClick={() => this.props.onClickPlay(album.uri, album.id)}
 												style={{
 													filter: this.state.album == album.id ? 'brightness(80%)' : '',
 												}}
 											/>
 										)}
-										{(this.state.album == album.id || track == album.uri) && (
+										{/* {(this.state.album == album.id || track == album.uri) && (
 											<div className="actions">
 												{!playing && (
 													<FontAwesomeIcon
@@ -80,22 +73,24 @@ class NewReleasesList extends Component {
 													/>
 												)}
 											</div>
-										)}
-										<h5>{album.name}</h5>
+										)} */}
 									</div>
-									<h6>
-										{album.artists
-											.map((artist, i) => (i == 0 ? artist.name : ` ${artist.name}`))
-											.toString()}
-									</h6>
-								</Col>
+									<div className="card-detail">
+										<h5>{album.name}</h5>
+										<h6>
+											{album.artists
+												.map((artist, i) => (i == 0 ? artist.name : ` ${artist.name}`))
+												.toString()}
+										</h6>
+									</div>
+								</div>
 							);
 						})
 					) : (
 						<h3>No new releases</h3>
 					)}
 				</div>
-			</Col>
+			</>
 		);
 	}
 }

@@ -5,53 +5,37 @@ import maxBy from 'lodash/maxBy';
 import isEmpty from 'lodash/isEmpty';
 import FlipMove from 'react-flip-move';
 
-class ArtistList extends Component {
-	constructor(props) {
-		super(props);
-	}
+const formatEasing = () => {
+	let arr = ['0.39', '0', '0.45', '1.4'];
+	return `cubic-bezier(${arr.join(',')})`;
+};
 
-	formatEasing = () => {
-		let arr = ['0.39', '0', '0.45', '1.4'];
-		return `cubic-bezier(${arr.join(',')})`;
-	};
-
-	render() {
-		let { artists, onClickAdd } = this.props;
-
-		return (
-			<Row>
-				{artists && (
-					<FlipMove
-						duration={700}
-						delay={150}
-						easing={'ease'}
-						staggerDurationBy={15}
-						staggerDelayBy={20}
-						className="artist-list"
-					>
-						{artists.map(
-							artist =>
-								!isEmpty(artist.images) && (
-									<Col
-										md={length % 4 == 0 ? 3 : length % 3 == 0 ? 4 : 3}
-										xs={6}
-										key={artist.id}
-										className="item-container"
-									>
-										<img
-											src={maxBy(artist.images, 'height').url}
-											className="artist-dp"
-											onClick={() => onClickAdd(artist.id)}
-										/>
-										<h5>{artist.name}</h5>
-									</Col>
-								)
-						)}
-					</FlipMove>
+const ArtistList = ({ artists, onClickAdd }) => {
+	return (
+		artists && (
+			<FlipMove
+				duration={700}
+				delay={150}
+				easing={'ease'}
+				staggerDurationBy={15}
+				staggerDelayBy={20}
+				className="list"
+			>
+				{artists.map(
+					artist =>
+						!isEmpty(artist.images) && (
+							<div key={artist.id} className="item-container" onClick={() => onClickAdd(artist.id)}>
+								<img src={maxBy(artist.images, 'height').url} className="display-pic" />
+								<div className="card-detail">
+									<h5>{artist.name}</h5>
+									<h6>{artist.genres.slice(0, 3).join(', ')}</h6>
+								</div>
+							</div>
+						)
 				)}
-			</Row>
-		);
-	}
-}
+			</FlipMove>
+		)
+	);
+};
 
 export default ArtistList;

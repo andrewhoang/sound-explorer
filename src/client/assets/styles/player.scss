@@ -1,0 +1,59 @@
+.audio-player {
+	position: fixed;
+	display: flex;
+	width: 100%;
+	margin: 0;
+	bottom: 0;
+	padding: 5px;
+	background: #000;
+	svg {
+		font-size: 10px;
+	}
+	p {
+		&.title {
+			margin-right: 40px;
+		}
+		&.time {
+			margin-left: 40px;
+		}
+		margin: 0;
+		font-size: 11px;
+		line-height: normal;
+		white-space: nowrap;
+	}
+	.controls {
+		margin-right: 20px;
+		width: auto;
+	}
+	.audio-bar {
+		display: flex;
+		align-items: center;
+		width: 100%;
+		margin: 0 15px;
+		padding: 0;
+	}
+	.track {
+		position: relative;
+		width: 100%;
+		height: 8px;
+		display: flex;
+		border: 1px solid #fff;
+		opacity: 0.8;
+		overflow: hidden;
+		.toggle {
+			transition: width 1000ms linear;
+			position: absolute;
+			height: 7px;
+			background: #fff;
+		}
+		&:hover {
+			cursor: pointer;
+		}
+	}
+}
+
+@media screen and (max-width: 989px) {
+	.audio-player {
+		display: none;
+	}
+}
