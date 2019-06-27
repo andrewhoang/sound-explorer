@@ -15,7 +15,7 @@ class SpotifyController {
 			headers: {
 				Authorization:
 					'Basic ' +
-					new Buffer(process.env.SPOTIFY_CLIENT_ID + ':' + process.env.SPOTIFY_CLIENT_SECRET).toString(
+					Buffer.from(process.env.SPOTIFY_CLIENT_ID + ':' + process.env.SPOTIFY_CLIENT_SECRET).toString(
 						'base64'
 					),
 			},

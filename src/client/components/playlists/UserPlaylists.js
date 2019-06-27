@@ -20,27 +20,29 @@ class UserPlaylist extends Component {
 	render() {
 		let { playlists, onClickUpdate } = this.props;
 
-		// let image = upload ? upload : playlist[0] && maxBy(playlist[0].album.images, 'height').url;
-
 		return (
-			<Row className="playlist-list">
+			<Row className="list -column">
 				{playlists &&
 					playlists.map(
 						playlist =>
 							!isEmpty(playlist.images) && (
-								<Col
-									md={length % 4 == 0 ? 3 : length % 3 == 0 ? 4 : 3}
-									sm={6}
+								<div
 									key={playlist.id}
-									className="item-container"
+									className="item-container -lg"
+									style={{
+										background: `linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url(${
+											playlist.images[0].url
+										})`,
+									}}
+									onClick={() => onClickUpdate(playlist.id)}
 								>
-									<img
-										src={playlist.images[0].url}
-										className="playlist-dp"
-										onClick={() => onClickUpdate(playlist.id)}
-									/>
-									<h5>{playlist.name}</h5>
-								</Col>
+									<div className="card-detail">
+										<h5>{playlist.name}</h5>
+										<h6>
+											{playlist.tracks.total} {playlist.tracks.total !== 1 ? 'songs' : 'song'}
+										</h6>
+									</div>
+								</div>
 							)
 					)}
 			</Row>

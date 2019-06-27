@@ -5,6 +5,8 @@ export const track = (state = initialState.track, action = null) => {
 	switch (action.type) {
 		case types.RECEIVE_TRACK:
 			return action.track;
+		case types.RECEIVE_RECOMMENDED_TRACK:
+			return action.track;
 		default:
 			return state;
 	}

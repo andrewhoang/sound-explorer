@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
-import autoBind from 'react-autobind';
 
 import * as spotifyActions from '../../actions/spotifyActions';
 
@@ -25,7 +24,6 @@ class ArtistsPage extends Component {
 	constructor(props) {
 		super(props);
 		this.state = { artists: [], selectedArtists: [] };
-		autoBind(this);
 	}
 
 	componentDidMount = () => {
@@ -88,7 +86,7 @@ class ArtistsPage extends Component {
 		this.props.actions.createPlaylist('artist', this.state.selectedArtists);
 	};
 
-	render() {
+	render = () => {
 		let { artist, savingPlaylist } = this.props;
 		let { artists, selectedArtists } = this.state;
 
@@ -107,7 +105,7 @@ class ArtistsPage extends Component {
 				</Button>
 			</div>
 		);
-	}
+	};
 }
 
 ArtistsPage.propTypes = {

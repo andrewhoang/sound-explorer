@@ -7,10 +7,4 @@ const RouteComponent = ({ component: Component, user, ...rest }) => {
 	return <Route {...rest} render={props => <Component {...props} user={user} {...rest} />} />;
 };
 
-function mapStatesToProps(state) {
-	return {
-		state: state,
-	};
-}
-
-export default withRouter(connect(mapStatesToProps)(RouteComponent));
+export default withRouter(RouteComponent);

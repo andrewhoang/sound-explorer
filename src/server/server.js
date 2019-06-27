@@ -24,11 +24,8 @@ let webpackCompiler = webpack(webpackConfig);
 app.use(
 	require('webpack-dev-middleware')(webpackCompiler, {
 		hot: true,
-		noInfo: true,
 		publicPath: webpackConfig.output.publicPath,
-		stats: {
-			colors: true,
-		},
+		stats: 'errors-only',
 	})
 );
 
@@ -44,8 +41,10 @@ app.use(express.static(__dirname + '/dist/'));
 
 routes(app);
 
-setInterval(() => https.get('https://soundexplorer.herokuapp.com/'), 3600000);
+setInterval(() => https.get('https://soundexplorer.herokuapp.com/'), 1800000);
 
 app.get('/*', (req, res) => res.sendFile(path.join(__dirname, '../index.html')));
 
-app.listen(process.env.PORT || 3000, () => console.log(`Listening at http://localhost:${process.env.PORT || 3000}`));
+app.listen(process.env.PORT || 3000, () =>
+	console.log(`\nListening at http://localhost:${process.env.PORT || 3000}\n`)
+);

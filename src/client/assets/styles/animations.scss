@@ -1,0 +1,72 @@
+.line-scale-pulse-out-rapid > div {
+	height: 55px !important;
+	width: 8px !important;
+}
+
+.fade {
+	text-align: center;
+}
+
+.fade-appear {
+	opacity: 0;
+	z-index: 1;
+}
+.fade-appear-active {
+	opacity: 1;
+	transition: opacity 1000ms linear;
+}
+.fade-exit {
+	opacity: 1;
+	// transform: scale(1) translateY(0%);
+}
+.fade-exit.fade-exit-active {
+	opacity: 0.01;
+	transform: scale(0.9) translateY(50%);
+	transition: all 300ms ease-out;
+}
+
+.fade-exit-done {
+	opacity: 0;
+}
+
+.fade-entering {
+	animation: fadeOut 5000ms linear;
+}
+
+.fade-entered {
+	opacity: 1;
+	animation: fadeIn 5000ms linear;
+}
+
+.fade-enter-active {
+	opacity: 1;
+	transition: opacity 500ms ease-in;
+}
+.fade-exit {
+	opacity: 1;
+}
+.fade-exit-active {
+	opacity: 0.01;
+	transition: opacity 500ms ease-in;
+}
+
+@keyframes fadeOut {
+	0% {
+		opacity: 1;
+	}
+	90% {
+		opacity: 1;
+	}
+	100% {
+		opacity: 0.1;
+	}
+}
+
+@keyframes fadeIn {
+	0% {
+		opacity: 0;
+	}
+	100% {
+		opacity: 1;
+	}
+}

@@ -18,9 +18,8 @@ class PlaylistHeader extends Component {
 
 	componentDidMount = () => {
 		let name = this.props.owner && this.props.owner.split(' ');
-
 		this.name.focus();
-		this.name.innerHTML = `${name[0]}'s Playlist`;
+		if (name) this.name.innerHTML = `${name[0]}'s Playlist`;
 		var sel = window.getSelection();
 		sel.collapse(this.name.firstChild, this.name.innerHTML.length);
 	};

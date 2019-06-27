@@ -1,0 +1,44 @@
+// MODAL
+#savePlaylistModal {
+	div {
+		outline: none;
+	}
+	.view-modal ~ div {
+		background-color: #222 !important;
+	}
+	.view-modal > div {
+		background: transparent !important;
+	}
+}
+.view-modal {
+	width: auto !important;
+	-webkit-overflow-scrolling: touch;
+}
+.modal-md {
+	background: darken($theme_black, 2%) !important;
+	outline: none !important;
+	padding: 40px 40px 20px 40px;
+	height: 80vh;
+	overflow-y: scroll;
+	.modal-header {
+		border: 0;
+		h2 {
+			white-space: nowrap;
+		}
+	}
+	.modal-body {
+		padding: 0;
+		.modal-actions {
+			display: flex;
+			align-items: center;
+			flex-direction: row;
+			button {
+				margin: 5px;
+				width: 100%;
+			}
+		}
+	}
+	.modal-footer {
+		border: 0;
+	}
+}

@@ -94,8 +94,8 @@ const TrackList = ({ playlist, playing, track, onClickPlay, onClickPause, onClic
 			<ReactTable
 				data={playlist}
 				columns={columns}
-				className="-highlight"
 				showPagination={false}
+				resizable={false}
 				draggable="true"
 				{...playingProps}
 				getTdProps={(state, rowInfo, column) => {
