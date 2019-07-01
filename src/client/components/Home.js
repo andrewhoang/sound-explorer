@@ -39,12 +39,12 @@ class Home extends Component {
 			this.props.actions.getNewReleases(artists);
 		}
 
-		this.props.actions.getRecommendedTrack();
+		// this.props.actions.getRecommendedTrack();
 		setTimeout(() => this.setState({ rendered: true }), 3500);
 	};
 
 	componentWillReceiveProps = nextProps => {
-		let { user, player, tracks } = nextProps;
+		let { user, player } = nextProps;
 		if (user !== this.props.user) {
 			let artists = user.following.map(artist => artist.id);
 			this.props.actions.getNewReleases(artists);
@@ -150,13 +150,7 @@ class Home extends Component {
 				<AlertMessage />
 				<div className="container animated fadeIn">
 					<Row>
-						<Col
-							md={12}
-							className="home header"
-							style={{
-								background: `url(${background})`,
-							}}
-						>
+						<Col md={12} className="home header" style={{ background: `url(${background})` }}>
 							<Search
 								category
 								// open={true}
@@ -169,16 +163,14 @@ class Home extends Component {
 							/>
 						</Col>
 					</Row>
-					<Row>
-						<NewReleasesList
-							albums={albums}
-							onClickPlay={this.handlePlay}
-							onClickPause={this.handlePause}
-							track={track}
-							playing={player.playing}
-							isPremium={user.product == 'premium'}
-						/>
-					</Row>
+					<NewReleasesList
+						albums={albums}
+						onClickPlay={this.handlePlay}
+						onClickPause={this.handlePause}
+						track={track}
+						playing={player.playing}
+						isPremium={user.product == 'premium'}
+					/>
 				</div>
 			</Loading>
 		);
