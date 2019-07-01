@@ -13,8 +13,6 @@ class AlertMessage extends Component {
 		let { player } = this.props;
 		let { error } = player;
 
-		console.log(error);
-
 		return player.error ? (
 			<Notification isActive={error.status} title={error.title} message={error.message} />
 		) : (
