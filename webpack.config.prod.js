@@ -1,6 +1,5 @@
 const path = require('path');
 const common = require('./webpack.config.js');
-const path = require('path');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 const merge = require('webpack-merge');
@@ -28,36 +27,4 @@ module.exports = merge(common, {
 		}),
 		// new HtmlWebpackPlugin({ template: './src/index.html' }),
 	],
-	module: {
-		rules: [
-			{
-				test: /\.js$/,
-				exclude: /node_modules/,
-				use: 'babel-loader',
-				include: path.join(__dirname, 'src'),
-			},
-			{
-				test: /\.(s*)css$/,
-				use: ['style-loader', 'css-loader', 'sass-loader'],
-			},
-			{
-				test: /\.(jpe?g|png|gif|svg|ico)$/i,
-				use: {
-					loader: 'file-loader',
-					options: {
-						name: 'images/[name].[ext]',
-					},
-				},
-			},
-			{
-				test: /\.(ttf|eot|woff|woff2|svg)$/,
-				use: {
-					loader: 'file-loader',
-					options: {
-						name: 'fonts/[name].[ext]',
-					},
-				},
-			},
-		],
-	},
 });
