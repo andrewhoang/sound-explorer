@@ -1,10 +1,12 @@
 const path = require('path');
-
+const common = require('./webpack.config.js');
+const path = require('path');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
+const merge = require('webpack-merge');
 // const HtmlWebpackPlugin = require('html-webpack-plugin');
 
-module.exports = {
+module.exports = merge(common, {
 	mode: 'production',
 	devtool: 'source-map',
 	performance: {
@@ -58,4 +60,4 @@ module.exports = {
 			},
 		],
 	},
-};
+});

@@ -1,25 +1,23 @@
 import React, { Component } from 'react';
-import autoBind from 'react-autobind';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlayCircle, faPauseCircle } from '@fortawesome/free-regular-svg-icons';
 import { faInfoCircle } from '@fortawesome/free-solid-svg-icons';
 import ReactTooltip from 'react-tooltip';
 
-import maxBy from 'lodash/maxBy';
+import minBy from 'lodash/minBy';
 import orderBy from 'lodash/orderBy';
 import uniqBy from 'lodash/uniqBy';
+import isEmpty from 'lodash/isEmpty';
 
 class NewReleasesList extends Component {
 	constructor(props) {
 		super(props);
 		this.state = { album: '' };
-		autoBind(this);
 	}
 
-	render() {
+	render = () => {
 		let { albums, playing, track, isPremium } = this.props;
-
 		return (
 			<>
 				<h2>
@@ -31,20 +29,20 @@ class NewReleasesList extends Component {
 				<ReactTooltip id="info" place="top">
 					<p>Based on artists you follow.</p>
 				</ReactTooltip>
-				<div className="list">
-					{albums ? (
-						uniqBy(orderBy(albums, 'release_date', 'desc'), 'name').map(album => {
+				{!isEmpty(albums) ? (
+					<div className="list">
+						{uniqBy(orderBy(albums, 'release_date', 'desc'), 'name').map((album, i) => {
 							const premiumProps = isPremium && {
 								onMouseEnter: () => this.setState({ album: album.id }),
 								onMouseLeave: () => this.setState({ album: '' }),
 							};
 
 							return (
-								<div key={album.id} className="item-container">
+								<div key={i} className="item-container">
 									<div className="album-container" {...premiumProps}>
 										{album.images && (
 											<img
-												src={maxBy(album.images, 'height').url}
+												src={minBy(album.images, 'height').url}
 												className="display-pic"
 												onClick={() => this.props.onClickPlay(album.uri, album.id)}
 												style={{
@@ -85,14 +83,14 @@ class NewReleasesList extends Component {
 									</div>
 								</div>
 							);
-						})
-					) : (
-						<h3>No new releases</h3>
-					)}
-				</div>
+						})}
+					</div>
+				) : (
+					<h3 className="vertical-center">No new releases</h3>
+				)}
 			</>
 		);
-	}
+	};
 }
 
 export default NewReleasesList;
