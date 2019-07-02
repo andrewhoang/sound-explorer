@@ -1,6 +1,5 @@
 const path = require('path');
 const webpack = require('webpack');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 const ManifestPlugin = require('webpack-manifest-plugin');
 const { InjectManifest } = require('workbox-webpack-plugin');
@@ -38,7 +37,6 @@ module.exports = {
 			},
 		}),
 		new webpack.optimize.OccurrenceOrderPlugin(),
-		// new HtmlWebpackPlugin({ template: './src/index.html' }),
 	],
 	module: {
 		rules: [
