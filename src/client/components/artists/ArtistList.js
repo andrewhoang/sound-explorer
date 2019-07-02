@@ -24,7 +24,11 @@ const ArtistList = ({ artists, onClickAdd }) => {
 				{artists.map(
 					artist =>
 						!isEmpty(artist.images) && (
-							<div key={artist.id} className="item-container" onClick={() => onClickAdd(artist.id)}>
+							<div
+								key={artist.id}
+								className="item-container animated fadeInUp"
+								onClick={() => onClickAdd(artist.id)}
+							>
 								<img src={maxBy(artist.images, 'height').url} className="display-pic" />
 								<div className="card-detail">
 									<h5>{artist.name}</h5>

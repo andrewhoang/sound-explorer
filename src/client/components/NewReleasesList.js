@@ -16,8 +16,9 @@ class NewReleasesList extends Component {
 		this.state = { album: '' };
 	}
 
-	render = () => {
+	render() {
 		let { albums, playing, track, isPremium } = this.props;
+
 		return (
 			<>
 				<h2>
@@ -38,7 +39,7 @@ class NewReleasesList extends Component {
 							};
 
 							return (
-								<div key={i} className="item-container">
+								<div key={i} className="item-container animated fadeInUp">
 									<div className="album-container" {...premiumProps}>
 										{album.images && (
 											<img
@@ -90,7 +91,7 @@ class NewReleasesList extends Component {
 				)}
 			</>
 		);
-	};
+	}
 }
 
 export default NewReleasesList;

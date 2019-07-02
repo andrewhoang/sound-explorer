@@ -150,7 +150,7 @@ class Home extends Component {
 				<AlertMessage />
 				<div className="container animated fadeIn">
 					<Row>
-						<Col md={12} className="home header" style={{ background: `url(${background})` }}>
+						<Col md={12} xs={12} className="home header" style={{ background: `url(${background})` }}>
 							<Search
 								category
 								// open={true}

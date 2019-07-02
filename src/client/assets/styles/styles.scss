@@ -148,6 +148,7 @@ svg {
 		margin-bottom: 5px;
 		font-size: 1em;
 		letter-spacing: 0.1em;
+		max-width: 80vw;
 	}
 	&.home {
 		display: block;
@@ -356,7 +357,8 @@ input[type='file'] {
 
 @media screen and (max-width: 989px) {
 	.container {
-		padding-bottom: 30px;
+		padding-bottom: 50px;
+		margin-bottom: 50px;
 	}
 	.list {
 		margin-bottom: 30px;
