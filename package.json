@@ -50,6 +50,7 @@
 		"node-sass": "^4.12.0",
 		"nodemon": "^1.18.4",
 		"optimize-css-assets-webpack-plugin": "^5.0.1",
+		"pulltorefreshjs": "^0.1.17",
 		"redux-logger": "^2.4.0",
 		"rimraf": "^2.4.3",
 		"sass-loader": "^7.1.0",

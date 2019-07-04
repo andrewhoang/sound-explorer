@@ -13,7 +13,7 @@ const MobileTrackList = ({ playlist, playing, track, onClickPlay, onClickPause, 
 	return playlist.map((item, i) => {
 		const isPlaying = playing && track === item.uri;
 		return (
-			<div key={i} className="track mobile">
+			<div key={i} className="track mobile animated fadeInUp">
 				<Col
 					xs={10}
 					style={{

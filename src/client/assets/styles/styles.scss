@@ -5,6 +5,10 @@ $theme_white: #fff;
 $theme_black: #1a1a1a;
 $theme_navy: #2b2f3d;
 
+html {
+	scroll-behavior: smooth;
+}
+
 body {
 	-webkit-user-select: none;
 	-webkit-tap-highlight-color: transparent;
@@ -72,16 +76,11 @@ a {
 }
 
 .container {
-	position: absolute;
-	top: 50%;
-	left: 50%;
-	bottom: 0;
 	height: 100vh;
+	max-width: 80vw;
 	overflow-y: scroll;
-	transform: translate(-50%, -50%);
 	background: lighten($theme_black, 5%);
 	padding-bottom: 35px;
-	border-radius: 4px;
 	&::-webkit-scrollbar {
 		width: 0px;
 	}
@@ -96,6 +95,12 @@ a {
 	}
 }
 
+.flex {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
 .pull-center {
 	display: block;
 	text-align: center;
@@ -106,7 +111,7 @@ a {
 	align-items: center;
 	flex-direction: row;
 	.btn {
-		margin: 20px 10px;
+		margin: 20px 5px;
 	}
 }
 
@@ -143,12 +148,19 @@ svg {
 	h1 {
 		text-align: center;
 		margin-bottom: 0px;
+		max-width: 80vw;
 	}
 	.subtext {
-		margin-bottom: 5px;
+		display: flex;
+		justify-content: center;
+		margin: 5px auto;
 		font-size: 1em;
 		letter-spacing: 0.1em;
 		max-width: 80vw;
+		opacity: 0.6;
+		span {
+			margin-left: 5px;
+		}
 	}
 	&.home {
 		display: block;
@@ -356,13 +368,6 @@ input[type='file'] {
 }
 
 @media screen and (max-width: 989px) {
-	.container {
-		padding-bottom: 50px;
-		margin-bottom: 50px;
-	}
-	.list {
-		margin-bottom: 30px;
-	}
 	.desktop {
 		display: none !important;
 	}
@@ -371,14 +376,18 @@ input[type='file'] {
 	}
 	.header {
 		h1 {
-			font-size: 35px !important;
-		}
-		button {
-			font-size: 11px;
-			padding: 15px;
+			font-size: 3em !important;
 		}
 		p {
 			right: 20px !important;
+		}
+	}
+	button {
+		font-size: 0.9rem !important;
+	}
+	.flex-row {
+		.btn {
+			padding: 15px !important;
 		}
 	}
 
@@ -391,6 +400,7 @@ input[type='file'] {
 		transform: translate(-50%, 0) !important;
 		background: $theme_green !important;
 		text-align: center;
+		width: 80vw !important;
 		.notification-bar-message {
 			display: block;
 		}
@@ -398,13 +408,13 @@ input[type='file'] {
 
 	.container {
 		width: 100vw !important;
+		max-width: unset !important;
 		overflow-x: hidden;
 		padding: 0;
 		-webkit-overflow-scrolling: touch;
 		h6 {
 			display: block !important;
 			white-space: nowrap;
-			width: 150px;
 			margin: 0 auto;
 			text-overflow: ellipsis !important;
 			overflow: hidden;
@@ -473,7 +483,7 @@ input[type='file'] {
 		margin-bottom: 0;
 	}
 	.track {
-		background: #222;
+		background: #1a1a1a;
 		border-radius: 5px;
 		display: flex !important;
 		align-items: center;
@@ -481,6 +491,7 @@ input[type='file'] {
 		.item-container {
 			background: transparent;
 			grid-gap: 15px;
+			border-radius: 5px;
 			padding: 0;
 			margin: 0;
 		}

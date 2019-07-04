@@ -13,9 +13,11 @@ app.use(compression());
 
 let webpackConfig;
 
-if (app.get('env') === 'development') {
+const environment = app.get('env');
+
+if (environment === 'development') {
 	webpackConfig = require('../../webpack.config.dev');
-} else if (app.get('env') === 'production') {
+} else if (environment === 'production') {
 	webpackConfig = require('../../webpack.config.prod');
 }
 

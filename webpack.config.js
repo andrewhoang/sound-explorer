@@ -5,17 +5,11 @@ const ManifestPlugin = require('webpack-manifest-plugin');
 const { InjectManifest } = require('workbox-webpack-plugin');
 
 module.exports = {
-	stats: 'errors-only',
-	output: {
-		path: path.join(__dirname, 'dist'),
-		filename: 'bundle.js',
-		publicPath: '/',
-	},
-	node: {
-		fs: 'empty',
-	},
+	// node: {
+	// 	fs: 'empty',
+	// },
 	plugins: [
-		new webpack.HotModuleReplacementPlugin({ multiStep: true }),
+		new webpack.optimize.OccurrenceOrderPlugin(),
 		new InjectManifest({
 			swSrc: './src-sw.js',
 			swDest: './sw.js',
@@ -36,7 +30,6 @@ module.exports = {
 				],
 			},
 		}),
-		new webpack.optimize.OccurrenceOrderPlugin(),
 	],
 	module: {
 		rules: [

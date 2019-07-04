@@ -49,24 +49,18 @@ axios.interceptors.response.use(
 	}
 );
 
-ReactDOM.render(
+const AppWrapper = () => (
 	<Provider store={store}>
 		<ConnectedRouter history={history}>
 			<App />
 		</ConnectedRouter>
-	</Provider>,
-	document.getElementById('app')
+	</Provider>
 );
+
+ReactDOM.render(<AppWrapper />, document.getElementById('app'));
 
 if (module.hot) {
 	module.hot.accept('./components/App', () => {
-		ReactDOM.render(
-			<Provider store={store}>
-				<ConnectedRouter history={history}>
-					<App />
-				</ConnectedRouter>
-			</Provider>,
-			document.getElementById('app')
-		);
+		ReactDOM.render(<AppWrapper />, document.getElementById('app'));
 	});
 }
