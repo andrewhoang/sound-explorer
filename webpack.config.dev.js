@@ -6,8 +6,9 @@ const merge = require('webpack-merge');
 module.exports = merge(common, {
 	mode: 'development',
 	devtool: 'cheap-module-eval-source-map',
+	stats: 'errors-only',
 	entry: [
-		// '@babel/polyfill',
+		'@babel/polyfill',
 		'eventsource-polyfill',
 		'webpack-hot-middleware/client?path=/__webpack_hmr&timeout=20000',
 		'./src/client/index',
@@ -17,7 +18,6 @@ module.exports = merge(common, {
 		filename: 'bundle.js',
 		publicPath: '/',
 	},
-	target: 'web',
 	plugins: [
 		new webpack.HotModuleReplacementPlugin({ multiStep: true }),
 		// new BundleAnalyzerPlugin(),

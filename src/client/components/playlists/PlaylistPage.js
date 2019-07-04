@@ -192,11 +192,13 @@ class Playlist extends Component {
 
 		return (
 			<div>
-				<Notification
-					isActive={this.state.error}
-					title={'File is too large!'}
-					message={'Please upload file no larger than 256 KB.'}
-				/>
+				{this.state.error && (
+					<Notification
+						isActive={this.state.error}
+						title={'File is too large!'}
+						message={'Please upload file no larger than 256 KB.'}
+					/>
+				)}
 				{player.error && (
 					<Notification
 						isActive={player.error.status}

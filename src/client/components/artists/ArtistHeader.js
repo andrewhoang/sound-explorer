@@ -52,14 +52,18 @@ class ArtistHeader extends Component {
 												<h1>{artist.name}</h1>
 												<p className="subtext">
 													{artist.followers && commaNumber(artist.followers.total)} Followers
-													{artist.genres && ' | '}
-													{artist.genres &&
-														artist.genres
-															.slice(0, 4)
-															.map((genre, i) =>
-																i == 0 ? `${startCase(genre)}` : ` ${startCase(genre)}`
-															)
-															.toString()}
+													<span className="desktop">
+														{artist.genres && ' | '}
+														{artist.genres &&
+															artist.genres
+																.slice(0, 4)
+																.map((genre, i) =>
+																	i == 0
+																		? `${startCase(genre)}`
+																		: ` ${startCase(genre)}`
+																)
+																.toString()}
+													</span>
 												</p>
 											</span>
 										);

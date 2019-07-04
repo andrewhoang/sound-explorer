@@ -21,7 +21,7 @@ class NewReleasesList extends Component {
 
 		return (
 			<>
-				<h2>
+				<h2 className="flex">
 					New Releases
 					<a data-tip data-for="info" className="info-tooltip">
 						<FontAwesomeIcon icon={faInfoCircle} />
@@ -38,14 +38,19 @@ class NewReleasesList extends Component {
 								onMouseLeave: () => this.setState({ album: '' }),
 							};
 
+							const isPlaying = this.state.album == album.id || track == album.uri;
+
 							return (
-								<div key={i} className="item-container animated fadeInUp">
+								<div
+									key={i}
+									onClick={() => this.props.onClickPlay(album.uri, album.id)}
+									className="item-container animated fadeInUp"
+								>
 									<div className="album-container" {...premiumProps}>
 										{album.images && (
 											<img
 												src={minBy(album.images, 'height').url}
 												className="display-pic"
-												onClick={() => this.props.onClickPlay(album.uri, album.id)}
 												style={{
 													filter: this.state.album == album.id ? 'brightness(80%)' : '',
 												}}
@@ -75,7 +80,7 @@ class NewReleasesList extends Component {
 										)} */}
 									</div>
 									<div className="card-detail">
-										<h5>{album.name}</h5>
+										<h5 style={{ color: isPlaying ? '#1db954' : 'white' }}>{album.name}</h5>
 										<h6>
 											{album.artists
 												.map((artist, i) => (i == 0 ? artist.name : ` ${artist.name}`))

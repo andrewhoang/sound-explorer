@@ -77,9 +77,10 @@ class SpotifyService {
 		switch (type) {
 			case 'artist':
 				let tracks = selection.map(artist => {
-					const url = `${endpoints.SPOTIFY_BASE_URL}${endpoints.SEARCH}?q=${type}:"${
+					const url = `${endpoints.SPOTIFY_BASE_URL}${endpoints.SEARCH}?q=${type}:${
 						artist.name
-					}"&type=track&market=US&limit=50`;
+					}&type=track&market=US&limit=50`;
+					console.log(url);
 					return axios.get(url).then(response => response.data.tracks.items);
 				});
 
@@ -142,7 +143,6 @@ class SpotifyService {
 			position_ms: position_ms,
 		};
 
-		console.log('uri', uri);
 		if (uri && uri.includes('album')) {
 			body[`context_uri`] = uri;
 			// contexturi ? (body[`context_uri`] = uri) : (body[`uris`] = [uri]);

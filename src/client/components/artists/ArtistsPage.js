@@ -59,8 +59,7 @@ class ArtistsPage extends Component {
 	};
 
 	handleAddArtist = id => {
-		let artists = this.state.artists;
-		let selectedArtists = this.state.selectedArtists;
+		let { artists, selectedArtists } = this.state;
 
 		let artistIdx = findIndex(artists, { id });
 
@@ -71,8 +70,7 @@ class ArtistsPage extends Component {
 	};
 
 	handleRemoveArtist = id => {
-		let artists = this.state.artists;
-		let selectedArtists = this.state.selectedArtists;
+		let { artists, selectedArtists } = this.state;
 
 		let artistIdx = findIndex(selectedArtists, { id });
 

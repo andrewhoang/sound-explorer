@@ -6,6 +6,10 @@ import MainRoute from './routes/MainRoute';
 import Login from './Login/Login';
 
 import querystring from 'query-string';
+import ReactDOMServer from 'react-dom/server';
+import PullToRefresh from 'pulltorefreshjs';
+import { faSyncAlt } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 class App extends Component {
 	constructor(props) {
@@ -23,6 +27,18 @@ class App extends Component {
 
 		let isAuth = localStorage.getItem('access_token') && localStorage.getItem('refresh_token') ? true : false;
 		this.setState({ isAuth });
+
+		// PullToRefresh.init({
+		// 	mainElement: 'body',
+		// 	instructionsPullToRefresh: '',
+		// 	instructionsReleaseToRefresh: '',
+		// 	instructionsRefreshing: '',
+		// 	onRefresh() {
+		// 		window.location.reload();
+		// 	},
+		// 	iconArrow: ReactDOMServer.renderToString(<FontAwesomeIcon icon={faSyncAlt} />),
+		// 	iconRefreshing: ReactDOMServer.renderToString(<FontAwesomeIcon icon={faSyncAlt} spin={true} />),
+		// });
 	};
 
 	render = () => {
