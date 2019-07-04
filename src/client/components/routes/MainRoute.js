@@ -11,7 +11,6 @@ import RouteComponent from './Route';
 import Home from '../Home';
 import ArtistsPage from '../artists/ArtistsPage';
 import PlaylistPage from '../playlists/PlaylistPage';
-import LoadingWrapper from '../common/LoadingWrapper';
 import AudioPlayer from '../AudioPlayer';
 
 import moment from 'moment';

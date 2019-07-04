@@ -51,6 +51,7 @@ function routes(app) {
 			const access_token = body.access_token;
 			const refresh_token = body.refresh_token;
 			const uri = process.env.FRONTEND_URI || 'http://localhost:3000/';
+
 			res.redirect(uri + '?access_token=' + access_token + '&refresh_token=' + refresh_token);
 		});
 	});
