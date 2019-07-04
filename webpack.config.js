@@ -5,9 +5,6 @@ const ManifestPlugin = require('webpack-manifest-plugin');
 const { InjectManifest } = require('workbox-webpack-plugin');
 
 module.exports = {
-	// node: {
-	// 	fs: 'empty',
-	// },
 	plugins: [
 		new webpack.optimize.OccurrenceOrderPlugin(),
 		new InjectManifest({
@@ -18,13 +15,14 @@ module.exports = {
 			seed: {
 				name: 'SoundExplorer',
 				short_name: 'Sound Explorer',
-				start_url: '.',
+				start_url: 'https://soundexplorer.herokuapp.com/',
 				display: 'standalone',
-				background_color: '#ffffff',
+				orientation: 'portrait',
+				background_color: '#1db954',
 				icons: [
 					{
-						src: 'images/rocket.png',
-						sizes: '192x192',
+						src: 'images/rocket-512.png',
+						sizes: '512x512',
 						type: 'image/png',
 					},
 				],
