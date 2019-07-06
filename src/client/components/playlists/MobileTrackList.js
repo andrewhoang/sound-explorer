@@ -4,12 +4,12 @@ import 'react-table/react-table.css';
 
 import ReactTable from 'react-table';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTimes } from '@fortawesome/free-solid-svg-icons';
+import { faPlus, faTimes } from '@fortawesome/free-solid-svg-icons';
 
 import { Col } from 'react-bootstrap';
 import minBy from 'lodash/minBy';
 
-const MobileTrackList = ({ playlist, playing, track, onClickPlay, onClickPause, onClickRemove, onClickMove }) => {
+const MobileTrackList = ({ playlist, playing, track, onClickAdd, onClickPlay, onClickPause, onClickRemove }) => {
 	return playlist.map((item, i) => {
 		const isPlaying = playing && track === item.uri;
 		return (
@@ -40,8 +40,9 @@ const MobileTrackList = ({ playlist, playing, track, onClickPlay, onClickPause, 
 						</p>
 					</div>
 				</Col>
-				<Col xs={2}>
-					<FontAwesomeIcon style={{ float: 'right' }} icon={faTimes} onClick={() => onClickRemove(item.id)} />
+				<Col xs={2} className="actions">
+					<FontAwesomeIcon icon={faPlus} onClick={() => onClickAdd(item.id)} />
+					<FontAwesomeIcon icon={faTimes} onClick={() => onClickRemove(item.id)} />
 				</Col>
 			</div>
 		);

@@ -38,12 +38,20 @@ class NewReleasesList extends Component {
 								onMouseLeave: () => this.setState({ album: '' }),
 							};
 
-							const isPlaying = this.state.album == album.id || track == album.uri;
+							const isPlaying = playing && track == album.uri;
 
 							return (
 								<div
 									key={i}
-									onClick={() => this.props.onClickPlay(album.uri, album.id)}
+									onClick={() =>
+										playing && track !== album.uri
+											? this.props.onClickPlay(album.uri, album.id)
+											: playing && track == album.uri
+											? this.props.onClickPause(album.uri)
+											: !playing
+											? this.props.onClickPlay(album.uri, album.id)
+											: null
+									}
 									className="item-container animated fadeInUp"
 								>
 									<div className="album-container" {...premiumProps}>
@@ -57,7 +65,7 @@ class NewReleasesList extends Component {
 											/>
 										)}
 										{/* {(this.state.album == album.id || track == album.uri) && (
-											<div className="actions">
+											<div className="album-actions">
 												{!playing && (
 													<FontAwesomeIcon
 														icon={faPlayCircle}

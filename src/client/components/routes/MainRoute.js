@@ -84,6 +84,8 @@ class MainRoute extends Component {
 		let fraction = player && player.track && this.state.time / player.track.duration_ms;
 		let toggleWidth = `${(fraction * 100).toFixed(4)}%`;
 
+		let playerOpen = player && player.track;
+
 		return (
 			<>
 				<Switch>
@@ -92,12 +94,14 @@ class MainRoute extends Component {
 						exact
 						path="/"
 						component={Home}
+						playerOpen={playerOpen}
 						pauseTrack={this.pauseTrack}
 						playTrack={this.playTrack}
 					/>
 					<RouteComponent
 						{...this.props}
 						path="/playlist"
+						playerOpen={playerOpen}
 						component={PlaylistPage}
 						pauseTrack={this.pauseTrack}
 						playTrack={this.playTrack}
@@ -105,6 +109,7 @@ class MainRoute extends Component {
 					<RouteComponent
 						{...this.props}
 						path="/search"
+						playerOpen={playerOpen}
 						component={ArtistsPage}
 						pauseTrack={this.pauseTrack}
 						playTrack={this.playTrack}

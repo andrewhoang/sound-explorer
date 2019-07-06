@@ -142,13 +142,13 @@ class Home extends Component {
 	};
 
 	render = () => {
-		const { albums, user, player } = this.props;
+		const { albums, user, player, playerOpen } = this.props;
 		const { value, results, isLoading, rendered, track } = this.state;
 
 		return (
 			<Loading rendered={rendered}>
 				<AlertMessage />
-				<div className="container animated fadeIn">
+				<div className="container animated fadeIn" style={{ paddingBottom: playerOpen ? '60px' : '20px' }}>
 					<Row>
 						<Col md={12} xs={12} className="home header" style={{ background: `url(${background})` }}>
 							<Search
