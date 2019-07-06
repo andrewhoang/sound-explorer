@@ -32,7 +32,7 @@ body {
 h1,
 h2,
 h3 {
-	font-family: 'Montserrat';
+	font-family: 'Open Sans';
 	letter-spacing: -0.1rem;
 }
 
@@ -80,7 +80,6 @@ a {
 	max-width: 80vw;
 	overflow-y: scroll;
 	background: lighten($theme_black, 5%);
-	padding-bottom: 35px;
 	&::-webkit-scrollbar {
 		width: 0px;
 	}
@@ -218,7 +217,7 @@ svg {
 	align-items: center;
 	background: $theme_black;
 	border-radius: 10px;
-	margin: 10px;
+	margin: 5px;
 	overflow: hidden;
 	background-repeat: no-repeat !important;
 	background-size: cover !important;
@@ -228,12 +227,14 @@ svg {
 	}
 	&.-lg {
 		padding: 3rem;
+		grid-template-columns: 1fr !important;
 		h5 {
 			font-size: 2em;
 		}
 	}
 	.card-detail {
 		overflow: hidden;
+		max-width: 90%;
 		h5 {
 			text-overflow: ellipsis;
 			overflow: hidden;
@@ -338,7 +339,7 @@ svg {
 	}
 }
 
-.actions {
+.album-actions {
 	position: absolute;
 	top: 49%;
 	left: 50%;
@@ -395,7 +396,7 @@ input[type='file'] {
 		display: none !important;
 	}
 	.notification-bar-active {
-		position: absolute !important;
+		position: absolute;
 		left: 50% !important;
 		transform: translate(-50%, 0) !important;
 		background: $theme_green !important;
@@ -422,7 +423,7 @@ input[type='file'] {
 	}
 	.list {
 		grid-template-columns: 1fr;
-		padding: 0 20px;
+		padding: 0 10px;
 		.card-detail {
 			h5 {
 				font-size: 1rem !important;
@@ -509,6 +510,10 @@ input[type='file'] {
 		}
 		svg {
 			font-size: 1.2rem;
+		}
+		.actions {
+			display: flex;
+			padding: 0;
 		}
 	}
 	.playlist-list {

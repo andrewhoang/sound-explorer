@@ -172,7 +172,7 @@ class Playlist extends Component {
 	};
 
 	render = () => {
-		let { player, playlists } = this.props;
+		let { player, playlists, playerOpen } = this.props;
 		let { playlist, playing, track, upload, single } = this.state;
 
 		let modalBody = (
@@ -206,7 +206,7 @@ class Playlist extends Component {
 						message={player.error.message}
 					/>
 				)}
-				<div className="container">
+				<div className="container" style={{ paddingBottom: playerOpen ? '50px' : '20px' }}>
 					<input ref="upload" type="file" onChange={e => this.handleChangeImage(e)} />
 					<PlaylistHeader
 						playlist={playlist}

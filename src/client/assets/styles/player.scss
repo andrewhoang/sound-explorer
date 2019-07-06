@@ -1,7 +1,10 @@
+$bar_height: 40px;
+
 .audio-player {
 	position: fixed;
 	display: flex;
 	width: 100%;
+	height: $bar_height;
 	margin: 0;
 	bottom: 0;
 	padding: 5px;
@@ -53,7 +56,30 @@
 }
 
 @media screen and (max-width: 989px) {
-	.audio-player {
-		display: none;
+	.player-container {
+		position: relative;
+		.track-container {
+			position: fixed;
+			bottom: $bar_height;
+			left: 0 !important;
+			width: 100%;
+			.track {
+				border-radius: 0;
+				height: 4px;
+				border: 0;
+				margin: 0;
+			}
+		}
+		.audio-player {
+			display: flex;
+			align-items: center;
+			.controls {
+				margin: 0;
+			}
+			.time {
+				display: none;
+			}
+			// display: none;
+		}
 	}
 }

@@ -15,7 +15,6 @@ module.exports = {
 			seed: {
 				name: 'SoundExplorer',
 				short_name: 'Sound Explorer',
-				start_url: 'https://soundexplorer.herokuapp.com/',
 				display: 'standalone',
 				orientation: 'portrait',
 				background_color: '#1db954',

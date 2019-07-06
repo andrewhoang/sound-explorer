@@ -85,11 +85,11 @@ class ArtistsPage extends Component {
 	};
 
 	render = () => {
-		let { artist, savingPlaylist } = this.props;
+		let { artist, savingPlaylist, playerOpen } = this.props;
 		let { artists, selectedArtists } = this.state;
 
 		return (
-			<div className="container">
+			<div className="container" style={{ paddingBottom: playerOpen ? '50px' : '20px' }}>
 				<ArtistHeader
 					artist={artist}
 					selectedArtists={selectedArtists}
