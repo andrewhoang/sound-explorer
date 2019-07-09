@@ -39,7 +39,7 @@ class SpotifyService {
 		return axios.get(url).then(response => response.data);
 	}
 
-	static getNewReleases(artists) {
+	static async getNewReleases(artists) {
 		let albums = artists.map(artist => {
 			const url = `${endpoints.SPOTIFY_BASE_URL}${endpoints.GET_ARTIST}/${artist}/albums`;
 			return axios.get(url).then(response => {
@@ -47,12 +47,18 @@ class SpotifyService {
 				let recentAlbums = response.data.items.filter(album =>
 					moment(new Date(album.release_date)).isAfter(monthOld)
 				);
+
 				return recentAlbums;
 			});
 		});
 
-		let albumPromise = Promise.all(albums).then(response => response.reduce((prev, curr) => prev.concat(curr)));
-		return albumPromise;
+		const results = await Promise.all(albums.map(p => p.catch(e => e)));
+		const validResults = results.reduce((arr, curr) => {
+			if (Array.isArray(curr) && curr.length) arr.push(...curr);
+			return arr;
+		}, []);
+
+		return validResults;
 	}
 
 	static async getRecommendedTrack() {

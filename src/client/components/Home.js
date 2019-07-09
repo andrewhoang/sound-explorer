@@ -16,7 +16,6 @@ import Loading from './common/LoadingWrapper';
 import { Row, Col } from 'react-bootstrap';
 import { Search } from 'semantic-ui-react';
 
-import debounce from 'lodash/debounce';
 import capitalize from 'lodash/capitalize';
 import uniqBy from 'lodash/uniqBy';
 import minBy from 'lodash/minBy';
@@ -36,7 +35,7 @@ class Home extends Component {
 		let { user } = this.props;
 		if (user && user.following) {
 			let artists = user.following.map(artist => artist.id);
-			this.props.actions.getNewReleases(artists);
+			this.props.actions.getNewReleases(artists.slice);
 		}
 
 		// this.props.actions.getRecommendedTrack();
@@ -75,7 +74,7 @@ class Home extends Component {
 
 	handleSearchChange = (e, { value }) => {
 		value && this.props.actions.search(['artist', 'track'], value);
-		this.setState({ isLoading: true, results: false, value });
+		this.setState({ isLoading: true, value });
 
 		setTimeout(() => {
 			if (this.state.value.length < 1) return this.resetComponent();
@@ -157,7 +156,7 @@ class Home extends Component {
 								loading={isLoading}
 								placeholder="Search by favorite artist or track"
 								onResultSelect={this.handleResultSelect}
-								onSearchChange={debounce(this.handleSearchChange, 3000, { leading: true })}
+								onSearchChange={this.handleSearchChange}
 								results={results}
 								value={value}
 							/>
