@@ -6,3 +6,6 @@ lib
 coverage
 dist
 .vscode
+package-lock.json
+Procfile
+sftp-config.json
