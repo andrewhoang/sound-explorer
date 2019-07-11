@@ -1,6 +1,7 @@
 import axios from 'axios';
 import moment from 'moment';
 import shuffle from 'lodash/shuffle';
+import uniq from 'lodash/uniq';
 import * as endpoints from './apiEndpoints';
 
 class SpotifyService {
@@ -40,7 +41,7 @@ class SpotifyService {
 	}
 
 	static async getNewReleases(artists) {
-		let albums = artists.map(artist => {
+		let albums = await artists.map(artist => {
 			const url = `${endpoints.SPOTIFY_BASE_URL}${endpoints.GET_ARTIST}/${artist}/albums`;
 			return axios.get(url).then(response => {
 				let monthOld = moment().subtract(1, 'month');
@@ -61,17 +62,24 @@ class SpotifyService {
 		return validResults;
 	}
 
-	static async getRecommendedTrack() {
+	static async getRecommendedTracks() {
 		// Get last played tracks
-		const lastPlayedUrl = `${endpoints.SPOTIFY_BASE_URL}/me${endpoints.PLAYER}/recently-played`;
+		const lastPlayedUrl = `${endpoints.SPOTIFY_BASE_URL}/me${endpoints.PLAYER}/recently-played?limit=50`;
 		const lastTracks = await axios.get(lastPlayedUrl).then(response => response.data.items);
 
 		let lastTrack = await shuffle(lastTracks)[0].track;
+		let lastArtists = await uniq(shuffle(lastTracks).map(track => track.track.artists[0].name)).slice(0, 3);
 
 		const params = `seed_tracks=${lastTrack.id}&seed_artists=${lastTrack.artists.map(artist => artist.id)}`;
 
-		const recommendedUrl = `${endpoints.SPOTIFY_BASE_URL}/recommendations?limit=1&${params}`;
-		return axios.get(recommendedUrl).then(response => response.data.tracks[0]);
+		const recommendedUrl = `${endpoints.SPOTIFY_BASE_URL}/recommendations?limit=10&${params}`;
+		return axios.get(recommendedUrl).then(response => {
+			let tracks = response.data.tracks;
+			return tracks.map(track => {
+				track.seed = lastArtists;
+				return track;
+			});
+		});
 	}
 
 	static getPlaylists(id) {

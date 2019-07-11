@@ -3,11 +3,10 @@ import { Row, Col } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlay, faPause, faForward, faBackward } from '@fortawesome/free-solid-svg-icons';
 
-const DEVICE_WIDTH = window.innerWidth;
-
 class AudioPlayer extends Component {
 	render() {
 		let { player, pauseTrack, playTrack, time, seekTrack, toggleWidth } = this.props;
+
 		return (
 			<div className="player-container">
 				<Row className="audio-player">

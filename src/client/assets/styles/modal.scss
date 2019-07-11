@@ -9,6 +9,10 @@
 	.view-modal > div {
 		background: transparent !important;
 	}
+	&::-webkit-scrollbar {
+		width: 0px;
+		height: 0;
+	}
 }
 .view-modal {
 	width: auto !important;
@@ -41,5 +45,11 @@
 	}
 	.modal-footer {
 		border: 0;
+	}
+}
+
+@media screen and (min-width: 990px) and (max-width: 1455px) {
+	.modal-md {
+		min-width: 80vw;
 	}
 }

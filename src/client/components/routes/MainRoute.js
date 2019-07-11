@@ -13,6 +13,7 @@ import ArtistsPage from '../artists/ArtistsPage';
 import PlaylistPage from '../playlists/PlaylistPage';
 import AudioPlayer from '../AudioPlayer';
 
+import windowSize from 'react-window-size';
 import moment from 'moment';
 
 class MainRoute extends Component {
@@ -27,13 +28,17 @@ class MainRoute extends Component {
 	};
 
 	// Simulate time remaining
-	tick = () => {
+	tick = (start = null) => {
 		let { player } = this.props;
 		let timeLapsed = this.timeLapsed;
 
-		this.setState({ time: timeLapsed });
+		this.setState({ time: timeLapsed }, () => {
+			if (start) {
+				this.timeLapsed += 1000;
+			}
+		});
 
-		if (timeLapsed >= player.track.duration_ms) {
+		if (timeLapsed >= player.track && player.track.duration_ms) {
 			this.setState({ time: 0 });
 			this.props.actions.pauseTrack();
 			clearInterval(this.setTimer);
@@ -46,10 +51,10 @@ class MainRoute extends Component {
 
 	playTrack = (track, id, progress_ms) => {
 		clearInterval(this.setTimer);
+		this.timeLapsed = progress_ms || 0;
+		this.tick(1);
 		this.setTimer = setInterval(this.tick, 1000);
 		this.props.actions.playTrack(track, id, progress_ms);
-
-		this.timeLapsed = progress_ms || 0;
 	};
 
 	pauseTrack = () => {
@@ -75,11 +80,12 @@ class MainRoute extends Component {
 			`${moment(this.state.time).format('mm:ss')} | ${moment(this.props.player.track.duration_ms).format(
 				'mm:ss'
 			)}`;
+
 		return time;
 	};
 
 	render = () => {
-		let { player } = this.props;
+		let { player, windowWidth } = this.props;
 
 		let fraction = player && player.track && this.state.time / player.track.duration_ms;
 		let toggleWidth = `${(fraction * 100).toFixed(4)}%`;
@@ -97,6 +103,7 @@ class MainRoute extends Component {
 						playerOpen={playerOpen}
 						pauseTrack={this.pauseTrack}
 						playTrack={this.playTrack}
+						isMobile={windowWidth < 769}
 					/>
 					<RouteComponent
 						{...this.props}
@@ -105,6 +112,7 @@ class MainRoute extends Component {
 						component={PlaylistPage}
 						pauseTrack={this.pauseTrack}
 						playTrack={this.playTrack}
+						isMobile={windowWidth < 769}
 					/>
 					<RouteComponent
 						{...this.props}
@@ -113,6 +121,7 @@ class MainRoute extends Component {
 						component={ArtistsPage}
 						pauseTrack={this.pauseTrack}
 						playTrack={this.playTrack}
+						isMobile={windowWidth < 769}
 					/>
 				</Switch>
 				{player && player.track && (
@@ -123,6 +132,7 @@ class MainRoute extends Component {
 						time={this.displayTime()}
 						toggleWidth={toggleWidth}
 						seekTrack={this.seekTrack}
+						isMobile={windowWidth < 769}
 					/>
 				)}
 			</>
@@ -149,9 +159,11 @@ function mapDispatchToProps(dispatch) {
 	};
 }
 
-export default withRouter(
-	connect(
-		mapStateToProps,
-		mapDispatchToProps
-	)(MainRoute)
+export default windowSize(
+	withRouter(
+		connect(
+			mapStateToProps,
+			mapDispatchToProps
+		)(MainRoute)
+	)
 );

@@ -63,8 +63,7 @@ class ArtistsPage extends Component {
 
 		let artistIdx = findIndex(artists, { id });
 
-		let artist = artists.splice(artistIdx, 1);
-		selectedArtists.push(...artist);
+		selectedArtists = [].concat(artists.splice(artistIdx, 1), selectedArtists);
 
 		this.setState({ artists, selectedArtists }, () => this.props.actions.getRelatedArtists(id));
 	};

@@ -5,8 +5,6 @@ export const track = (state = initialState.track, action = null) => {
 	switch (action.type) {
 		case types.RECEIVE_TRACK:
 			return action.track;
-		case types.RECEIVE_RECOMMENDED_TRACK:
-			return action.track;
 		default:
 			return state;
 	}
@@ -18,6 +16,15 @@ export const tracks = (state = initialState.tracks, action = null) => {
 			return action.tracks;
 		case types.CLEAR_TRACKS:
 			return [];
+		default:
+			return state;
+	}
+};
+
+export const recommendedTracks = (state = initialState.recommendedTracks, action = null) => {
+	switch (action.type) {
+		case types.RECEIVE_RECOMMENDED_TRACKS:
+			return action.recommendedTracks;
 		default:
 			return state;
 	}

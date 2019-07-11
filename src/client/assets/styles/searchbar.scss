@@ -28,3 +28,25 @@
 		}
 	}
 }
+
+@media screen and (max-width: 989px) {
+	.ui.input {
+		width: 80% !important;
+	}
+	.results {
+		.image {
+			width: auto !important;
+		}
+		&.visible {
+			display: block;
+			position: relative !important;
+			margin: 10px auto;
+			width: 80% !important;
+		}
+		.category {
+			.results {
+				width: 100% !important;
+			}
+		}
+	}
+}

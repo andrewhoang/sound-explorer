@@ -1,17 +1,29 @@
 import React, { Component } from 'react';
 
-import maxBy from 'lodash/maxBy';
-import isEmpty from 'lodash/isEmpty';
 import FlipMove from 'react-flip-move';
+import Card from '../common/Card';
 
-// const formatEasing = () => {
-// 	let arr = ['0.39', '0', '0.45', '1.4'];
-// 	return `cubic-bezier(${arr.join(',')})`;
-// };
+import maxBy from 'lodash/maxBy';
 
-const ArtistList = ({ artists, onClickAdd }) => {
-	return (
-		artists && (
+class ArtistList extends Component {
+	renderArtists = () => {
+		let { artists, onClickAdd } = this.props;
+		return artists
+			.filter(artist => artist.images.length > 0)
+			.map((artist, i) => (
+				<Card
+					key={i}
+					onClickCard={() => onClickAdd(artist.id)}
+					src={maxBy(artist.images, 'height').url}
+					style={{}}
+					title={artist.name}
+					subtext={artist.genres.slice(0, 3).join(', ')}
+				/>
+			));
+	};
+
+	render() {
+		return (
 			<FlipMove
 				duration={700}
 				delay={150}
@@ -19,23 +31,13 @@ const ArtistList = ({ artists, onClickAdd }) => {
 				staggerDurationBy={15}
 				staggerDelayBy={20}
 				enterAnimation="fade"
-				leaveAnimation="elevator"
+				leaveAnimation="accordionVertical"
 				className="list"
 			>
-				{artists
-					.filter(artist => artist.images.length > 0)
-					.map((artist, i) => (
-						<div key={i} className="item-container animated fadeInUp" onClick={() => onClickAdd(artist.id)}>
-							<img src={maxBy(artist.images, 'height').url} className="display-pic" />
-							<div className="card-detail">
-								<h5>{artist.name}</h5>
-								<h6>{artist.genres.slice(0, 3).join(', ')}</h6>
-							</div>
-						</div>
-					))}
+				{this.renderArtists()}
 			</FlipMove>
-		)
-	);
-};
+		);
+	}
+}
 
 export default ArtistList;

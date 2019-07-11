@@ -8,6 +8,7 @@ export default {
 	artists: {},
 	track: {},
 	tracks: [],
+	recommendedTracks: [],
 	playlists: [],
 	album: {},
 	albums: {},

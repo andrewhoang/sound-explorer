@@ -1,7 +1,19 @@
 import { combineReducers } from 'redux';
 import { routerReducer } from 'react-router-redux';
 
-import { artist, artists, track, tracks, playlists, album, albums, results, player, savingPlaylist } from './spotify';
+import {
+	artist,
+	artists,
+	track,
+	tracks,
+	recommendedTracks,
+	playlists,
+	album,
+	albums,
+	results,
+	player,
+	savingPlaylist,
+} from './spotify';
 import { user, image } from './users';
 import { modal } from './modal';
 
@@ -12,6 +24,7 @@ const rootReducer = combineReducers({
 	albums,
 	track,
 	tracks,
+	recommendedTracks,
 	results,
 	player,
 	playlists,

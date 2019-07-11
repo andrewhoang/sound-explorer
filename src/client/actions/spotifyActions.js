@@ -51,10 +51,10 @@ function receiveLastPlayed(tracks) {
 	};
 }
 
-function receiveRecommendedTrack(track) {
+function receiveRecommendedTracks(recommendedTracks) {
 	return {
-		type: types.RECEIVE_RECOMMENDED_TRACK,
-		track,
+		type: types.RECEIVE_RECOMMENDED_TRACKS,
+		recommendedTracks,
 	};
 }
 
@@ -167,11 +167,11 @@ export function getNewReleases(artists) {
 			.catch(err => console.error(err));
 }
 
-export function getRecommendedTrack() {
+export function getRecommendedTracks() {
 	return dispatch =>
 		spotifyService
-			.getRecommendedTrack()
-			.then(response => dispatch(receiveRecommendedTrack(response)))
+			.getRecommendedTracks()
+			.then(response => dispatch(receiveRecommendedTracks(response)))
 			.catch(err => console.error(err));
 }
 
