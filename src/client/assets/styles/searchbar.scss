@@ -21,6 +21,14 @@
 			margin: 10px auto;
 			width: 50%;
 		}
+		.content {
+			.description {
+				white-space: nowrap;
+				overflow: hidden;
+				text-overflow: ellipsis;
+				max-width: 100%;
+			}
+		}
 		.category {
 			.results {
 				width: 100% !important;
@@ -34,8 +42,17 @@
 		width: 80% !important;
 	}
 	.results {
+		.result {
+			font-size: 0.9em !important;
+			width: 100% !important;
+		}
+		.content {
+			margin: 0 !important;
+		}
 		.image {
-			width: auto !important;
+			object-fit: cover;
+			height: 40px;
+			width: 40px;
 		}
 		&.visible {
 			display: block;
@@ -44,6 +61,7 @@
 			width: 80% !important;
 		}
 		.category {
+			background: transparent;
 			.results {
 				width: 100% !important;
 			}
