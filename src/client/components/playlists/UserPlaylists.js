@@ -1,20 +1,12 @@
 import React, { Component } from 'react';
-import autoBind from 'react-autobind';
 
-import { Row, Col, Button } from 'react-bootstrap';
-import { Form, Radio } from 'semantic-ui-react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSpotify } from '@fortawesome/free-brands-svg-icons';
-import { faPencilAlt } from '@fortawesome/free-solid-svg-icons';
-
-import maxBy from 'lodash/maxBy';
+import { Row } from 'react-bootstrap';
 import isEmpty from 'lodash/isEmpty';
 
 class UserPlaylist extends Component {
 	constructor(props) {
 		super(props);
 		this.state = { new: false };
-		autoBind(this);
 	}
 
 	render() {
@@ -24,11 +16,11 @@ class UserPlaylist extends Component {
 			<Row className="list -column">
 				{playlists &&
 					playlists.map(
-						playlist =>
+						(playlist, i) =>
 							!isEmpty(playlist.images) && (
 								<div
-									key={playlist.id}
-									className="item-container -lg"
+									key={i}
+									className="item-container -lg animated fadeInUp"
 									style={{
 										background: `linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url(${
 											playlist.images[0].url
@@ -38,9 +30,9 @@ class UserPlaylist extends Component {
 								>
 									<div className="card-detail">
 										<h5>{playlist.name}</h5>
-										<h6>
+										<p>
 											{playlist.tracks.total} {playlist.tracks.total !== 1 ? 'songs' : 'song'}
-										</h6>
+										</p>
 									</div>
 								</div>
 							)

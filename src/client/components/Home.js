@@ -11,6 +11,7 @@ import background from '../assets/styles/wallpaper1.jpeg';
 import 'semantic-ui-css/semantic.min.css';
 
 import NewReleasesList from './NewReleasesList';
+import RecommendedList from './RecommendedList';
 import AlertMessage from './common/Notification';
 import Loading from './common/LoadingWrapper';
 import { Row, Col } from 'react-bootstrap';
@@ -35,10 +36,10 @@ class Home extends Component {
 		let { user } = this.props;
 		if (user && user.following) {
 			let artists = user.following.map(artist => artist.id);
-			this.props.actions.getNewReleases(artists.slice);
+			this.props.actions.getNewReleases(artists);
 		}
 
-		// this.props.actions.getRecommendedTrack();
+		this.props.actions.getRecommendedTracks();
 		setTimeout(() => this.setState({ rendered: true }), 3500);
 	};
 
@@ -141,7 +142,7 @@ class Home extends Component {
 	};
 
 	render = () => {
-		const { albums, user, player, playerOpen } = this.props;
+		const { albums, tracks, user, player, playerOpen, isMobile } = this.props;
 		const { value, results, isLoading, rendered, track } = this.state;
 
 		return (
@@ -149,7 +150,14 @@ class Home extends Component {
 				<AlertMessage />
 				<div className="container animated fadeIn" style={{ paddingBottom: playerOpen ? '60px' : '20px' }}>
 					<Row>
-						<Col md={12} xs={12} className="home header" style={{ background: `url(${background})` }}>
+						<Col
+							md={12}
+							xs={12}
+							className="home header"
+							style={{
+								background: `url(https://images.unsplash.com/photo-1506157786151-b8491531f063?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2250&q=80)`,
+							}}
+						>
 							<Search
 								category
 								// open={true}
@@ -162,14 +170,25 @@ class Home extends Component {
 							/>
 						</Col>
 					</Row>
-					<NewReleasesList
-						albums={albums}
-						onClickPlay={this.handlePlay}
-						onClickPause={this.handlePause}
-						track={track}
-						playing={player.playing}
-						isPremium={user.product == 'premium'}
-					/>
+					<div id="home-grid">
+						<NewReleasesList
+							albums={albums}
+							onClickPlay={this.handlePlay}
+							onClickPause={this.handlePause}
+							track={track}
+							playing={player.playing}
+							isMobile={isMobile}
+							isPremium={user.product == 'premium'}
+						/>
+						<RecommendedList
+							tracks={tracks}
+							onClickPlay={this.handlePlay}
+							onClickPause={this.handlePause}
+							track={track}
+							playing={player.playing}
+							isPremium={user.product == 'premium'}
+						/>
+					</div>
 				</div>
 			</Loading>
 		);
@@ -187,6 +206,7 @@ function mapStateToProps(state) {
 		results: state.reducers.results,
 		albums: state.reducers.albums,
 		track: state.reducers.track,
+		tracks: state.reducers.recommendedTracks,
 		image: state.reducers.image,
 		player: state.reducers.player,
 	};

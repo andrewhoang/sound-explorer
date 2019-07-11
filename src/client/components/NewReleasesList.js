@@ -1,9 +1,6 @@
 import React, { Component } from 'react';
 
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPlayCircle, faPauseCircle } from '@fortawesome/free-regular-svg-icons';
-import { faInfoCircle } from '@fortawesome/free-solid-svg-icons';
-import ReactTooltip from 'react-tooltip';
+import Card from './common/Card';
 
 import minBy from 'lodash/minBy';
 import orderBy from 'lodash/orderBy';
@@ -13,58 +10,88 @@ import isEmpty from 'lodash/isEmpty';
 class NewReleasesList extends Component {
 	constructor(props) {
 		super(props);
-		this.state = { album: '' };
+		this.state = { albums: [], itemsToShow: 5, expanded: false };
 	}
 
+	componentDidMount = () => {
+		this.setState({ albums: this.props.albums });
+		!this.props.isMobile
+			? this.setState({ itemsToShow: this.props.albums.length })
+			: this.setState({ itemsToShow: 5, expanded: false });
+	};
+
+	componentWillReceiveProps = nextProps => {
+		if (nextProps.isMobile !== this.props.isMobile) {
+			!nextProps.isMobile
+				? this.setState({ itemsToShow: this.props.albums.length })
+				: this.setState({ itemsToShow: 5, expanded: false });
+		}
+	};
+
+	toggle = album => {
+		let { playing, track, isPremium } = this.props;
+		if (isPremium) {
+			playing && track !== album.uri
+				? this.props.onClickPlay(album.uri, album.id)
+				: playing && track == album.uri
+				? this.props.onClickPause(album.uri)
+				: !playing
+				? this.props.onClickPlay(album.uri, album.id)
+				: null;
+		}
+	};
+
+	toggleShow = () => {
+		this.state.itemsToShow === 5
+			? this.setState({ itemsToShow: this.props.albums.length, expanded: true })
+			: this.setState({ itemsToShow: 5, expanded: false });
+	};
+
 	render() {
-		let { albums, playing, track, isPremium } = this.props;
+		let { playing, track, isMobile } = this.props;
+		let { albums, itemsToShow, expanded } = this.state;
 
 		return (
-			<>
-				<h2 className="flex">
-					New Releases
-					<a data-tip data-for="info" className="info-tooltip">
-						<FontAwesomeIcon icon={faInfoCircle} />
-					</a>
-				</h2>
-				<ReactTooltip id="info" place="top">
-					<p>Based on artists you follow.</p>
-				</ReactTooltip>
+			<div id="new-releases">
+				<div className="heading">
+					<h2 className="flex">New Releases</h2>
+					<p>Based on artists you follow</p>
+				</div>
 				{!isEmpty(albums) ? (
 					<div className="list">
-						{uniqBy(orderBy(albums, 'release_date', 'desc'), 'name').map((album, i) => {
-							const premiumProps = isPremium && {
-								onMouseEnter: () => this.setState({ album: album.id }),
-								onMouseLeave: () => this.setState({ album: '' }),
-							};
+						{uniqBy(orderBy(albums, 'release_date', 'desc'), 'name')
+							.slice(0, itemsToShow)
+							.map((album, i) => {
+								const isPlaying = playing && track == album.uri;
+								return (
+									<Card
+										key={i}
+										onClickCard={() => this.toggle(album)}
+										src={minBy(album.images, 'height').url}
+										style={{ color: isPlaying ? '#1db954' : 'white' }}
+										title={album.name}
+										subtext={album.artists.map(artist => artist.name).join(', ')}
+									/>
+								);
+							})}
+						{isMobile && (
+							<p className="see-more" onClick={this.toggleShow}>
+								{expanded ? 'See less' : 'See more'}
+							</p>
+						)}
+					</div>
+				) : (
+					<h3 className="vertical-center">No new releases</h3>
+				)}
+			</div>
+		);
+	}
+}
 
-							const isPlaying = playing && track == album.uri;
+export default NewReleasesList;
 
-							return (
-								<div
-									key={i}
-									onClick={() =>
-										playing && track !== album.uri
-											? this.props.onClickPlay(album.uri, album.id)
-											: playing && track == album.uri
-											? this.props.onClickPause(album.uri)
-											: !playing
-											? this.props.onClickPlay(album.uri, album.id)
-											: null
-									}
-									className="item-container animated fadeInUp"
-								>
-									<div className="album-container" {...premiumProps}>
-										{album.images && (
-											<img
-												src={minBy(album.images, 'height').url}
-												className="display-pic"
-												style={{
-													filter: this.state.album == album.id ? 'brightness(80%)' : '',
-												}}
-											/>
-										)}
-										{/* {(this.state.album == album.id || track == album.uri) && (
+{
+	/* {(this.state.album == album.id || track == album.uri) && (
 											<div className="album-actions">
 												{!playing && (
 													<FontAwesomeIcon
@@ -85,26 +112,5 @@ class NewReleasesList extends Component {
 													/>
 												)}
 											</div>
-										)} */}
-									</div>
-									<div className="card-detail">
-										<h5 style={{ color: isPlaying ? '#1db954' : 'white' }}>{album.name}</h5>
-										<h6>
-											{album.artists
-												.map((artist, i) => (i == 0 ? artist.name : ` ${artist.name}`))
-												.toString()}
-										</h6>
-									</div>
-								</div>
-							);
-						})}
-					</div>
-				) : (
-					<h3 className="vertical-center">No new releases</h3>
-				)}
-			</>
-		);
-	}
+										)} */
 }
-
-export default NewReleasesList;
