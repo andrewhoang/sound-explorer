@@ -15,4 +15,5 @@ export default {
 	results: [],
 	player: {},
 	savingPlaylist: false,
+	alert: {},
 };

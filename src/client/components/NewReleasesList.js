@@ -47,6 +47,11 @@ class NewReleasesList extends Component {
 			: this.setState({ itemsToShow: 5, expanded: false });
 	};
 
+	checkAvailability = album => {
+		let { country } = this.props.user;
+		return album.available_markets.includes(country);
+	};
+
 	render() {
 		let { playing, track, isMobile } = this.props;
 		let { albums, itemsToShow, expanded } = this.state;
@@ -63,10 +68,28 @@ class NewReleasesList extends Component {
 							.slice(0, itemsToShow)
 							.map((album, i) => {
 								const isPlaying = playing && track == album.uri;
+								const isAvailable = this.checkAvailability(album);
 								return (
 									<Card
 										key={i}
-										onClickCard={() => this.toggle(album)}
+										onClickCard={() => {
+											isAvailable
+												? this.toggle(album)
+												: this.props.showError(
+														'This track is currently unavailable in your country.',
+														'',
+														'error'
+												  );
+										}}
+										onClickLike={() =>
+											isAvailable
+												? this.props.onClickLike(album.uri)
+												: this.props.showError(
+														'This track is currently unavailable in your country.',
+														'',
+														'error'
+												  )
+										}
 										src={minBy(album.images, 'height').url}
 										style={{ color: isPlaying ? '#1db954' : 'white' }}
 										title={album.name}

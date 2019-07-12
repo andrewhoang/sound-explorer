@@ -20,7 +20,7 @@ const MobileTrackList = ({ playlist, playing, track, onClickAdd, onClickPlay, on
 						color: isPlaying ? '#1db954' : '#fff',
 						fontWeight: isPlaying ? 700 : 400,
 					}}
-					className="item-container"
+					className="card"
 					onClick={() =>
 						!playing
 							? onClickPlay(item.uri, item.id)

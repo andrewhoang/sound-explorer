@@ -20,7 +20,7 @@ class UserPlaylist extends Component {
 							!isEmpty(playlist.images) && (
 								<div
 									key={i}
-									className="item-container -lg animated fadeInUp"
+									className="card -lg animated fadeInUp"
 									style={{
 										background: `linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url(${
 											playlist.images[0].url

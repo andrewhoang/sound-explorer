@@ -15,7 +15,8 @@ function routes(app) {
 	 user-top-read
 	 user-follow-read
 	 ugc-image-upload
-	 user-read-recently-played`;
+	 user-read-recently-played
+	 user-library-modify`;
 
 	app.get('/login', (req, res) =>
 		res.redirect(

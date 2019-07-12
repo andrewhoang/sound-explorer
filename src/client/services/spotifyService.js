@@ -1,48 +1,47 @@
+import * as endpoints from './apiEndpoints';
 import axios from 'axios';
 import moment from 'moment';
 import shuffle from 'lodash/shuffle';
 import uniq from 'lodash/uniq';
-import * as endpoints from './apiEndpoints';
 
 class SpotifyService {
 	static search(types, value) {
-		let responses = types.map(type => {
+		let results = types.map(type => {
 			const url = `${endpoints.SPOTIFY_BASE_URL}${endpoints.SEARCH}?q=${value}*&type=${type}&limit=10`;
 			return axios.get(url).then(response => response.data);
 		});
 
-		let responsePromise = Promise.all(responses);
-		return responsePromise;
+		return Promise.all(results);
 	}
 
 	static getArtist(id) {
-		const url = `${endpoints.SPOTIFY_BASE_URL}${endpoints.GET_ARTIST}/${id}`;
+		const url = `${endpoints.SPOTIFY_BASE_URL}${endpoints.ARTISTS}/${id}`;
 		return axios.get(url).then(response => response.data);
 	}
 
 	static getRelatedArtists(id) {
-		const url = `${endpoints.SPOTIFY_BASE_URL}${endpoints.GET_ARTIST}/${id}/related-artists`;
+		const url = `${endpoints.SPOTIFY_BASE_URL}${endpoints.ARTISTS}/${id}/related-artists`;
 		return axios.get(url).then(response => response.data);
 	}
 
 	static getTrack(id) {
-		const url = `${endpoints.SPOTIFY_BASE_URL}${endpoints.GET_TRACK}/${id}`;
+		const url = `${endpoints.SPOTIFY_BASE_URL}${endpoints.TRACKS}/${id}`;
 		return axios.get(url).then(response => response.data);
 	}
 
 	static getAlbum(id) {
-		const url = `${endpoints.SPOTIFY_BASE_URL}${endpoints.GET_ALBUM}/${id}`;
+		const url = `${endpoints.SPOTIFY_BASE_URL}${endpoints.ALBUMS}/${id}`;
 		return axios.get(url).then(response => response.data);
 	}
 
 	static getAlbums(id) {
-		const url = `${endpoints.SPOTIFY_BASE_URL}${endpoints.GET_ARTIST}/${id}/albums`;
+		const url = `${endpoints.SPOTIFY_BASE_URL}${endpoints.ARTISTS}/${id}/albums`;
 		return axios.get(url).then(response => response.data);
 	}
 
 	static async getNewReleases(artists) {
 		let albums = await artists.map(artist => {
-			const url = `${endpoints.SPOTIFY_BASE_URL}${endpoints.GET_ARTIST}/${artist}/albums`;
+			const url = `${endpoints.SPOTIFY_BASE_URL}${endpoints.ARTISTS}/${artist}/albums`;
 			return axios.get(url).then(response => {
 				let monthOld = moment().subtract(1, 'month');
 				let recentAlbums = response.data.items.filter(album =>
@@ -72,18 +71,28 @@ class SpotifyService {
 
 		const params = `seed_tracks=${lastTrack.id}&seed_artists=${lastTrack.artists.map(artist => artist.id)}`;
 
+		// Get recommendations based on last played tracks
 		const recommendedUrl = `${endpoints.SPOTIFY_BASE_URL}/recommendations?limit=10&${params}`;
 		return axios.get(recommendedUrl).then(response => {
 			let tracks = response.data.tracks;
 			return tracks.map(track => {
-				track.seed = lastArtists;
+				track.seed = lastArtists; // track seeded artists
 				return track;
 			});
 		});
 	}
 
+	/* LIBRARY */
+	static addToLibrary(uri) {
+		let type = uri.split(':')[1];
+		let id = uri.split(':')[2];
+		const url = `${endpoints.SPOTIFY_BASE_URL}/me/${type}s?ids=${id}`;
+		return axios.put(url).then(response => response.data);
+	}
+
+	/* PLAYLIST */
 	static getPlaylists(id) {
-		const url = `${endpoints.SPOTIFY_BASE_URL}${endpoints.GET_USER}/${id}/playlists`;
+		const url = `${endpoints.SPOTIFY_BASE_URL}${endpoints.USER}/${id}/playlists`;
 		return axios.get(url).then(response => response.data.items);
 	}
 
@@ -94,7 +103,6 @@ class SpotifyService {
 					const url = `${endpoints.SPOTIFY_BASE_URL}${endpoints.SEARCH}?q=${type}:${
 						artist.name
 					}&type=track&market=US&limit=50`;
-					console.log(url);
 					return axios.get(url).then(response => response.data.tracks.items);
 				});
 
@@ -102,14 +110,12 @@ class SpotifyService {
 				return allTracks;
 				break;
 			case 'track':
-				const url = `${endpoints.SPOTIFY_BASE_URL}${endpoints.GET_TRACK}/${selection}`;
+				const url = `${endpoints.SPOTIFY_BASE_URL}${endpoints.TRACKS}/${selection}`;
 				return axios.get(url).then(response => {
 					let track = response.data;
 					let artists = track.artists.map(artist => artist.id).toString();
-
-					// let genres = track.artists.map(artist => artist)
 					const url = `${endpoints.SPOTIFY_BASE_URL}${
-						endpoints.GET_RECOMMENDATIONS
+						endpoints.RECOMMENDATIONS
 					}?market=US&limit=50&seed_artists=${artists}&seed_tracks=${track.id}`;
 					return axios.get(url).then(response => [response.data.tracks]);
 				});
@@ -151,6 +157,7 @@ class SpotifyService {
 		return axios.put(url, body, config).then(response => response.data);
 	}
 
+	/* PLAYER */
 	static playTrack(uri, id, position_ms) {
 		const url = `${endpoints.SPOTIFY_BASE_URL}/me${endpoints.PLAYER}/play`;
 		const body = {

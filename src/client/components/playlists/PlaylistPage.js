@@ -81,7 +81,6 @@ class Playlist extends Component {
 	handlePlay = (track, id) => {
 		let progress_ms = track == this.state.track ? this.state.progress_ms : 0;
 		this.setState({ playing: true, track });
-		console.log('track', track);
 		this.props.playTrack(track, id, progress_ms);
 	};
 
@@ -197,13 +196,6 @@ class Playlist extends Component {
 						isActive={this.state.error}
 						title={'File is too large!'}
 						message={'Please upload file no larger than 256 KB.'}
-					/>
-				)}
-				{player.error && (
-					<Notification
-						isActive={player.error.status}
-						title={player.error.title}
-						message={player.error.message}
 					/>
 				)}
 				<div className="container" style={{ paddingBottom: playerOpen ? '50px' : '20px' }}>

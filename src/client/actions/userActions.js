@@ -4,7 +4,7 @@ import { push } from 'react-router-redux';
 
 function getUserSuccess(user) {
 	return {
-		type: types.GET_USER_SUCCESS,
+		type: types.USER_SUCCESS,
 		user,
 	};
 }

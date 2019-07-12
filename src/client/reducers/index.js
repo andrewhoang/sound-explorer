@@ -13,6 +13,7 @@ import {
 	results,
 	player,
 	savingPlaylist,
+	alert,
 } from './spotify';
 import { user, image } from './users';
 import { modal } from './modal';
@@ -32,6 +33,7 @@ const rootReducer = combineReducers({
 	user,
 	image,
 	modal,
+	alert,
 	routing: routerReducer,
 });
 

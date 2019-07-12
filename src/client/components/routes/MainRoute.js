@@ -12,6 +12,7 @@ import Home from '../Home';
 import ArtistsPage from '../artists/ArtistsPage';
 import PlaylistPage from '../playlists/PlaylistPage';
 import AudioPlayer from '../AudioPlayer';
+import AlertMessage from '../common/Notification';
 
 import windowSize from 'react-window-size';
 import moment from 'moment';
@@ -94,6 +95,7 @@ class MainRoute extends Component {
 
 		return (
 			<>
+				<AlertMessage />
 				<Switch>
 					<RouteComponent
 						{...this.props}
