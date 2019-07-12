@@ -1,45 +1,79 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
+import * as spotifyActions from '../../actions/spotifyActions';
+
 import { Notification } from 'react-notification';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCheckCircle, faExclamationCircle } from '@fortawesome/free-solid-svg-icons';
+
+import isEmpty from 'lodash/isEmpty';
 
 class AlertMessage extends Component {
 	constructor(props) {
 		super(props);
-		this.state = { active: false };
+		this.state = { active: false, alert: {} };
 	}
 
 	componentWillReceiveProps = nextProps => {
-		if (nextProps.player !== this.props.player) {
-			this.setState({ active: nextProps.player.error.status }, () =>
-				setTimeout(() => this.setState({ active: false }), 5000)
-			);
+		if (nextProps.alert !== this.props.alert) {
+			this.setState({ alert: nextProps.alert, active: !isEmpty(nextProps.alert) ? true : false }, () => {
+				if (this.state.active) {
+					setTimeout(() => this.hideAlert(), 10000);
+				}
+			});
 		}
 	};
 
+	hideAlert = () => {
+		this.setState({ active: false });
+		this.props.actions.hideAlert();
+	};
+
 	render() {
-		let { player } = this.props;
-		let { error } = player;
+		let { alert } = this.state;
+
+		let icon = alert.status == 'error' ? faExclamationCircle : faCheckCircle;
 
 		return (
-			<Notification
-				isActive={this.state.active}
-				title={error ? error.title : ''}
-				message={error ? error.message : ''}
-			/>
+			<div onClick={this.hideAlert}>
+				<Notification
+					isActive={this.state.active}
+					title={
+						alert.title ? (
+							<>
+								<FontAwesomeIcon icon={icon} /> {alert.title}
+							</>
+						) : (
+							''
+						)
+					}
+					message={alert.message || ''}
+				/>
+			</div>
 		);
 	}
 }
 
 AlertMessage.propTypes = {
-	player: PropTypes.object,
+	alert: PropTypes.object,
 };
 
 function mapStateToProps(state) {
 	return {
-		player: state.reducers.player,
+		alert: state.reducers.alert,
 	};
 }
 
-export default connect(mapStateToProps)(AlertMessage);
+function mapDispatchToProps(dispatch) {
+	return {
+		actions: bindActionCreators({ ...spotifyActions }, dispatch),
+	};
+}
+
+export default connect(
+	mapStateToProps,
+	mapDispatchToProps
+)(AlertMessage);

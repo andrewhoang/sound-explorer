@@ -3,11 +3,11 @@ export const SEARCH = '/search';
 export const PLAYLISTS = '/playlists';
 export const PLAYER = '/player';
 export const GET_ME = '/me';
-export const GET_USER = '/users';
-export const GET_ARTIST = '/artists';
-export const GET_TRACK = '/tracks';
-export const GET_ALBUM = '/albums';
-export const GET_RECOMMENDATIONS = '/recommendations';
+export const USER = '/users';
+export const ARTISTS = '/artists';
+export const TRACKS = '/tracks';
+export const ALBUMS = '/albums';
+export const RECOMMENDATIONS = '/recommendations';
 
 export const UNSPLASH_BASE_URL = 'https://api.unsplash.com';
 export const GET_PHOTOS = '/photos';

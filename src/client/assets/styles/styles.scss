@@ -234,21 +234,17 @@ svg {
 	}
 }
 
-.item-container {
+.card {
 	display: grid;
-	grid-template-columns: auto 1fr;
-	grid-gap: 15px;
-	padding-right: 10px;
+	grid-template-columns: 10fr auto;
 	align-items: center;
+	position: relative;
 	background: lighten($theme_black, 2%);
 	border-radius: 8px;
 	margin: 5px;
 	padding: 10px;
 	overflow: hidden;
-	background-repeat: no-repeat !important;
-	background-size: cover !important;
-	background-position: center 15% !important;
-	&:after {
+	&:before {
 		content: '';
 		position: absolute;
 		top: 0;
@@ -260,7 +256,7 @@ svg {
 		-moz-transition: none;
 		transition: none;
 	}
-	&:hover:after {
+	&:hover:before {
 		width: 120%;
 		background-color: rgba(255, 255, 255, 0);
 		-webkit-transition: all 0.5s ease-in-out;
@@ -273,30 +269,18 @@ svg {
 	&.-lg {
 		padding: 3rem;
 		grid-template-columns: 1fr !important;
+		background-repeat: no-repeat !important;
+		background-size: cover !important;
+		background-position: center 15% !important;
 		h5 {
 			font-size: 2em;
 		}
 	}
-	.card-detail {
-		overflow: hidden;
-		max-width: 90%;
-		h5 {
-			text-overflow: ellipsis;
-			overflow: hidden;
-			margin-bottom: 0;
-			font-family: 'Open Sans';
-			white-space: nowrap;
-		}
-		p {
-			font-size: 0.9em;
-			opacity: 0.7;
-			margin: 5px 0;
-			padding: 0;
-			text-overflow: ellipsis;
-			white-space: nowrap;
-			overflow: hidden;
-			display: block;
-		}
+	.card-body {
+		display: grid;
+		grid-template-columns: auto 1fr;
+		grid-gap: 15px;
+		align-items: center;
 	}
 	.display-pic {
 		height: 80px;
@@ -304,10 +288,33 @@ svg {
 		object-fit: cover;
 		border-radius: 5px;
 		animation-delay: 300ms;
+	}
+	.card-detail {
+		position: relative;
+		max-width: 90%;
+		overflow: hidden;
+		h5 {
+			font-family: 'Open Sans';
+			text-overflow: ellipsis;
+			overflow: hidden;
+			white-space: nowrap;
+			margin: 0;
+		}
+		p {
+			font-size: 0.9em;
+			opacity: 0.6;
+			margin: 2px 0;
+			text-overflow: ellipsis;
+			white-space: nowrap;
+			overflow: hidden;
+		}
+	}
+	svg {
+		font-size: 18px;
+		color: lighten($theme_black, 10%);
+		z-index: 99999;
 		&:hover {
-			opacity: 0.8;
-			filter: brightness(120%);
-			cursor: pointer !important;
+			color: lighten($theme_black, 20%);
 		}
 	}
 }
@@ -354,7 +361,10 @@ svg {
 	}
 	.rt-th {
 		text-align: left;
-		font-weight: 700;
+		opacity: 0.7;
+		text-transform: uppercase;
+		letter-spacing: 1px;
+		font-size: 12px;
 		padding: 15px 0 !important;
 	}
 	.rt-tr-group {
@@ -402,6 +412,7 @@ svg {
 
 .notification-bar {
 	z-index: 1;
+	background: $theme_green !important;
 }
 
 input[type='file'] {
@@ -508,7 +519,7 @@ input[type='file'] {
 	}
 
 	.artist-list {
-		.item-container {
+		.card {
 			padding: 10px;
 			&:nth-child(odd) {
 				padding-left: 30px;
@@ -523,7 +534,7 @@ input[type='file'] {
 		-webkit-overflow-scrolling: touch;
 	}
 
-	.item-container {
+	.card {
 		padding: 15px;
 		.display-pic {
 			height: 50px;
@@ -556,7 +567,7 @@ input[type='file'] {
 		display: flex !important;
 		align-items: center;
 		margin: 10px;
-		.item-container {
+		.card {
 			background: transparent;
 			grid-gap: 15px;
 			border-radius: 5px;
@@ -586,7 +597,7 @@ input[type='file'] {
 		}
 	}
 	.playlist-list {
-		.item-container {
+		.card {
 			margin: 15px 0;
 		}
 	}

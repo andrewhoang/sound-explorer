@@ -7,12 +7,10 @@ import { withRouter } from 'react-router-dom';
 import * as userActions from '../actions/userActions';
 import * as spotifyActions from '../actions/spotifyActions';
 
-import background from '../assets/styles/wallpaper1.jpeg';
 import 'semantic-ui-css/semantic.min.css';
 
 import NewReleasesList from './NewReleasesList';
 import RecommendedList from './RecommendedList';
-import AlertMessage from './common/Notification';
 import Loading from './common/LoadingWrapper';
 import { Row, Col } from 'react-bootstrap';
 import { Search } from 'semantic-ui-react';
@@ -145,9 +143,18 @@ class Home extends Component {
 		const { albums, tracks, user, player, playerOpen, isMobile } = this.props;
 		const { value, results, isLoading, rendered, track } = this.state;
 
+		const spotifyProps = {
+			onClickPlay: this.handlePlay,
+			onClickPause: this.handlePause,
+			onClickLike: this.props.actions.addToLibrary,
+			showError: this.props.actions.showAlert,
+			track: track,
+			playing: player.playing,
+			isPremium: user.product == 'premium',
+		};
+
 		return (
 			<Loading rendered={rendered}>
-				<AlertMessage />
 				<div className="container animated fadeIn" style={{ paddingBottom: playerOpen ? '60px' : '20px' }}>
 					<Row>
 						<Col md={12} xs={12} className="home header">
@@ -164,23 +171,8 @@ class Home extends Component {
 						</Col>
 					</Row>
 					<div id="home-grid">
-						<NewReleasesList
-							albums={albums}
-							onClickPlay={this.handlePlay}
-							onClickPause={this.handlePause}
-							track={track}
-							playing={player.playing}
-							isMobile={isMobile}
-							isPremium={user.product == 'premium'}
-						/>
-						<RecommendedList
-							tracks={tracks}
-							onClickPlay={this.handlePlay}
-							onClickPause={this.handlePause}
-							track={track}
-							playing={player.playing}
-							isPremium={user.product == 'premium'}
-						/>
+						<NewReleasesList albums={albums} user={user} isMobile={isMobile} {...spotifyProps} />
+						<RecommendedList tracks={tracks} {...spotifyProps} />
 					</div>
 				</div>
 			</Loading>

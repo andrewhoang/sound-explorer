@@ -105,7 +105,27 @@ function seekTrackSuccess(position_ms) {
 	};
 }
 
-function playTrackError(error) {
+export function showAlert(title, message, status) {
+	return {
+		type: types.SHOW_ALERT_SUCCESS,
+		alert: {
+			title,
+			message,
+			status,
+		},
+	};
+}
+
+export function hideAlert() {
+	return {
+		type: types.HIDE_ALERT_SUCCESS,
+		meta: {
+			throttle: true,
+		},
+	};
+}
+
+export function playTrackError(error) {
 	return {
 		type: types.PLAY_TRACK_ERROR,
 		error,
@@ -173,6 +193,15 @@ export function getRecommendedTracks() {
 			.getRecommendedTracks()
 			.then(response => dispatch(receiveRecommendedTracks(response)))
 			.catch(err => console.error(err));
+}
+
+export function addToLibrary(uri) {
+	return dispatch => {
+		return spotifyService
+			.addToLibrary(uri)
+			.then(response => dispatch(showAlert('Track was successfully added to library', null, 'success')))
+			.catch(err => err);
+	};
 }
 
 export function getPlaylists(id) {
@@ -257,12 +286,19 @@ export function playTrack(uri, id, progress_ms) {
 			.playTrack(uri, id, progress_ms)
 			.then(track => dispatch(playTrackSuccess(track)))
 			.catch(err => {
-				if (err.status == 404) {
-					dispatch(playTrackError(404));
+				let title = '';
+				let message = '';
+				switch (err.status) {
+					case 404: // spotify not open
+						title = 'Player not found';
+						message = 'Please open up Spotify to continue.';
+						break;
+					case 403: // not premium
+						title = 'Upgrade to Premium';
+						message = 'Unable to access player for non-premium account.';
+						break;
 				}
-				if (err.status == 403) {
-					dispatch(playTrackError(403));
-				}
+				dispatch(showAlert(title, message, 'error'));
 			});
 }
 

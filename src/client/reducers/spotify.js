@@ -91,11 +91,7 @@ export const player = (state = initialState.player, action = null) => {
 		case types.PLAY_TRACK_SUCCESS:
 			return Object.assign({}, state, { error: false, playing: true, track: action.track });
 		case types.PLAY_TRACK_ERROR:
-			let message = (action.error = 404
-				? 'Please open up Spotify to continue.'
-				: 'Unable to access player for non-premium account.');
-			let title = (action.error = 404 ? 'Player not Found!' : 'Upgrade to Premium');
-			return Object.assign({}, state, { error: { status: true, title, message } });
+			return Object.assign({}, state, { error: { status: true } });
 		case types.PAUSE_TRACK_SUCCESS:
 			return Object.assign({}, state, { error: false, playing: false, progress_ms: action.progress_ms });
 		case types.SEEK_TRACK_SUCCESS:
@@ -109,6 +105,20 @@ export const savingPlaylist = (state = initialState.savingPlaylist, action = nul
 	switch (action.type) {
 		case types.SAVING_PLAYLIST:
 			return action.savingPlaylist;
+		default:
+			return state;
+	}
+};
+
+export const alert = (state = initialState.alert, action = null) => {
+	switch (action.type) {
+		case types.SHOW_ALERT_SUCCESS:
+			return Object.assign(
+				{},
+				{ title: action.alert.title, message: action.alert.message, status: action.alert.status }
+			);
+		case types.HIDE_ALERT_SUCCESS:
+			return {};
 		default:
 			return state;
 	}

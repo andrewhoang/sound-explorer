@@ -12,7 +12,7 @@ import uniqBy from 'lodash/uniqBy';
 import isEmpty from 'lodash/isEmpty';
 
 class RecommendedList extends Component {
-	toggle = recommendedTrack => {
+	handlePlayer = recommendedTrack => {
 		let { playing, track, isPremium } = this.props;
 		if (isPremium) {
 			playing && track !== recommendedTrack.uri
@@ -41,7 +41,8 @@ class RecommendedList extends Component {
 							return (
 								<Card
 									key={i}
-									onClickCard={() => this.toggle(recommendedTrack)}
+									onClickCard={() => this.handlePlayer(recommendedTrack)}
+									onClickLike={() => this.props.onClickLike(recommendedTrack.uri)}
 									src={minBy(recommendedTrack.album.images, 'height').url}
 									style={{ color: isPlaying ? '#1db954' : 'white' }}
 									title={recommendedTrack.name}
