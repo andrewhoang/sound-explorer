@@ -6,11 +6,7 @@ import MainRoute from './routes/MainRoute';
 import Login from './Login/Login';
 
 import querystring from 'query-string';
-import ReactDOMServer from 'react-dom/server';
-import PullToRefresh from 'pulltorefreshjs';
-import { faSyncAlt } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { Popup } from 'semantic-ui-react';
+import Pullable from 'react-pullable';
 
 class App extends Component {
 	constructor(props) {
@@ -30,17 +26,23 @@ class App extends Component {
 		this.setState({ isAuth });
 	};
 
+	handleRefresh = () => {
+		window.location.reload();
+	};
+
 	render = () => {
 		let { isAuth } = this.state;
 
 		return (
-			<Switch>
-				{isAuth ? (
-					<RouteComponent path="/" component={MainRoute} auth={isAuth} />
-				) : (
-					<RouteComponent exact path="/" component={Login} />
-				)}
-			</Switch>
+			<Pullable onRefresh={this.handleRefresh} spinnerColor="#FFFFFF">
+				<Switch>
+					{isAuth ? (
+						<RouteComponent path="/" component={MainRoute} auth={isAuth} />
+					) : (
+						<RouteComponent exact path="/" component={Login} />
+					)}
+				</Switch>
+			</Pullable>
 		);
 	};
 }

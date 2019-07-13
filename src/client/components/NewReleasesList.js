@@ -7,6 +7,9 @@ import orderBy from 'lodash/orderBy';
 import uniqBy from 'lodash/uniqBy';
 import isEmpty from 'lodash/isEmpty';
 
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faHeart } from '@fortawesome/free-solid-svg-icons';
+
 class NewReleasesList extends Component {
 	constructor(props) {
 		super(props);
@@ -72,6 +75,10 @@ class NewReleasesList extends Component {
 								return (
 									<Card
 										key={i}
+										src={minBy(album.images, 'height').url}
+										style={{ color: isPlaying ? '#1db954' : 'white' }}
+										title={album.name}
+										subtext={album.artists.map(artist => artist.name).join(', ')}
 										onClickCard={() => {
 											isAvailable
 												? this.toggle(album)
@@ -81,19 +88,20 @@ class NewReleasesList extends Component {
 														'error'
 												  );
 										}}
-										onClickLike={() =>
-											isAvailable
-												? this.props.onClickLike(album.uri)
-												: this.props.showError(
-														'This track is currently unavailable in your country.',
-														'',
-														'error'
-												  )
+										actions={
+											<FontAwesomeIcon
+												icon={faHeart}
+												onClick={() =>
+													isAvailable
+														? this.props.onClickLike(album.uri)
+														: this.props.showError(
+																'This track is currently unavailable in your country.',
+																'',
+																'error'
+														  )
+												}
+											/>
 										}
-										src={minBy(album.images, 'height').url}
-										style={{ color: isPlaying ? '#1db954' : 'white' }}
-										title={album.name}
-										subtext={album.artists.map(artist => artist.name).join(', ')}
 									/>
 								);
 							})}

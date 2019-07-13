@@ -12,6 +12,7 @@
 		}
 	}
 	.results {
+		z-index: 999999;
 		.image {
 			width: auto !important;
 		}
@@ -48,6 +49,7 @@
 		}
 		.content {
 			margin: 0 !important;
+			max-width: 50vw;
 		}
 		.image {
 			object-fit: cover;

@@ -1,6 +1,4 @@
 import React, { Component } from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faHeart } from '@fortawesome/free-solid-svg-icons';
 
 class Card extends Component {
 	constructor(props) {
@@ -8,9 +6,9 @@ class Card extends Component {
 	}
 
 	render() {
-		let { src, title, subtext, style, onClickCard, onClickLike } = this.props;
+		let { src, title, subtext, style, onClickCard, actions } = this.props;
 		return (
-			<div className="card animated fadeInUp">
+			<div className="card animated">
 				<div className="card-body" onClick={onClickCard}>
 					<img src={src} className="display-pic animated zoomIn" />
 					<div className="card-detail">
@@ -18,7 +16,7 @@ class Card extends Component {
 						<p>{subtext}</p>
 					</div>
 				</div>
-				{onClickLike && <FontAwesomeIcon icon={faHeart} onClick={onClickLike} />}
+				<div className="card-actions">{actions}</div>
 			</div>
 		);
 	}

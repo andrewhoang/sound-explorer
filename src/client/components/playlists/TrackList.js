@@ -90,31 +90,29 @@ const TrackList = ({ playlist, playing, track, onClickPlay, onClickPause, onClic
 	};
 
 	return (
-		<div className="desktop">
-			<ReactTable
-				data={playlist}
-				columns={columns}
-				showPagination={false}
-				resizable={false}
-				draggable="true"
-				{...playingProps}
-				getTdProps={(state, rowInfo, column) => {
-					return {
-						onClick: () => {
-							if (column.id !== 'id') {
-								return !playing
-									? onClickPlay(rowInfo.original.uri, rowInfo.original.id)
-									: playing && track === rowInfo.original.uri
-									? onClickPause(rowInfo.original.uri, rowInfo.original.id)
-									: playing &&
-									  track !== rowInfo.original.uri &&
-									  onClickPlay(rowInfo.original.uri, rowInfo.original.id);
-							}
-						},
-					};
-				}}
-			/>
-		</div>
+		<ReactTable
+			data={playlist}
+			columns={columns}
+			showPagination={false}
+			resizable={false}
+			draggable="true"
+			{...playingProps}
+			getTdProps={(state, rowInfo, column) => {
+				return {
+					onClick: () => {
+						if (column.id !== 'id') {
+							return !playing
+								? onClickPlay(rowInfo.original.uri, rowInfo.original.id)
+								: playing && track === rowInfo.original.uri
+								? onClickPause(rowInfo.original.uri, rowInfo.original.id)
+								: playing &&
+								  track !== rowInfo.original.uri &&
+								  onClickPlay(rowInfo.original.uri, rowInfo.original.id);
+						}
+					},
+				};
+			}}
+		/>
 	);
 };
 

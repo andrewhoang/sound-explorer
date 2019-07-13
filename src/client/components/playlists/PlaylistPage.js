@@ -171,7 +171,7 @@ class Playlist extends Component {
 	};
 
 	render = () => {
-		let { player, playlists, playerOpen } = this.props;
+		let { player, playlists, playerOpen, isMobile } = this.props;
 		let { playlist, playing, track, upload, single } = this.state;
 
 		let modalBody = (
@@ -212,8 +212,7 @@ class Playlist extends Component {
 						upload={upload}
 						savingPlaylist={this.props.savingPlaylist}
 					/>
-					<TrackList {...playlistProps} />
-					<MobileTrackList {...playlistProps} />
+					{!isMobile ? <TrackList {...playlistProps} /> : <MobileTrackList {...playlistProps} />}
 					<Link
 						to={'/'}
 						className="pull-center"
