@@ -13,6 +13,7 @@ body {
 	-webkit-user-select: none;
 	-webkit-tap-highlight-color: transparent;
 	-webkit-touch-callout: none;
+	overscroll-behavior-y: none;
 }
 
 .desktop {
@@ -76,7 +77,6 @@ a {
 }
 
 .container {
-	height: 100vh;
 	width: 100vw;
 	overflow-y: scroll;
 	background: $theme_black;
@@ -309,12 +309,16 @@ svg {
 			overflow: hidden;
 		}
 	}
-	svg {
-		font-size: 18px;
-		color: lighten($theme_black, 10%);
+	.card-actions {
 		z-index: 99999;
-		&:hover {
-			color: lighten($theme_black, 20%);
+		svg {
+			&.fa-heart {
+				font-size: 18px;
+				color: lighten($theme_black, 10%);
+				&:hover {
+					color: lighten($theme_black, 20%);
+				}
+			}
 		}
 	}
 }
@@ -480,6 +484,7 @@ input[type='file'] {
 		display: grid;
 		grid-template-columns: 1fr;
 		grid-row-gap: 20px;
+		padding-top: 10px;
 		#new-releases {
 			border: 0 !important;
 			padding: 0;
@@ -554,10 +559,6 @@ input[type='file'] {
 				font-size: 50px;
 			}
 		}
-	}
-
-	.playlist-header {
-		margin-bottom: 0;
 	}
 
 	.track {

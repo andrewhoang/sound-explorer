@@ -1,19 +1,16 @@
 import React, { Component } from 'react';
-import autoBind from 'react-autobind';
 
 import { Row, Col, Button } from 'react-bootstrap';
 import { Form, Radio } from 'semantic-ui-react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSpotify } from '@fortawesome/free-brands-svg-icons';
 import { faPencilAlt } from '@fortawesome/free-solid-svg-icons';
 
 import maxBy from 'lodash/maxBy';
 
 class PlaylistHeader extends Component {
-	constructor(props, context) {
-		super(props, context);
+	constructor(props) {
+		super(props);
 		this.state = { new: false };
-		autoBind(this);
 	}
 
 	componentDidMount = () => {
@@ -40,7 +37,7 @@ class PlaylistHeader extends Component {
 		let image = upload ? upload : playlist[0] && maxBy(playlist[0].album.images, 'height').url;
 
 		return (
-			<Row className="playlist-header">
+			<Row>
 				<Col
 					md={12}
 					className="header custom"

@@ -2,8 +2,7 @@ import React, { Component } from 'react';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlayCircle, faPauseCircle } from '@fortawesome/free-regular-svg-icons';
-import { faInfoCircle } from '@fortawesome/free-solid-svg-icons';
-import ReactTooltip from 'react-tooltip';
+import { faHeart } from '@fortawesome/free-solid-svg-icons';
 import Card from './common/Card';
 
 import minBy from 'lodash/minBy';
@@ -42,11 +41,16 @@ class RecommendedList extends Component {
 								<Card
 									key={i}
 									onClickCard={() => this.handlePlayer(recommendedTrack)}
-									onClickLike={() => this.props.onClickLike(recommendedTrack.uri)}
 									src={minBy(recommendedTrack.album.images, 'height').url}
 									style={{ color: isPlaying ? '#1db954' : 'white' }}
 									title={recommendedTrack.name}
 									subtext={recommendedTrack.artists.map(artist => artist.name).join(', ')}
+									actions={
+										<FontAwesomeIcon
+											icon={faHeart}
+											onClick={() => this.props.onClickLike(recommendedTrack.uri)}
+										/>
+									}
 								/>
 							);
 						})}

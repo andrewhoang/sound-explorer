@@ -12,7 +12,7 @@ import 'semantic-ui-css/semantic.min.css';
 import NewReleasesList from './NewReleasesList';
 import RecommendedList from './RecommendedList';
 import Loading from './common/LoadingWrapper';
-import { Row, Col } from 'react-bootstrap';
+import { Row, Col, Button } from 'react-bootstrap';
 import { Search } from 'semantic-ui-react';
 
 import capitalize from 'lodash/capitalize';
