@@ -89,7 +89,12 @@ export const results = (state = initialState.results, action) => {
 export const player = (state = initialState.player, action = null) => {
 	switch (action.type) {
 		case types.PLAY_TRACK_SUCCESS:
-			return Object.assign({}, state, { error: false, playing: true, track: action.track });
+			return Object.assign({}, state, {
+				error: false,
+				playing: true,
+				track: action.track,
+				progress: action.progress_ms,
+			});
 		case types.PLAY_TRACK_ERROR:
 			return Object.assign({}, state, { error: { status: true } });
 		case types.PAUSE_TRACK_SUCCESS:
@@ -115,7 +120,12 @@ export const alert = (state = initialState.alert, action = null) => {
 		case types.SHOW_ALERT_SUCCESS:
 			return Object.assign(
 				{},
-				{ title: action.alert.title, message: action.alert.message, status: action.alert.status }
+				{
+					title: action.alert.title,
+					message: action.alert.message,
+					link: action.alert.link,
+					status: action.alert.status,
+				}
 			);
 		case types.HIDE_ALERT_SUCCESS:
 			return {};

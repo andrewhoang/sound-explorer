@@ -28,4 +28,4 @@ class SpotifyController {
 	}
 }
 
-export default new SpotifyController();
+module.exports = new SpotifyController();

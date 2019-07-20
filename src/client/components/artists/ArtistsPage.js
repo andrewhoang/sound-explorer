@@ -21,33 +21,23 @@ import queryString from 'query-string';
  */
 
 class ArtistsPage extends Component {
-	constructor(props) {
-		super(props);
-		this.state = { artists: [], selectedArtists: [] };
-	}
+	state = { artists: [], selectedArtists: [] };
 
 	componentDidMount = () => {
-		let parsed = queryString.parse(location.search);
-		let type = Object.keys(parsed).map(query => query)[0];
-		let search = Object.values(parsed).map(query => query)[0];
-		switch (type) {
-			case 'artist':
-				this.props.actions.getArtist(search);
-				this.props.actions.getRelatedArtists(search);
-				break;
-			case 'track':
-				this.props.actions.getTrack(search);
-				break;
-		}
+		let id = queryString.parse(location.search).artist;
+
+		this.props.actions.getArtist(id);
+		this.props.actions.getRelatedArtists(id);
 	};
 
 	componentWillReceiveProps = nextProps => {
 		if (nextProps.artist !== this.props.artist) {
-			let selectedArtists = [{ ...nextProps.artist }];
+			let selectedArtists = [nextProps.artist];
 			this.setState({ selectedArtists });
 		}
+
 		if (nextProps.artists !== this.props.artists) {
-			let relatedArtists = nextProps.artists.artists.filter(artist => {
+			let relatedArtists = nextProps.artists.filter(artist => {
 				if (find(this.state.selectedArtists, { id: artist.id })) {
 					return false;
 				}
@@ -73,8 +63,7 @@ class ArtistsPage extends Component {
 
 		let artistIdx = findIndex(selectedArtists, { id });
 
-		let artist = selectedArtists.splice(artistIdx, 1);
-		artists.push(...artist);
+		artists = [].concat(selectedArtists.splice(artistIdx, 1), artists);
 
 		this.setState({ artists, selectedArtists });
 	};
@@ -84,11 +73,11 @@ class ArtistsPage extends Component {
 	};
 
 	render = () => {
-		let { artist, savingPlaylist, playerOpen } = this.props;
+		let { artist, player, savingPlaylist } = this.props;
 		let { artists, selectedArtists } = this.state;
 
 		return (
-			<div className="container" style={{ paddingBottom: playerOpen ? '50px' : '20px' }}>
+			<div className="container" style={{ paddingBottom: player.track ? '50px' : '20px' }}>
 				<ArtistHeader
 					artist={artist}
 					selectedArtists={selectedArtists}
@@ -110,6 +99,7 @@ ArtistsPage.propTypes = {
 	results: PropTypes.array,
 	artist: PropTypes.object,
 	artists: PropTypes.object,
+	player: PropTypes.player,
 	savingPlaylist: PropTypes.bool,
 };
 
@@ -119,6 +109,7 @@ function mapStateToProps(state) {
 		artist: state.reducers.artist,
 		artists: state.reducers.artists,
 		savingPlaylist: state.reducers.savingPlaylist,
+		player: state.reducers.player,
 	};
 }
 

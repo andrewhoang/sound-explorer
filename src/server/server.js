@@ -1,12 +1,12 @@
-import path from 'path';
-import express from 'express';
-import webpack from 'webpack';
-import routes from '../server/routes';
-import bodyParser from 'body-parser';
-import compression from 'compression';
-import https from 'https';
-
+const path = require('path');
+const express = require('express');
+const webpack = require('webpack');
+const routes = require('../server/routes');
+const bodyParser = require('body-parser');
+const compression = require('compression');
+const https = require('https');
 const app = express();
+
 app.use(bodyParser.json({ limit: '50mb' }));
 app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }));
 app.use(compression());
@@ -15,13 +15,16 @@ let webpackConfig;
 
 const environment = app.get('env');
 
-if (environment === 'development') {
-	webpackConfig = require('../../webpack.config.dev');
-} else if (environment === 'production') {
-	webpackConfig = require('../../webpack.config.prod');
+switch (environment) {
+	case 'production':
+		webpackConfig = require('../../webpack.config.prod');
+		break;
+	default:
+		webpackConfig = require('../../webpack.config.dev');
+		break;
 }
 
-let webpackCompiler = webpack(webpackConfig);
+const webpackCompiler = webpack(webpackConfig);
 
 app.use(
 	require('webpack-dev-middleware')(webpackCompiler, {

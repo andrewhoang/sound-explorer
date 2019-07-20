@@ -21,7 +21,7 @@ class SpotifyService {
 
 	static getRelatedArtists(id) {
 		const url = `${endpoints.SPOTIFY_BASE_URL}${endpoints.ARTISTS}/${id}/related-artists`;
-		return axios.get(url).then(response => response.data);
+		return axios.get(url).then(response => response.data.artists);
 	}
 
 	static getTrack(id) {
@@ -108,7 +108,7 @@ class SpotifyService {
 
 				let allTracks = Promise.all(tracks);
 				return allTracks;
-				break;
+
 			case 'track':
 				const url = `${endpoints.SPOTIFY_BASE_URL}${endpoints.TRACKS}/${selection}`;
 				return axios.get(url).then(response => {
@@ -119,7 +119,6 @@ class SpotifyService {
 					}?market=US&limit=50&seed_artists=${artists}&seed_tracks=${track.id}`;
 					return axios.get(url).then(response => [response.data.tracks]);
 				});
-				break;
 		}
 	}
 

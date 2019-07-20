@@ -21,7 +21,7 @@ class AlertMessage extends Component {
 		if (nextProps.alert !== this.props.alert) {
 			this.setState({ alert: nextProps.alert, active: !isEmpty(nextProps.alert) ? true : false }, () => {
 				if (this.state.active) {
-					setTimeout(() => this.hideAlert(), 10000);
+					setTimeout(() => this.hideAlert(), 8000);
 				}
 			});
 		}
@@ -32,25 +32,31 @@ class AlertMessage extends Component {
 		this.props.actions.hideAlert();
 	};
 
+	handleClick = () => {
+		let { alert } = this.state;
+		if (alert.link) {
+			window.location = alert.link;
+		} else {
+			this.hideAlert();
+		}
+	};
+
 	render() {
 		let { alert } = this.state;
 
-		let icon = alert.status == 'error' ? faExclamationCircle : faCheckCircle;
+		let icon = isEmpty(alert) ? null : alert.status == 'error' ? faExclamationCircle : faCheckCircle;
 
 		return (
-			<div onClick={this.hideAlert}>
+			<div onClick={this.handleClick}>
 				<Notification
 					isActive={this.state.active}
-					title={
-						alert.title ? (
-							<>
-								<FontAwesomeIcon icon={icon} /> {alert.title}
-							</>
-						) : (
-							''
-						)
+					title={icon && <FontAwesomeIcon icon={icon} />}
+					message={
+						<>
+							<strong>{alert.title}</strong>
+							<p>{alert.message}</p>
+						</>
 					}
-					message={alert.message || ''}
 				/>
 			</div>
 		);

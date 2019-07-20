@@ -29,10 +29,8 @@ const store = configureStore({}, history);
 
 axios.interceptors.request.use(
 	config => {
-		if (!config.url.includes('unsplash')) {
-			const token = localStorage.getItem('access_token');
-			config.headers.Authorization = `Bearer ${token}`;
-		}
+		const token = localStorage.getItem('access_token');
+		config.headers.Authorization = `Bearer ${token}`;
 		return config;
 	},
 	error => Promise.reject(error)

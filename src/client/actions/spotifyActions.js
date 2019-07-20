@@ -84,10 +84,11 @@ function receiveSearchResults(results) {
 	};
 }
 
-function playTrackSuccess(track) {
+function playTrackSuccess(track, progress_ms) {
 	return {
 		type: types.PLAY_TRACK_SUCCESS,
 		track,
+		progress_ms,
 	};
 }
 
@@ -105,12 +106,13 @@ function seekTrackSuccess(position_ms) {
 	};
 }
 
-export function showAlert(title, message, status) {
+export function showAlert(title, message, link, status) {
 	return {
 		type: types.SHOW_ALERT_SUCCESS,
 		alert: {
 			title,
 			message,
+			link,
 			status,
 		},
 	};
@@ -199,7 +201,7 @@ export function addToLibrary(uri) {
 	return dispatch => {
 		return spotifyService
 			.addToLibrary(uri)
-			.then(response => dispatch(showAlert('Track was successfully added to library', null, 'success')))
+			.then(response => dispatch(showAlert('Track was successfully added to library', null, null, 'success')))
 			.catch(err => err);
 	};
 }
@@ -284,21 +286,23 @@ export function playTrack(uri, id, progress_ms) {
 	return dispatch =>
 		spotifyService
 			.playTrack(uri, id, progress_ms)
-			.then(track => dispatch(playTrackSuccess(track)))
+			.then(track => dispatch(playTrackSuccess(track, progress_ms)))
 			.catch(err => {
 				let title = '';
+				let link = '';
 				let message = '';
 				switch (err.status) {
 					case 404: // spotify not open
 						title = 'Player not found';
-						message = 'Please open up Spotify to continue.';
+						message = 'Click here to open up Spotify.';
+						link = `spotify://${uri}`;
 						break;
 					case 403: // not premium
 						title = 'Upgrade to Premium';
 						message = 'Unable to access player for non-premium account.';
 						break;
 				}
-				dispatch(showAlert(title, message, 'error'));
+				dispatch(showAlert(title, message, link, 'error'));
 			});
 }
 
