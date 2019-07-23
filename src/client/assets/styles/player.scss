@@ -17,6 +17,9 @@ $bar_height: 40px;
 		font-size: 12px !important;
 		&.title {
 			margin-right: 40px;
+			span {
+				opacity: 0.6;
+			}
 		}
 		&.time {
 			position: absolute;
@@ -28,8 +31,8 @@ $bar_height: 40px;
 		white-space: nowrap;
 	}
 	.controls {
-		margin-right: 20px;
 		width: auto;
+		white-space: nowrap;
 		&:hover {
 			cursor: pointer;
 		}
@@ -96,10 +99,15 @@ $bar_height: 40px;
 			align-items: center;
 			svg,
 			.title {
-				font-size: 12px;
+				font-size: 1rem !important;
 				overflow: hidden;
 				text-overflow: ellipsis;
-				max-width: 80vw;
+				max-width: 70vw;
+				overflow: hidden;
+				text-overflow: ellipsis;
+			}
+			.title {
+				font-size: 0.8rem !important;
 			}
 			.controls {
 				margin: 0;

@@ -21,21 +21,16 @@ class MainRoute extends Component {
 	};
 
 	render = () => {
-		let { windowWidth } = this.props;
+		let { user, windowWidth } = this.props;
 
 		return (
 			<>
 				<AlertMessage />
 				<Switch>
-					<RouteComponent {...this.props} isMobile={windowWidth < 768} exact path="/" component={Home} />
+					<RouteComponent user={user} isMobile={windowWidth < 768} exact path="/" component={Home} />
+					<RouteComponent user={user} isMobile={windowWidth < 767} path="/search" component={ArtistsPage} />
 					<RouteComponent
-						{...this.props}
-						isMobile={windowWidth < 767}
-						path="/search"
-						component={ArtistsPage}
-					/>
-					<RouteComponent
-						{...this.props}
+						user={user}
 						isMobile={windowWidth < 767}
 						path="/playlist"
 						component={PlaylistPage}

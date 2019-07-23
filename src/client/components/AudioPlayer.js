@@ -13,6 +13,10 @@ import moment from 'moment';
 class AudioPlayer extends Component {
 	state = { time: 0 };
 
+	componentDidMount = () => {
+		this.props.actions.getPlayer();
+	};
+
 	componentWillReceiveProps = nextProps => {
 		if (nextProps.player !== this.props.player) {
 			if (nextProps.player.playing) {
@@ -46,16 +50,29 @@ class AudioPlayer extends Component {
 		}
 	};
 
-	playTrack = (track, id, progress_ms) => {
+	playTrack = (e, track, id, progress_ms) => {
+		e.stopPropagation();
 		this.props.actions.playTrack(track, id, progress_ms);
 	};
 
-	pauseTrack = () => {
+	pauseTrack = e => {
+		e.stopPropagation();
 		this.props.actions.pauseTrack();
+	};
+
+	prevTrack = e => {
+		e.stopPropagation();
+		this.props.actions.prevTrack();
+	};
+
+	nextTrack = e => {
+		e.stopPropagation();
+		this.props.actions.nextTrack();
 	};
 
 	// Allow user to skip around track
 	seekTrack = (e, player) => {
+		e.stopPropagation();
 		let time = e.nativeEvent.offsetX;
 		let length = player.clientWidth;
 
@@ -84,16 +101,22 @@ class AudioPlayer extends Component {
 		let toggleWidth = `${(fraction * 100).toFixed(4)}%`;
 
 		return player && player.track ? (
-			<div className="player-container">
+			<div className="player-container" onClick={() => (window.location = `spotify://${player.track.uri}`)}>
 				<Row className="audio-player">
 					<Col md={1} xs={1} className="controls">
+						<FontAwesomeIcon icon={faBackward} onClick={this.prevTrack} />
 						<FontAwesomeIcon
 							icon={playing ? faPause : faPlay}
-							onClick={playing ? this.pauseTrack : () => this.playTrack(track.uri, track.id, progress_ms)}
+							onClick={e =>
+								playing ? this.pauseTrack(e) : this.playTrack(e, track.uri, track.id, progress_ms)
+							}
 						/>
+						<FontAwesomeIcon icon={faForward} onClick={this.nextTrack} />
 					</Col>
 					<Col md={11} xs={8} className="audio-bar">
-						<p className="title">{track.name}</p>
+						<p className="title">
+							{track.name} | <span>{track.artists.map(artist => artist.name).join(', ')}</span>
+						</p>
 						<div className="track-container">
 							<div
 								ref={p => (this.player = p)}

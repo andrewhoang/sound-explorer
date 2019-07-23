@@ -3,28 +3,18 @@ import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import { configureStore } from './store/configureStore';
 import { ConnectedRouter } from 'react-router-redux';
-import createHistory from 'history/createBrowserHistory';
+import { createBrowserHistory } from 'history';
 import axios from 'axios';
 
 import userService from './services/userService';
+import { register } from '../../src-sw';
 
 import App from './components/App';
-import './assets/styles/styles.scss';
 import 'animate.css';
-import './assets/rocket.png';
-import './assets/rocket-512.png';
-import './assets/iphone5_splash.png';
-import './assets/iphone6_splash.png';
-import './assets/iphoneplus_splash.png';
-import './assets/iphonex_splash.png';
-import './assets/iphonexr_splash.png';
-import './assets/iphonexsmax_splash.png';
-import './assets/ipad_splash.png';
-import './assets/ipadpro1_splash.png';
-import './assets/ipadpro3_splash.png';
-import './assets/ipadpro2_splash.png';
+import './assets/images';
+import './assets/styles/styles.scss';
 
-const history = createHistory();
+const history = createBrowserHistory();
 const store = configureStore({}, history);
 
 axios.interceptors.request.use(
@@ -57,6 +47,8 @@ axios.interceptors.response.use(
 		return Promise.reject(error.response);
 	}
 );
+
+register();
 
 const AppWrapper = () => (
 	<Provider store={store}>

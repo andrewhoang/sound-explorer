@@ -12,10 +12,7 @@ import { faCheckCircle, faExclamationCircle } from '@fortawesome/free-solid-svg-
 import isEmpty from 'lodash/isEmpty';
 
 class AlertMessage extends Component {
-	constructor(props) {
-		super(props);
-		this.state = { active: false, alert: {} };
-	}
+	state = { active: false, alert: {} };
 
 	componentWillReceiveProps = nextProps => {
 		if (nextProps.alert !== this.props.alert) {
@@ -43,14 +40,11 @@ class AlertMessage extends Component {
 
 	render() {
 		let { alert } = this.state;
-
-		let icon = isEmpty(alert) ? null : alert.status == 'error' ? faExclamationCircle : faCheckCircle;
-
-		return (
+		return !isEmpty(alert) ? (
 			<div onClick={this.handleClick}>
 				<Notification
 					isActive={this.state.active}
-					title={icon && <FontAwesomeIcon icon={icon} />}
+					title={<FontAwesomeIcon icon={alert.status == 'error' ? faExclamationCircle : faCheckCircle} />}
 					message={
 						<>
 							<strong>{alert.title}</strong>
@@ -59,6 +53,8 @@ class AlertMessage extends Component {
 					}
 				/>
 			</div>
+		) : (
+			<div />
 		);
 	}
 }

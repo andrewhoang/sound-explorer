@@ -147,7 +147,7 @@ class Home extends Component {
 			<Loading rendered={rendered}>
 				<div className="container animated fadeIn" style={{ paddingBottom: player.track ? '60px' : '20px' }}>
 					<Row>
-						<Col md={12} xs={12} className="home header">
+						<div className="home header">
 							<Search
 								category
 								// open={true}
@@ -158,7 +158,7 @@ class Home extends Component {
 								results={results}
 								value={value}
 							/>
-						</Col>
+						</div>
 					</Row>
 					<div id="home-grid">
 						<NewReleasesList albums={albums} user={user} isMobile={isMobile} {...spotifyProps} />

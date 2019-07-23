@@ -173,7 +173,7 @@ class Playlist extends Component {
 	render = () => {
 		let { player, playlists, isMobile } = this.props;
 		let { playlist, playing, track, upload, single } = this.state;
-		console.log(isMobile);
+
 		let modalBody = (
 			<UserPlaylists playlists={playlists} onClickUpdate={!single ? this.handleUpdate : this.handleAdd} />
 		);
@@ -190,7 +190,7 @@ class Playlist extends Component {
 		};
 
 		return (
-			<div>
+			<>
 				{this.state.error && (
 					<Notification
 						isActive={this.state.error}
@@ -228,7 +228,7 @@ class Playlist extends Component {
 					modal={this.props.modal}
 					close={this.props.actions.hideModal}
 				/>
-			</div>
+			</>
 		);
 	};
 }

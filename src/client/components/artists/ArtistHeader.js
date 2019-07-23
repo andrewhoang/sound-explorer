@@ -12,12 +12,12 @@ const ArtistHeader = ({ artist, selectedArtists, onClickRemove, onClickCreate, s
 	const [show, setShow] = useState(false);
 
 	useEffect(() => {
-		setTimeout(() => setShow(true), 300);
-	});
+		setTimeout(() => setShow(true), 100);
+	}, []);
 
 	return (
 		<Row>
-			{/* <Col
+			<Col
 				md={12}
 				className="header"
 				style={{
@@ -64,7 +64,7 @@ const ArtistHeader = ({ artist, selectedArtists, onClickRemove, onClickCreate, s
 				</Transition>
 				<Button onClick={onClickCreate}>{savingPlaylist ? 'Creating Playlist...' : 'Create Playlist'}</Button>
 			</Col>
-			<SelectedArtistList artists={selectedArtists} parent={artist} onClickRemove={onClickRemove} /> */}
+			<SelectedArtistList artists={selectedArtists} parent={artist} onClickRemove={onClickRemove} />
 		</Row>
 	);
 };

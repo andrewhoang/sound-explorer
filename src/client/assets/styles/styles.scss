@@ -316,12 +316,13 @@ svg {
 	}
 	.card-actions {
 		z-index: 99999;
+		padding: 5px;
 		svg {
 			&.fa-heart {
 				font-size: 18px;
-				color: lighten($theme_black, 10%);
+				color: lighten($theme_black, 15%);
 				&:hover {
-					color: lighten($theme_black, 20%);
+					color: lighten($theme_black, 30%);
 				}
 			}
 		}
@@ -463,7 +464,9 @@ input[type='file'] {
 	}
 	.header {
 		h1 {
-			font-size: 3em !important;
+			display: flex;
+			align-items: center;
+			font-size: 2.5em !important;
 		}
 		p {
 			right: 20px !important;

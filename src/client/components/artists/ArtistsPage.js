@@ -77,7 +77,7 @@ class ArtistsPage extends Component {
 		let { artists, selectedArtists } = this.state;
 
 		return (
-			<div className="container" style={{ paddingBottom: player.track ? '50px' : '20px' }}>
+			<div className="container" style={{ paddingBottom: player.track ? '60px' : '20px' }}>
 				<ArtistHeader
 					artist={artist}
 					selectedArtists={selectedArtists}
@@ -86,9 +86,11 @@ class ArtistsPage extends Component {
 					savingPlaylist={savingPlaylist}
 				/>
 				<ArtistList artists={artists} onClickAdd={this.handleAddArtist} />
-				<Button onClick={this.createPlaylist}>
-					{savingPlaylist ? 'Creating Playlist...' : 'Create Playlist'}
-				</Button>
+				{selectedArtists.length > 1 && (
+					<Button onClick={this.createPlaylist}>
+						{savingPlaylist ? 'Creating Playlist...' : 'Create Playlist'}
+					</Button>
+				)}
 			</div>
 		);
 	};
