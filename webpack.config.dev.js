@@ -2,6 +2,7 @@ const webpack = require('webpack');
 const common = require('./webpack.config.js');
 const path = require('path');
 const merge = require('webpack-merge');
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
 module.exports = merge(common, {
 	mode: 'development',
@@ -20,6 +21,6 @@ module.exports = merge(common, {
 	},
 	plugins: [
 		new webpack.HotModuleReplacementPlugin({ multiStep: true }),
-		// new BundleAnalyzerPlugin(),
+		// new BundleAnalyzerPlugin()
 	],
 });

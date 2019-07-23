@@ -12,16 +12,13 @@ import { faCheckCircle, faExclamationCircle } from '@fortawesome/free-solid-svg-
 import isEmpty from 'lodash/isEmpty';
 
 class AlertMessage extends Component {
-	constructor(props) {
-		super(props);
-		this.state = { active: false, alert: {} };
-	}
+	state = { active: false, alert: {} };
 
 	componentWillReceiveProps = nextProps => {
 		if (nextProps.alert !== this.props.alert) {
 			this.setState({ alert: nextProps.alert, active: !isEmpty(nextProps.alert) ? true : false }, () => {
 				if (this.state.active) {
-					setTimeout(() => this.hideAlert(), 10000);
+					setTimeout(() => this.hideAlert(), 8000);
 				}
 			});
 		}
@@ -32,27 +29,32 @@ class AlertMessage extends Component {
 		this.props.actions.hideAlert();
 	};
 
+	handleClick = () => {
+		let { alert } = this.state;
+		if (alert.link) {
+			window.location = alert.link;
+		} else {
+			this.hideAlert();
+		}
+	};
+
 	render() {
 		let { alert } = this.state;
-
-		let icon = alert.status == 'error' ? faExclamationCircle : faCheckCircle;
-
-		return (
-			<div onClick={this.hideAlert}>
+		return !isEmpty(alert) ? (
+			<div onClick={this.handleClick}>
 				<Notification
 					isActive={this.state.active}
-					title={
-						alert.title ? (
-							<>
-								<FontAwesomeIcon icon={icon} /> {alert.title}
-							</>
-						) : (
-							''
-						)
+					title={<FontAwesomeIcon icon={alert.status == 'error' ? faExclamationCircle : faCheckCircle} />}
+					message={
+						<>
+							<strong>{alert.title}</strong>
+							<p>{alert.message}</p>
+						</>
 					}
-					message={alert.message || ''}
 				/>
 			</div>
+		) : (
+			<div />
 		);
 	}
 }

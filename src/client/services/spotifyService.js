@@ -21,7 +21,7 @@ class SpotifyService {
 
 	static getRelatedArtists(id) {
 		const url = `${endpoints.SPOTIFY_BASE_URL}${endpoints.ARTISTS}/${id}/related-artists`;
-		return axios.get(url).then(response => response.data);
+		return axios.get(url).then(response => response.data.artists);
 	}
 
 	static getTrack(id) {
@@ -44,11 +44,15 @@ class SpotifyService {
 			const url = `${endpoints.SPOTIFY_BASE_URL}${endpoints.ARTISTS}/${artist}/albums`;
 			return axios.get(url).then(response => {
 				let monthOld = moment().subtract(1, 'month');
-				let recentAlbums = response.data.items.filter(album =>
-					moment(new Date(album.release_date)).isAfter(monthOld)
-				);
+				let recentAlbums = response.data.items
+					.filter(album => moment(new Date(album.release_date)).isAfter(monthOld))
+					.map(async album => {
+						let isSaved = await this.checkIsSaved(album.uri);
+						album.is_saved = isSaved;
+						return album;
+					});
 
-				return recentAlbums;
+				return Promise.all(recentAlbums);
 			});
 		});
 
@@ -75,10 +79,14 @@ class SpotifyService {
 		const recommendedUrl = `${endpoints.SPOTIFY_BASE_URL}/recommendations?limit=10&${params}`;
 		return axios.get(recommendedUrl).then(response => {
 			let tracks = response.data.tracks;
-			return tracks.map(track => {
-				track.seed = lastArtists; // track seeded artists
-				return track;
-			});
+			return Promise.all(
+				tracks.map(async track => {
+					let isSaved = await this.checkIsSaved(track.uri);
+					track.is_saved = isSaved;
+					track.seed = lastArtists; // track seeded artists
+					return track;
+				})
+			);
 		});
 	}
 
@@ -88,6 +96,13 @@ class SpotifyService {
 		let id = uri.split(':')[2];
 		const url = `${endpoints.SPOTIFY_BASE_URL}/me/${type}s?ids=${id}`;
 		return axios.put(url).then(response => response.data);
+	}
+
+	static checkIsSaved(uri) {
+		let type = uri.split(':')[1];
+		let id = uri.split(':')[2];
+		const url = `${endpoints.SPOTIFY_BASE_URL}/me/${type}s/contains?ids=${id}`;
+		return axios.get(url).then(response => response.data[0]);
 	}
 
 	/* PLAYLIST */
@@ -108,7 +123,7 @@ class SpotifyService {
 
 				let allTracks = Promise.all(tracks);
 				return allTracks;
-				break;
+
 			case 'track':
 				const url = `${endpoints.SPOTIFY_BASE_URL}${endpoints.TRACKS}/${selection}`;
 				return axios.get(url).then(response => {
@@ -119,7 +134,6 @@ class SpotifyService {
 					}?market=US&limit=50&seed_artists=${artists}&seed_tracks=${track.id}`;
 					return axios.get(url).then(response => [response.data.tracks]);
 				});
-				break;
 		}
 	}
 
@@ -158,6 +172,11 @@ class SpotifyService {
 	}
 
 	/* PLAYER */
+	static getPlayer() {
+		const url = `${endpoints.SPOTIFY_BASE_URL}/me${endpoints.PLAYER}`;
+		return axios.get(url).then(response => response.data);
+	}
+
 	static playTrack(uri, id, position_ms) {
 		const url = `${endpoints.SPOTIFY_BASE_URL}/me${endpoints.PLAYER}/play`;
 		const body = {
@@ -177,6 +196,22 @@ class SpotifyService {
 	static pauseTrack() {
 		const url = `${endpoints.SPOTIFY_BASE_URL}/me${endpoints.PLAYER}/pause`;
 		return axios.put(url).then(() => {
+			const url = `${endpoints.SPOTIFY_BASE_URL}/me${endpoints.PLAYER}`;
+			return axios.get(url).then(response => response.data);
+		});
+	}
+
+	static prevTrack() {
+		const url = `${endpoints.SPOTIFY_BASE_URL}/me${endpoints.PLAYER}/previous`;
+		return axios.post(url).then(() => {
+			const url = `${endpoints.SPOTIFY_BASE_URL}/me${endpoints.PLAYER}`;
+			return axios.get(url).then(response => response.data);
+		});
+	}
+
+	static nextTrack() {
+		const url = `${endpoints.SPOTIFY_BASE_URL}/me${endpoints.PLAYER}/next`;
+		return axios.post(url).then(() => {
 			const url = `${endpoints.SPOTIFY_BASE_URL}/me${endpoints.PLAYER}`;
 			return axios.get(url).then(response => response.data);
 		});

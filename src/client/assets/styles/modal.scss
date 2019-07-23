@@ -16,6 +16,8 @@
 }
 .view-modal {
 	width: auto !important;
+	z-index: 99999 !important;
+	min-width: 90vw;
 	-webkit-overflow-scrolling: touch;
 }
 .modal-md {

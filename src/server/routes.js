@@ -1,5 +1,5 @@
-import request from 'request';
-import querystring from 'query-string';
+const request = require('request');
+const querystring = require('query-string');
 
 function routes(app) {
 	app.use(require('./index.js'));

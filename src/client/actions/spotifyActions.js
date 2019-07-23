@@ -1,5 +1,6 @@
 import * as types from '../constants/ActionTypes';
 import { push } from 'react-router-redux';
+import capitalize from 'lodash/capitalize';
 import spotifyService from '../services/spotifyService';
 
 function receiveArtist(artist) {
@@ -84,10 +85,18 @@ function receiveSearchResults(results) {
 	};
 }
 
-function playTrackSuccess(track) {
+function getPlayerSuccess(player) {
+	return {
+		type: types.GET_PLAYER_SUCCESS,
+		player,
+	};
+}
+
+function playTrackSuccess(track, progress_ms) {
 	return {
 		type: types.PLAY_TRACK_SUCCESS,
 		track,
+		progress_ms,
 	};
 }
 
@@ -105,13 +114,14 @@ function seekTrackSuccess(position_ms) {
 	};
 }
 
-export function showAlert(title, message, status) {
+export function showAlert(status, title, message, link) {
 	return {
 		type: types.SHOW_ALERT_SUCCESS,
 		alert: {
+			status,
 			title,
 			message,
-			status,
+			link,
 		},
 	};
 }
@@ -199,7 +209,10 @@ export function addToLibrary(uri) {
 	return dispatch => {
 		return spotifyService
 			.addToLibrary(uri)
-			.then(response => dispatch(showAlert('Track was successfully added to library', null, 'success')))
+			.then(response => {
+				let type = uri.split(':')[1];
+				dispatch(showAlert('success', `${capitalize(type)} was successfully added to library.`));
+			})
 			.catch(err => err);
 	};
 }
@@ -241,6 +254,7 @@ export function updatePlaylist(id, tracks, upload, REDIRECT = true) {
 						})
 						.catch(err => err);
 				}
+				dispatch(showAlert('success', 'Playlist was successfully updated.'));
 				dispatch(savingPlaylist());
 				REDIRECT && dispatch(push('/'));
 			})
@@ -264,6 +278,7 @@ export function savePlaylist(title, isPublic, tracks, upload) {
 							})
 							.catch(err => err);
 					}
+					dispatch(showAlert('success', 'Playlist was successfully created.'));
 					dispatch(savingPlaylist());
 					dispatch(push('/'));
 				});
@@ -280,33 +295,60 @@ export function addCoverImage(playlist, upload) {
 			.catch(err => err);
 }
 
+/* PLAYER */
+export function getPlayer() {
+	return dispatch =>
+		spotifyService
+			.getPlayer()
+			.then(player => dispatch(getPlayerSuccess(player)))
+			.catch(err => console.log(err));
+}
+
 export function playTrack(uri, id, progress_ms) {
 	return dispatch =>
 		spotifyService
 			.playTrack(uri, id, progress_ms)
-			.then(track => dispatch(playTrackSuccess(track)))
+			.then(track => dispatch(playTrackSuccess(track, progress_ms)))
 			.catch(err => {
 				let title = '';
+				let link = '';
 				let message = '';
 				switch (err.status) {
 					case 404: // spotify not open
 						title = 'Player not found';
-						message = 'Please open up Spotify to continue.';
+						message = 'Click here to open up Spotify.';
+						link = `spotify://${uri}`;
 						break;
 					case 403: // not premium
 						title = 'Upgrade to Premium';
 						message = 'Unable to access player for non-premium account.';
 						break;
 				}
-				dispatch(showAlert(title, message, 'error'));
+				dispatch(showAlert('error', title, message, link));
 			});
 }
 
-export function pauseTrack(uri) {
+export function pauseTrack() {
 	return dispatch =>
 		spotifyService
-			.pauseTrack(uri)
+			.pauseTrack()
 			.then(response => dispatch(pauseTrackSuccess(response.progress_ms)))
+			.catch(err => err);
+}
+
+export function prevTrack() {
+	return dispatch =>
+		spotifyService
+			.prevTrack()
+			.then(response => dispatch(playTrackSuccess(response.item)))
+			.catch(err => err);
+}
+
+export function nextTrack() {
+	return dispatch =>
+		spotifyService
+			.nextTrack()
+			.then(response => dispatch(playTrackSuccess(response.item)))
 			.catch(err => err);
 }
 

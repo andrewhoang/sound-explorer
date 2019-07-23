@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPlayCircle, faPauseCircle } from '@fortawesome/free-regular-svg-icons';
 import { faHeart } from '@fortawesome/free-solid-svg-icons';
+import { faHeart as faHeartEmpty } from '@fortawesome/free-regular-svg-icons';
 import Card from './common/Card';
 
 import minBy from 'lodash/minBy';
@@ -11,6 +11,8 @@ import uniqBy from 'lodash/uniqBy';
 import isEmpty from 'lodash/isEmpty';
 
 class RecommendedList extends Component {
+	state = {};
+
 	handlePlayer = recommendedTrack => {
 		let { playing, track, isPremium } = this.props;
 		if (isPremium) {
@@ -22,6 +24,11 @@ class RecommendedList extends Component {
 				? this.props.onClickPlay(recommendedTrack.uri, recommendedTrack.id)
 				: null;
 		}
+	};
+
+	onClickLike = uri => {
+		this.setState({ [uri]: true });
+		this.props.onClickLike(uri);
 	};
 
 	render() {
@@ -37,6 +44,8 @@ class RecommendedList extends Component {
 					<div className="list">
 						{uniqBy(orderBy(tracks, 'release_date', 'desc'), 'name').map((recommendedTrack, i) => {
 							const isPlaying = playing && track == recommendedTrack.album.uri;
+							const isSaved = this.state[recommendedTrack.uri] || recommendedTrack.is_saved;
+
 							return (
 								<Card
 									key={i}
@@ -47,8 +56,15 @@ class RecommendedList extends Component {
 									subtext={recommendedTrack.artists.map(artist => artist.name).join(', ')}
 									actions={
 										<FontAwesomeIcon
-											icon={faHeart}
-											onClick={() => this.props.onClickLike(recommendedTrack.uri)}
+											icon={isSaved ? faHeart : faHeartEmpty}
+											onClick={() =>
+												isSaved
+													? this.props.showError(
+															'error',
+															'This track is already saved in your library.'
+													  )
+													: this.onClickLike(recommendedTrack.uri)
+											}
 										/>
 									}
 								/>

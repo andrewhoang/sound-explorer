@@ -9,10 +9,7 @@ import querystring from 'query-string';
 import Pullable from 'react-pullable';
 
 class App extends Component {
-	constructor(props) {
-		super(props);
-		this.state = { isAuth: false };
-	}
+	state = { isAuth: false };
 
 	componentDidMount = () => {
 		let params = querystring.parse(location.search);

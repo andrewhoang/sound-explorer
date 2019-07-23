@@ -12,7 +12,7 @@ import 'semantic-ui-css/semantic.min.css';
 import NewReleasesList from './NewReleasesList';
 import RecommendedList from './RecommendedList';
 import Loading from './common/LoadingWrapper';
-import { Row, Col, Button } from 'react-bootstrap';
+import { Row, Col } from 'react-bootstrap';
 import { Search } from 'semantic-ui-react';
 
 import capitalize from 'lodash/capitalize';
@@ -20,15 +20,7 @@ import uniqBy from 'lodash/uniqBy';
 import minBy from 'lodash/minBy';
 
 class Home extends Component {
-	constructor(props) {
-		super(props);
-		this.state = {
-			albums: [],
-			playing: false,
-			progress_ms: 0,
-			rendered: false,
-		};
-	}
+	state = { albums: [], playing: false, progress_ms: 0, rendered: false };
 
 	componentDidMount = () => {
 		let { user } = this.props;
@@ -53,14 +45,12 @@ class Home extends Component {
 		}
 	};
 
-	resetComponent = () => this.setState({ isLoading: false, results: false, value: '' });
+	resetComponent = () => this.setState({ loading: false, results: false, value: '' });
 
 	handleResultSelect = (e, { result }) => {
 		this.setState({ value: result.title, selected: result });
 		switch (result.type) {
 			case 'artist':
-				this.props.actions.getArtist(result.id);
-				this.props.actions.getRelatedArtists(result.id);
 				this.props.history.push(`/search?${result.type}=${result.id}`);
 				break;
 			case 'track':
@@ -73,12 +63,12 @@ class Home extends Component {
 
 	handleSearchChange = (e, { value }) => {
 		value && this.props.actions.search(['artist', 'track'], value);
-		this.setState({ isLoading: true, value });
+		this.setState({ loading: true, value });
 
 		setTimeout(() => {
 			if (this.state.value.length < 1) return this.resetComponent();
 
-			let artists = uniqBy(
+			const artists = uniqBy(
 				this.props.results[0].artists.items
 					.filter(artist => minBy(artist.images, 'height'))
 					.map(artist => ({
@@ -94,7 +84,7 @@ class Home extends Component {
 				'title'
 			);
 
-			let tracks = uniqBy(
+			const tracks = uniqBy(
 				this.props.results[1].tracks.items
 					.filter(track => minBy(track.album.images, 'height'))
 					.map(track => ({
@@ -109,39 +99,39 @@ class Home extends Component {
 				'title'
 			);
 
-			let categories = {};
-			artists.length &&
-				(categories['artists'] = {
-					name: 'Artists',
-					results: artists,
-				});
-			tracks.length &&
-				(categories['tracks'] = {
-					name: 'Tracks',
-					results: tracks,
-				});
+			const categories = {
+				...(artists.length && {
+					artists: {
+						name: 'Artists',
+						results: artists,
+					},
+				}),
+				...(tracks.length && {
+					tracks: {
+						name: 'Tracks',
+						results: tracks,
+					},
+				}),
+			};
 
-			this.setState({
-				isLoading: false,
-				results: categories,
-			});
+			this.setState({ loading: false, results: categories });
 		}, 800);
 	};
 
 	handlePlay = (track, id) => {
 		let progress_ms = track == this.state.track ? this.state.progress_ms : 0;
 		this.setState({ track });
-		this.props.playTrack(track, id, progress_ms);
+		this.props.actions.playTrack(track, id, progress_ms);
 	};
 
 	handlePause = track => {
 		this.setState({ track });
-		this.props.pauseTrack();
+		this.props.actions.pauseTrack();
 	};
 
 	render = () => {
-		const { albums, tracks, user, player, playerOpen, isMobile } = this.props;
-		const { value, results, isLoading, rendered, track } = this.state;
+		const { albums, tracks, user, player, isMobile } = this.props;
+		const { value, results, loading, rendered, track } = this.state;
 
 		const spotifyProps = {
 			onClickPlay: this.handlePlay,
@@ -155,20 +145,20 @@ class Home extends Component {
 
 		return (
 			<Loading rendered={rendered}>
-				<div className="container animated fadeIn" style={{ paddingBottom: playerOpen ? '60px' : '20px' }}>
+				<div className="container animated fadeIn" style={{ paddingBottom: player.track ? '60px' : '20px' }}>
 					<Row>
-						<Col md={12} xs={12} className="home header">
+						<div className="home header">
 							<Search
 								category
 								// open={true}
-								loading={isLoading}
+								loading={loading}
 								placeholder="Search by favorite artist or track"
 								onResultSelect={this.handleResultSelect}
 								onSearchChange={this.handleSearchChange}
 								results={results}
 								value={value}
 							/>
-						</Col>
+						</div>
 					</Row>
 					<div id="home-grid">
 						<NewReleasesList albums={albums} user={user} isMobile={isMobile} {...spotifyProps} />

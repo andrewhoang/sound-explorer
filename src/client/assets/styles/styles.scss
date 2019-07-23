@@ -7,6 +7,9 @@ $theme_navy: #2b2f3d;
 
 html {
 	scroll-behavior: smooth;
+	&::-webkit-scrollbar {
+		width: 0;
+	}
 }
 
 body {
@@ -116,6 +119,7 @@ a {
 .btn {
 	display: block;
 	background: $theme_green;
+	font-family: 'Open Sans';
 	color: $theme_white;
 	padding: 15px 30px;
 	margin: 20px auto;
@@ -127,6 +131,7 @@ a {
 	&:hover {
 		background: darken($theme_green, 5%) !important;
 		color: $theme_white !important;
+		transition: background 500ms;
 	}
 }
 
@@ -311,12 +316,13 @@ svg {
 	}
 	.card-actions {
 		z-index: 99999;
+		padding: 5px;
 		svg {
 			&.fa-heart {
 				font-size: 18px;
-				color: lighten($theme_black, 10%);
+				color: lighten($theme_black, 15%);
 				&:hover {
-					color: lighten($theme_black, 20%);
+					color: lighten($theme_black, 30%);
 				}
 			}
 		}
@@ -372,11 +378,11 @@ svg {
 		padding: 15px 0 !important;
 	}
 	.rt-tr-group {
-		background: #222 !important;
+		background: darken(#222, 1%) !important;
 		margin: 5px 10px;
 		border-radius: 5px;
 		border: none !important;
-		padding: 10px 15px;
+		padding: 5px 15px;
 		&:hover {
 			background: darken($theme_black, 1%) !important;
 		}
@@ -384,6 +390,9 @@ svg {
 			display: flex;
 			align-items: center;
 			white-space: unset;
+			img {
+				border-radius: 5px;
+			}
 			&:last-child {
 				justify-content: center;
 			}
@@ -415,8 +424,25 @@ svg {
 }
 
 .notification-bar {
-	z-index: 1;
 	background: $theme_green !important;
+	&.notification-bar-active {
+		z-index: 1;
+		.notification-bar-wrapper {
+			display: grid;
+			grid-template-columns: auto auto;
+			grid-column-gap: 10px;
+			padding-right: 10px;
+			.notification-bar-title {
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				font-size: 18px;
+			}
+			.notification-bar-message {
+				text-align: left;
+			}
+		}
+	}
 }
 
 input[type='file'] {
@@ -438,7 +464,9 @@ input[type='file'] {
 	}
 	.header {
 		h1 {
-			font-size: 3em !important;
+			display: flex;
+			align-items: center;
+			font-size: 2.5em !important;
 		}
 		p {
 			right: 20px !important;
@@ -459,9 +487,8 @@ input[type='file'] {
 		transform: translate(-50%, 0) !important;
 		background: $theme_green !important;
 		text-align: center;
-		width: 80vw !important;
 		.notification-bar-message {
-			display: block;
+			white-space: nowrap;
 		}
 	}
 
@@ -484,7 +511,6 @@ input[type='file'] {
 		display: grid;
 		grid-template-columns: 1fr;
 		grid-row-gap: 20px;
-		padding-top: 10px;
 		#new-releases {
 			border: 0 !important;
 			padding: 0;

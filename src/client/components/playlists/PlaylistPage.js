@@ -20,28 +20,28 @@ import isEmpty from 'lodash/isEmpty';
 import shuffle from 'lodash/shuffle';
 import uniqBy from 'lodash/uniqBy';
 
+const PLAYLIST_SIZE = 20;
+
 class Playlist extends Component {
-	constructor(props) {
-		super(props);
-		this.state = {
-			playlist: [],
-			playing: false,
-			uri: '',
-			title: 'Playlist',
-			isPublic: 'false',
-			progress_ms: 0,
-			error: false,
-		};
-	}
+	state = {
+		playlist: [],
+		playing: false,
+		uri: '',
+		title: 'Playlist',
+		isPublic: 'false',
+		progress_ms: 0,
+		error: false,
+	};
 
 	componentDidMount = () => {
-		if (!isEmpty(this.props.tracks)) {
-			let tracks = uniqBy(this.props.tracks.reduce((prev, curr) => prev.concat(curr)), 'name', 'artist');
-			let playlist = shuffle(tracks).slice(0, 20);
-			if (!isEmpty(this.props.track)) {
-				playlist.unshift(this.props.track);
+		let { track, tracks } = this.props;
+		if (!isEmpty(tracks)) {
+			let uniqTracks = uniqBy(tracks.reduce((prev, curr) => prev.concat(curr)), 'name', 'artist');
+			let playlist = shuffle(uniqTracks).slice(0, PLAYLIST_SIZE);
+			if (!isEmpty(track)) {
+				playlist.unshift(track);
 			}
-			this.setState({ tracks, playlist });
+			this.setState({ tracks: uniqTracks, playlist });
 		} else {
 			this.props.history.push('/');
 		}
@@ -49,7 +49,7 @@ class Playlist extends Component {
 
 	componentWillReceiveProps = nextProps => {
 		if (nextProps.player !== this.props.player) {
-			this.setState({ progress_ms: nextProps.player.progress_ms });
+			this.setState({ playing: nextProps.player.playing, progress_ms: nextProps.player.progress_ms });
 		}
 	};
 
@@ -80,13 +80,13 @@ class Playlist extends Component {
 
 	handlePlay = (track, id) => {
 		let progress_ms = track == this.state.track ? this.state.progress_ms : 0;
-		this.setState({ playing: true, track });
-		this.props.playTrack(track, id, progress_ms);
+		this.setState({ track });
+		this.props.actions.playTrack(track, id, progress_ms);
 	};
 
 	handlePause = track => {
-		this.setState({ playing: false, track });
-		this.props.pauseTrack();
+		this.setState({ track });
+		this.props.actions.pauseTrack();
 	};
 
 	handleMove = (direction, id) => {
@@ -171,7 +171,7 @@ class Playlist extends Component {
 	};
 
 	render = () => {
-		let { player, playlists, playerOpen, isMobile } = this.props;
+		let { player, playlists, isMobile } = this.props;
 		let { playlist, playing, track, upload, single } = this.state;
 
 		let modalBody = (
@@ -190,7 +190,7 @@ class Playlist extends Component {
 		};
 
 		return (
-			<div>
+			<>
 				{this.state.error && (
 					<Notification
 						isActive={this.state.error}
@@ -198,7 +198,7 @@ class Playlist extends Component {
 						message={'Please upload file no larger than 256 KB.'}
 					/>
 				)}
-				<div className="container" style={{ paddingBottom: playerOpen ? '50px' : '20px' }}>
+				<div className="container" style={{ paddingBottom: player.track ? '50px' : '20px' }}>
 					<input ref="upload" type="file" onChange={e => this.handleChangeImage(e)} />
 					<PlaylistHeader
 						playlist={playlist}
@@ -228,7 +228,7 @@ class Playlist extends Component {
 					modal={this.props.modal}
 					close={this.props.actions.hideModal}
 				/>
-			</div>
+			</>
 		);
 	};
 }

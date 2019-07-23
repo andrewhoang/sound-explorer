@@ -1,5 +1,5 @@
-import { Router } from 'express';
-import controller from './spotify.controller';
+const Router = require('express');
+const controller = require('./spotify.controller');
 
 const router = new Router();
 

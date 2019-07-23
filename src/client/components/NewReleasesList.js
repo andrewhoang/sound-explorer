@@ -9,12 +9,10 @@ import isEmpty from 'lodash/isEmpty';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHeart } from '@fortawesome/free-solid-svg-icons';
+import { faHeart as faHeartEmpty } from '@fortawesome/free-regular-svg-icons';
 
 class NewReleasesList extends Component {
-	constructor(props) {
-		super(props);
-		this.state = { albums: [], itemsToShow: 5, expanded: false };
-	}
+	state = { albums: [], itemsToShow: 5, expanded: false };
 
 	componentDidMount = () => {
 		this.setState({ albums: this.props.albums });
@@ -55,6 +53,11 @@ class NewReleasesList extends Component {
 		return album.available_markets.includes(country);
 	};
 
+	onClickLike = uri => {
+		this.setState({ [uri]: true });
+		this.props.onClickLike(uri);
+	};
+
 	render() {
 		let { playing, track, isMobile } = this.props;
 		let { albums, itemsToShow, expanded } = this.state;
@@ -72,6 +75,8 @@ class NewReleasesList extends Component {
 							.map((album, i) => {
 								const isPlaying = playing && track == album.uri;
 								const isAvailable = this.checkAvailability(album);
+								const isSaved = this.state[album.uri] || album.is_saved;
+
 								return (
 									<Card
 										key={i}
@@ -83,21 +88,24 @@ class NewReleasesList extends Component {
 											isAvailable
 												? this.toggle(album)
 												: this.props.showError(
-														'This track is currently unavailable in your country.',
-														'',
-														'error'
+														'error',
+														'This track is currently unavailable in your country.'
 												  );
 										}}
 										actions={
 											<FontAwesomeIcon
-												icon={faHeart}
+												icon={isSaved ? faHeart : faHeartEmpty}
 												onClick={() =>
-													isAvailable
-														? this.props.onClickLike(album.uri)
+													isSaved
+														? this.props.showError(
+																'error',
+																'This album is already saved in your library.'
+														  )
+														: isAvailable
+														? this.onClickLike(album.uri)
 														: this.props.showError(
-																'This track is currently unavailable in your country.',
-																'',
-																'error'
+																'error',
+																'This album is currently unavailable in your country.'
 														  )
 												}
 											/>
