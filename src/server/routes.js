@@ -13,6 +13,7 @@ function routes(app) {
 	 user-modify-playback-state
 	 user-read-playback-state
 	 user-top-read
+	 user-library-read
 	 user-follow-read
 	 ugc-image-upload
 	 user-read-recently-played
