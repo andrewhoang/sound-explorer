@@ -83,6 +83,7 @@
 		"event-stream": "^4.0.1",
 		"history": "^4.9.0",
 		"lodash": "^4.17.11",
+		"match-sorter": "^4.0.0",
 		"moment": "^2.22.2",
 		"prop-types": "^15.6.2",
 		"query-string": "^6.1.0",
@@ -109,6 +110,7 @@
 		"redux-throttle": "^0.1.1",
 		"redux-thunk": "^2.1.0",
 		"semantic-ui-css": "^2.4.0",
-		"semantic-ui-react": "^0.82.5"
+		"semantic-ui-react": "^0.82.5",
+		"styled-components": "^4.3.2"
 	}
 }

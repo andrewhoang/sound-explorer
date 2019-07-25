@@ -1,25 +1,36 @@
 import React from 'react';
-
-import 'react-table/react-table.css';
+import PropTypes from 'prop-types';
 
 import ReactTable from 'react-table';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus, faTrash, faChevronUp, faChevronDown } from '@fortawesome/free-solid-svg-icons';
 
+import 'react-table/react-table.css';
+
 import minBy from 'lodash/minBy';
 import moment from 'moment';
 
-const TrackList = ({ playlist, playing, track, onClickPlay, onClickPause, onClickAdd, onClickRemove, onClickMove }) => {
+const TrackList = ({
+	playlist,
+	playing,
+	track,
+	isPremium,
+	onClickPlay,
+	onClickPause,
+	onClickAdd,
+	onClickRemove,
+	onClickMove,
+}) => {
 	const columns = [
 		{
 			accessor: 'id',
 			sortable: false,
 			maxWidth: 60,
 			Cell: row => (
-				<span style={{ color: '#999' }}>
+				<>
 					<FontAwesomeIcon icon={faChevronUp} onClick={() => onClickMove('up', row.value)} />
 					<FontAwesomeIcon icon={faChevronDown} onClick={() => onClickMove('down', row.value)} />
-				</span>
+				</>
 			),
 		},
 		{
@@ -45,14 +56,14 @@ const TrackList = ({ playlist, playing, track, onClickPlay, onClickPause, onClic
 			Header: 'Duration',
 			accessor: 'duration_ms',
 			maxWidth: 100,
-			Cell: row => moment.utc(row.value).format('mm:ss'),
+			Cell: row => moment(row.value).format('mm:ss'),
 		},
 		{
 			accessor: 'id',
 			sortable: false,
 			maxWidth: 80,
 			Cell: row => (
-				<span>
+				<>
 					<FontAwesomeIcon
 						icon={faPlus}
 						className="table-action"
@@ -69,7 +80,7 @@ const TrackList = ({ playlist, playing, track, onClickPlay, onClickPause, onClic
 							onClickRemove(row.value);
 						}}
 					/>
-				</span>
+				</>
 			),
 		},
 	];
@@ -100,7 +111,7 @@ const TrackList = ({ playlist, playing, track, onClickPlay, onClickPause, onClic
 			getTdProps={(state, rowInfo, column) => {
 				return {
 					onClick: () => {
-						if (column.id !== 'id') {
+						if (isPremium && column.id !== 'id') {
 							return !playing
 								? onClickPlay(rowInfo.original.uri, rowInfo.original.id)
 								: playing && track === rowInfo.original.uri
@@ -114,6 +125,18 @@ const TrackList = ({ playlist, playing, track, onClickPlay, onClickPause, onClic
 			}}
 		/>
 	);
+};
+
+TrackList.propTypes = {
+	playlist: PropTypes.array,
+	playing: PropTypes.bool,
+	track: PropTypes.string,
+	isPremium: PropTypes.bool,
+	onClickPlay: PropTypes.func,
+	onClickPause: PropTypes.func,
+	onClickAdd: PropTypes.func,
+	onClickRemove: PropTypes.func,
+	onClickMove: PropTypes.func,
 };
 
 export default TrackList;

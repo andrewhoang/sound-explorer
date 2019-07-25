@@ -9,23 +9,23 @@ import * as spotifyActions from '../actions/spotifyActions';
 
 import 'semantic-ui-css/semantic.min.css';
 
+import Container from './styled/Container';
 import NewReleasesList from './NewReleasesList';
 import RecommendedList from './RecommendedList';
-import Loading from './common/LoadingWrapper';
-import { Row, Col } from 'react-bootstrap';
+import Loading from './LoadingWrapper';
+import Header from './styled/Header';
 import { Search } from 'semantic-ui-react';
 
-import capitalize from 'lodash/capitalize';
 import uniqBy from 'lodash/uniqBy';
 import minBy from 'lodash/minBy';
 
 class Home extends Component {
-	state = { albums: [], playing: false, progress_ms: 0, rendered: false };
+	state = { rendered: false };
 
 	componentDidMount = () => {
-		let { user } = this.props;
+		const { user } = this.props;
 		if (user && user.following) {
-			let artists = user.following.map(artist => artist.id);
+			const artists = user.following.map(artist => artist.id);
 			this.props.actions.getNewReleases(artists);
 		}
 
@@ -34,9 +34,9 @@ class Home extends Component {
 	};
 
 	componentWillReceiveProps = nextProps => {
-		let { user, player } = nextProps;
+		const { user, player } = nextProps;
 		if (user !== this.props.user) {
-			let artists = user.following.map(artist => artist.id);
+			const artists = user.following.map(artist => artist.id);
 			this.props.actions.getNewReleases(artists);
 		}
 
@@ -78,7 +78,7 @@ class Home extends Component {
 						image: minBy(artist.images, 'height').url,
 						description: artist.genres
 							.slice(0, 3)
-							.map((genre, i) => (i == 0 ? `${capitalize(genre)}` : ` ${capitalize(genre)}`))
+							.map((genre, i) => (i == 0 ? `${genre}` : ` ${genre}`))
 							.toString(),
 					})),
 				'title'
@@ -145,53 +145,49 @@ class Home extends Component {
 
 		return (
 			<Loading rendered={rendered}>
-				<div className="container animated fadeIn" style={{ paddingBottom: player.track ? '60px' : '20px' }}>
-					<Row>
-						<div className="home header">
-							<Search
-								category
-								// open={true}
-								loading={loading}
-								placeholder="Search by favorite artist or track"
-								onResultSelect={this.handleResultSelect}
-								onSearchChange={this.handleSearchChange}
-								results={results}
-								value={value}
-							/>
-						</div>
-					</Row>
+				<Container className="animated fadeIn" player={player.track}>
+					<Header className="home">
+						<Search
+							category
+							// open={true}
+							loading={loading}
+							placeholder="Search by favorite artist or track"
+							onResultSelect={this.handleResultSelect}
+							onSearchChange={this.handleSearchChange}
+							results={results}
+							value={value}
+						/>
+					</Header>
 					<div id="home-grid">
 						<NewReleasesList albums={albums} user={user} isMobile={isMobile} {...spotifyProps} />
 						<RecommendedList tracks={tracks} {...spotifyProps} />
 					</div>
-				</div>
+				</Container>
 			</Loading>
 		);
 	};
 }
 
 Home.propTypes = {
-	songs: PropTypes.object,
 	actions: PropTypes.object,
+	track: PropTypes.object,
+	tracks: PropTypes.array,
+	albums: PropTypes.array,
 	results: PropTypes.array,
+	player: PropTypes.object,
 };
 
-function mapStateToProps(state) {
-	return {
-		results: state.reducers.results,
-		albums: state.reducers.albums,
-		track: state.reducers.track,
-		tracks: state.reducers.recommendedTracks,
-		image: state.reducers.image,
-		player: state.reducers.player,
-	};
-}
+const mapStateToProps = state => ({
+	results: state.reducers.results,
+	albums: state.reducers.albums,
+	track: state.reducers.track,
+	tracks: state.reducers.recommendedTracks,
+	player: state.reducers.player,
+});
 
-function mapDispatchToProps(dispatch) {
-	return {
-		actions: bindActionCreators({ ...userActions, ...spotifyActions }, dispatch),
-	};
-}
+const mapDispatchToProps = dispatch => ({
+	actions: bindActionCreators({ ...userActions, ...spotifyActions }, dispatch),
+});
 
 export default withRouter(
 	connect(

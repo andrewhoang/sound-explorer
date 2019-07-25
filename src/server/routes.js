@@ -5,6 +5,9 @@ function routes(app) {
 	app.use(require('./index.js'));
 
 	const redirect_uri = process.env.REDIRECT_URI || 'http://localhost:3000/callback';
+	const client_id = process.env.SPOTIFY_CLIENT_ID;
+	const client_secret = process.env.SPOTIFY_CLIENT_SECRET;
+
 	const scope = `playlist-modify-private
 	 playlist-modify-public
 	 playlist-read-private
@@ -22,12 +25,7 @@ function routes(app) {
 	app.get('/login', (req, res) =>
 		res.redirect(
 			'https://accounts.spotify.com/authorize?' +
-				querystring.stringify({
-					response_type: 'code',
-					client_id: process.env.SPOTIFY_CLIENT_ID,
-					scope,
-					redirect_uri,
-				})
+				querystring.stringify({ response_type: 'code', client_id, scope, redirect_uri })
 		)
 	);
 
@@ -41,15 +39,12 @@ function routes(app) {
 				grant_type: 'authorization_code',
 			},
 			headers: {
-				Authorization:
-					'Basic ' +
-					Buffer.from(process.env.SPOTIFY_CLIENT_ID + ':' + process.env.SPOTIFY_CLIENT_SECRET).toString(
-						'base64'
-					),
+				Authorization: 'Basic ' + Buffer.from(`${client_id}:${client_secret}`).toString('base64'),
 			},
 			json: true,
 		};
 		request.post(authOptions, (error, response, body) => {
+			console.log(body);
 			const access_token = body.access_token;
 			const refresh_token = body.refresh_token;
 			const uri = process.env.FRONTEND_URI || 'http://localhost:3000/';

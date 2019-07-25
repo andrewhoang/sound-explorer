@@ -1,95 +1,105 @@
-import React, { Component } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
+import PropTypes from 'prop-types';
 
-import { Row, Col, Button } from 'react-bootstrap';
+import Header from '../styled/Header';
+import Button from '../styled/Button';
 import { Form, Radio } from 'semantic-ui-react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPencilAlt } from '@fortawesome/free-solid-svg-icons';
 
 import maxBy from 'lodash/maxBy';
 
-class PlaylistHeader extends Component {
-	constructor(props) {
-		super(props);
-		this.state = { new: false };
-	}
+const PlaylistHeader = ({
+	playlist,
+	owner,
+	upload,
+	isPublic,
+	onChangeStatus,
+	onUploadImage,
+	onNamePlaylist,
+	onSavePlaylist,
+	onUpdatePlaylist,
+	savingPlaylist,
+}) => {
+	const title = useRef('name');
 
-	componentDidMount = () => {
-		let name = this.props.owner && this.props.owner.split(' ');
-		this.name.focus();
-		if (name) this.name.innerHTML = `${name[0]}'s Playlist`;
+	const [isNew, setIsNew] = useState(null);
+
+	useEffect(() => {
+		let name = owner && owner.split(' ');
+		title.current.focus();
+		if (name) title.current.innerHTML = `${name[0]}'s Playlist`;
 		var sel = window.getSelection();
-		sel.collapse(this.name.firstChild, this.name.innerHTML.length);
+		sel.collapse(title.current.firstChild, title.current.innerHTML.length);
+	}, []);
+
+	const savePlaylist = () => {
+		setIsNew(true);
+		onSavePlaylist();
 	};
 
-	savePlaylist = () => {
-		this.props.onSavePlaylist();
-		this.setState({ newPlaylist: true });
+	const updatePlaylist = () => {
+		setIsNew(false);
+		onUpdatePlaylist();
 	};
 
-	updatePlaylist = () => {
-		this.props.onUpdatePlaylist();
-		this.setState({ newPlaylist: false });
-	};
+	let image = upload ? upload : playlist[0] && maxBy(playlist[0].album.images, 'height').url;
 
-	render() {
-		let { playlist, upload, isPublic, onChangeStatus, onUploadImage, onNamePlaylist, savingPlaylist } = this.props;
+	return (
+		<Header
+			className="custom"
+			image={`linear-gradient(rgba(0, 0, 0, 0.8), rgba(34, 34, 34, 0.8)), url('${image}')`}
+		>
+			<h1>
+				<div contentEditable="true" onBlur={onNamePlaylist} ref={title} />
+			</h1>
+			<Form>
+				<Form.Field>
+					<Radio
+						label="Public"
+						name="radioGroup"
+						value="true"
+						checked={isPublic == 'true'}
+						onChange={onChangeStatus}
+					/>
+				</Form.Field>
+				<Form.Field>
+					<Radio
+						label="Private"
+						name="radioGroup"
+						value="false"
+						checked={isPublic == 'false'}
+						onChange={onChangeStatus}
+					/>
+				</Form.Field>
+			</Form>
+			<div className="flex -row">
+				<Button onClick={savePlaylist}>
+					{savingPlaylist && isNew ? 'Saving to Spotify...' : 'Create Playlist'}
+				</Button>
+				<Button onClick={updatePlaylist}>
+					{savingPlaylist && !isNew ? 'Adding to Playlist...' : 'Add To Playlist'}
+				</Button>
+			</div>
+			<p onClick={onUploadImage}>
+				<FontAwesomeIcon icon={faPencilAlt} />
+				Edit Cover Image
+			</p>
+		</Header>
+	);
+};
 
-		let image = upload ? upload : playlist[0] && maxBy(playlist[0].album.images, 'height').url;
+PlaylistHeader.propTypes = {
+	playlist: PropTypes.array,
+	owner: PropTypes.string,
+	upload: PropTypes.string,
+	isPublic: PropTypes.string,
+	onChangeStatus: PropTypes.func,
+	onUploadImage: PropTypes.func,
+	onNamePlaylist: PropTypes.func,
+	onSavePlaylist: PropTypes.func,
+	onUpdatePlaylist: PropTypes.func,
+	savingPlaylist: PropTypes.bool,
+};
 
-		return (
-			<Row>
-				<Col
-					md={12}
-					className="header custom"
-					style={{
-						backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.8), rgba(34, 34, 34, 0.8)), url('${image}')`,
-					}}
-				>
-					<h1>
-						<div
-							contentEditable="true"
-							onBlur={onNamePlaylist}
-							ref={input => {
-								this.name = input;
-							}}
-						/>
-					</h1>
-					<Form>
-						<Form.Field>
-							<Radio
-								label="Public"
-								name="radioGroup"
-								value="true"
-								checked={isPublic == 'true'}
-								onChange={onChangeStatus}
-							/>
-						</Form.Field>
-						<Form.Field>
-							<Radio
-								label="Private"
-								name="radioGroup"
-								value="false"
-								checked={isPublic == 'false'}
-								onChange={onChangeStatus}
-							/>
-						</Form.Field>
-					</Form>
-					<div className="flex-row">
-						<Button onClick={this.savePlaylist}>
-							{/* <FontAwesomeIcon icon={faSpotify} /> */}
-							{savingPlaylist && this.state.newPlaylist ? 'Saving to Spotify...' : 'Create Playlist'}
-						</Button>
-						<Button onClick={this.updatePlaylist}>
-							{savingPlaylist && !this.state.newPlaylist ? 'Adding to Playlist...' : 'Add To Playlist'}
-						</Button>
-					</div>
-					<p onClick={onUploadImage}>
-						<FontAwesomeIcon icon={faPencilAlt} />
-						Edit Cover Image
-					</p>
-				</Col>
-			</Row>
-		);
-	}
-}
 export default PlaylistHeader;
