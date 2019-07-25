@@ -1,15 +1,10 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+
 import WaveModal from 'reboron/WaveModal';
-import autoBind from 'react-autobind';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTimes } from '@fortawesome/free-solid-svg-icons';
 
 class Modal extends Component {
-	constructor(props) {
-		super(props);
-		this.state = {};
-		autoBind(this);
-	}
+	state = {};
 
 	componentWillUpdate = nextProps => {
 		const { id, modal } = nextProps;
@@ -29,7 +24,7 @@ class Modal extends Component {
 	};
 
 	render() {
-		const { id, size, title, body, footer } = this.props;
+		const { id, title, body } = this.props;
 
 		return (
 			<div id={id}>
@@ -39,12 +34,18 @@ class Modal extends Component {
 							<h2 className="modal-title">{title}</h2>
 						</div>
 						<div className="modal-body">{body}</div>
-						<div className="modal-footer" />
 					</div>
 				</WaveModal>
 			</div>
 		);
 	}
 }
+
+Modal.propTypes = {
+	modal: PropTypes.object,
+	id: PropTypes.string,
+	title: PropTypes.string,
+	body: PropTypes.object,
+};
 
 export default Modal;

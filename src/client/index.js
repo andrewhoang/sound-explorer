@@ -4,12 +4,13 @@ import { Provider } from 'react-redux';
 import { configureStore } from './store/configureStore';
 import { ConnectedRouter } from 'react-router-redux';
 import { createBrowserHistory } from 'history';
-import axios from 'axios';
-
-import userService from './services/userService';
-import { register } from '../../src-sw';
 
 import App from './components/App';
+import UserService from './services/userService';
+
+import axios from 'axios';
+import { register } from '../../src-sw';
+
 import 'animate.css';
 import './assets/images';
 import './assets/styles/styles.scss';
@@ -30,18 +31,19 @@ axios.interceptors.response.use(
 	response => response,
 	error => {
 		if (error.response.status === 401) {
-			const token = localStorage.getItem('refresh_token');
-			if (token && localStorage.getItem('access_token')) {
-				return userService.refreshToken(token).then(response => {
+			const refreshToken = localStorage.getItem('refresh_token');
+			if (refreshToken) {
+				/* Use refresh token to get another access token*/
+				return UserService.refreshToken(refreshToken).then(response => {
 					error.config.headers['Authorization'] = `Bearer ${response.access_token}`;
 					if (response.access_token) {
 						return axios.request(error.config);
 					} else {
-						return userService.logOut();
+						return UserService.logOut();
 					}
 				});
 			} else {
-				return userService.logOut();
+				return UserService.logOut();
 			}
 		}
 		return Promise.reject(error.response);

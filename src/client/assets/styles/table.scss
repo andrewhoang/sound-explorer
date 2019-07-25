@@ -1,0 +1,57 @@
+.ReactTable {
+	border: 0;
+	margin: 15px 0;
+	font-size: 1rem;
+	* {
+		box-shadow: none !important;
+		outline: none;
+	}
+	.rt-thead {
+		border-bottom: 1px solid rgba(255, 255, 255, 0.03) !important;
+		margin: 0 10px 5px 10px;
+		padding: 0 15px;
+	}
+	.rt-th {
+		text-align: left;
+		opacity: 0.7;
+		text-transform: uppercase;
+		letter-spacing: 1px;
+		font-size: 12px;
+		padding: 15px 0 !important;
+	}
+	.rt-tr-group {
+		background: darken(#222, 1%) !important;
+		margin: 5px 10px;
+		border-radius: 5px;
+		border: none !important;
+		padding: 5px 15px;
+		&:hover {
+			background: darken($theme_black, 1%) !important;
+		}
+		.rt-td {
+			display: flex;
+			align-items: center;
+			white-space: unset;
+			img {
+				border-radius: 5px;
+			}
+			svg {
+				color: #999;
+				&:hover {
+					color: #eee;
+				}
+			}
+			&:last-child {
+				justify-content: center;
+			}
+		}
+		&:hover {
+			cursor: pointer;
+		}
+	}
+	.table-action {
+		&:hover {
+			cursor: pointer;
+		}
+	}
+}

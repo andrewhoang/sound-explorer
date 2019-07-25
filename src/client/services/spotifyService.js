@@ -3,6 +3,7 @@ import axios from 'axios';
 import moment from 'moment';
 import shuffle from 'lodash/shuffle';
 import uniq from 'lodash/uniq';
+import find from 'lodash/find';
 
 class SpotifyService {
 	static search(types, value) {
@@ -114,11 +115,22 @@ class SpotifyService {
 	static createPlaylist(type, selection) {
 		switch (type) {
 			case 'artist':
+				/* Get 50 tracks from each selected artists and return promise */
 				let tracks = selection.map(artist => {
-					const url = `${endpoints.SPOTIFY_BASE_URL}${endpoints.SEARCH}?q=${type}:${
-						artist.name
-					}&type=track&market=US&limit=50`;
-					return axios.get(url).then(response => response.data.tracks.items);
+					const url = `${endpoints.SPOTIFY_BASE_URL}${endpoints.SEARCH}?q=artist:'${artist.name.replace(
+						/ /g,
+						'%20'
+					)}'&type=track&market=US&limit=50`;
+					return axios.get(url).then(response => {
+						/* Response will include tracks with matching artist name, so filtering is needed */
+						let filteredTracks = response.data.tracks.items.filter(track => {
+							if (find(track.artists, { name: artist.name })) {
+								return track;
+							}
+						});
+
+						return filteredTracks;
+					});
 				});
 
 				let allTracks = Promise.all(tracks);

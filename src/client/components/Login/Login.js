@@ -1,14 +1,12 @@
 import React from 'react';
 import { withRouter } from 'react-router-dom';
 
-import { Button } from 'react-bootstrap';
+import Button from '../styled/Button';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faRocket } from '@fortawesome/free-solid-svg-icons';
 
 const signIn = () => {
-	window.location = window.location.origin.includes('localhost')
-		? `http://localhost:3000/login`
-		: 'https://soundexplorer.herokuapp.com/login';
+	window.location = `${window.location.origin}/login`;
 };
 
 const Login = () => (

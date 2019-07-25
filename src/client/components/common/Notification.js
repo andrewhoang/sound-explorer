@@ -33,6 +33,7 @@ class AlertMessage extends Component {
 		let { alert } = this.state;
 		if (alert.link) {
 			window.location = alert.link;
+			this.hideAlert();
 		} else {
 			this.hideAlert();
 		}

@@ -7,12 +7,12 @@ import { withRouter, Link } from 'react-router-dom';
 import * as spotifyActions from '../../actions/spotifyActions';
 import * as modalActions from '../../actions/modalActions';
 
+import Container from '../styled/Container';
 import PlaylistHeader from './PlaylistHeader';
 import UserPlaylists from './UserPlaylists';
 import Modal from '../common/Modal';
 import TrackList from './TrackList';
 import MobileTrackList from './MobileTrackList';
-import { Notification } from 'react-notification';
 
 import findIndex from 'lodash/findIndex';
 import find from 'lodash/find';
@@ -30,14 +30,13 @@ class Playlist extends Component {
 		title: 'Playlist',
 		isPublic: 'false',
 		progress_ms: 0,
-		error: false,
 	};
 
 	componentDidMount = () => {
-		let { track, tracks } = this.props;
+		const { track, tracks } = this.props;
 		if (!isEmpty(tracks)) {
-			let uniqTracks = uniqBy(tracks.reduce((prev, curr) => prev.concat(curr)), 'name', 'artist');
-			let playlist = shuffle(uniqTracks).slice(0, PLAYLIST_SIZE);
+			const uniqTracks = uniqBy(tracks.reduce((prev, curr) => prev.concat(curr)), 'name', 'artist');
+			const playlist = shuffle(uniqTracks).slice(0, PLAYLIST_SIZE);
 			if (!isEmpty(track)) {
 				playlist.unshift(track);
 			}
@@ -58,8 +57,7 @@ class Playlist extends Component {
 	};
 
 	handleNamePlaylist = e => {
-		let title = e.target.innerHTML;
-		this.setState({ title });
+		this.setState({ title: e.target.innerHTML });
 	};
 
 	handleChangeStatus = (e, { value }) => {
@@ -67,11 +65,10 @@ class Playlist extends Component {
 	};
 
 	handleRemove = id => {
-		let tracks = this.state.tracks;
-		let playlist = this.state.playlist;
+		const { tracks, playlist } = this.state;
 
-		let trackIdx = findIndex(playlist, { id: id });
-		let newTrack = shuffle(tracks).slice(0, 1);
+		const trackIdx = findIndex(playlist, { id: id });
+		const newTrack = shuffle(tracks).slice(0, 1);
 
 		playlist[trackIdx] = newTrack[0];
 
@@ -79,7 +76,7 @@ class Playlist extends Component {
 	};
 
 	handlePlay = (track, id) => {
-		let progress_ms = track == this.state.track ? this.state.progress_ms : 0;
+		const progress_ms = track == this.state.track ? this.state.progress_ms : 0;
 		this.setState({ track });
 		this.props.actions.playTrack(track, id, progress_ms);
 	};
@@ -90,10 +87,10 @@ class Playlist extends Component {
 	};
 
 	handleMove = (direction, id) => {
-		let playlist = this.state.playlist;
+		const playlist = this.state.playlist;
 
-		let trackIdx = findIndex(playlist, { id: id });
-		let track = find(playlist, { id: id });
+		const trackIdx = findIndex(playlist, { id: id });
+		const track = find(playlist, { id: id });
 
 		playlist.splice(trackIdx, 1);
 		if (direction == 'up') {
@@ -106,7 +103,7 @@ class Playlist extends Component {
 	};
 
 	handleCreate = () => {
-		let { title, isPublic, playlist, base64 } = this.state;
+		const { title, isPublic, playlist, base64 } = this.state;
 		this.props.actions.savePlaylist(title, isPublic, playlist, base64);
 	};
 
@@ -118,7 +115,7 @@ class Playlist extends Component {
 
 	// Add tracks to user's selected playlist
 	handleUpdate = async id => {
-		let { playlist, base64 } = this.state;
+		const { playlist, base64 } = this.state;
 		await this.props.actions.updatePlaylist(id, playlist, base64);
 		await this.props.actions.hideModal('savePlaylistModal');
 	};
@@ -137,9 +134,9 @@ class Playlist extends Component {
 		await this.props.actions.updatePlaylist(id, [addingTrack], base64, false);
 		await this.props.actions.hideModal('savePlaylistModal');
 
-		let trackIdx = findIndex(playlist, { id: addingTrack.id });
+		const trackIdx = findIndex(playlist, { id: addingTrack.id });
 
-		let newTrack = shuffle(tracks).slice(0, 1);
+		const newTrack = shuffle(tracks).slice(0, 1);
 
 		playlist[trackIdx] = newTrack[0];
 
@@ -152,7 +149,7 @@ class Playlist extends Component {
 
 	getBase64 = file => {
 		return new Promise((resolve, reject) => {
-			let reader = new FileReader();
+			const reader = new FileReader();
 			reader.readAsDataURL(file);
 			reader.onload = () => resolve(reader.result);
 			reader.onerror = error => reject(error);
@@ -160,28 +157,29 @@ class Playlist extends Component {
 	};
 
 	handleChangeImage = e => {
-		let file = e.target.files[0];
+		const file = e.target.files[0];
 		if (file.size <= 256000) {
 			this.getBase64(file).then(data => {
-				this.setState({ upload: URL.createObjectURL(file), base64: data, error: false });
+				this.setState({ upload: URL.createObjectURL(file), base64: data });
 			});
 		} else {
-			this.setState({ error: true });
+			this.props.actions.showAlert('error', 'File is too large!', 'Please upload file no larger than 256 KB.');
 		}
 	};
 
 	render = () => {
-		let { player, playlists, isMobile } = this.props;
-		let { playlist, playing, track, upload, single } = this.state;
+		const { playlists, savingPlaylist, player, user, isMobile } = this.props;
+		const { playlist, playing, track, upload, single } = this.state;
 
-		let modalBody = (
+		const modalBody = (
 			<UserPlaylists playlists={playlists} onClickUpdate={!single ? this.handleUpdate : this.handleAdd} />
 		);
 
-		let playlistProps = {
+		const playlistProps = {
 			playlist: playlist,
 			track: track,
 			playing: playing,
+			isPremium: user.product === 'premium',
 			onClickPlay: this.handlePlay,
 			onClickPause: this.handlePause,
 			onClickAdd: this.onAddTrack,
@@ -190,37 +188,28 @@ class Playlist extends Component {
 		};
 
 		return (
-			<>
-				{this.state.error && (
-					<Notification
-						isActive={this.state.error}
-						title={'File is too large!'}
-						message={'Please upload file no larger than 256 KB.'}
-					/>
-				)}
-				<div className="container" style={{ paddingBottom: player.track ? '50px' : '20px' }}>
-					<input ref="upload" type="file" onChange={e => this.handleChangeImage(e)} />
-					<PlaylistHeader
-						playlist={playlist}
-						owner={this.props.user.display_name}
-						isPublic={this.state.isPublic}
-						onNamePlaylist={this.handleNamePlaylist}
-						onChangeStatus={this.handleChangeStatus}
-						onUploadImage={this.handleUploadImage}
-						onSavePlaylist={this.handleCreate}
-						onUpdatePlaylist={this.onUpdatePlaylist}
-						upload={upload}
-						savingPlaylist={this.props.savingPlaylist}
-					/>
-					{!isMobile ? <TrackList {...playlistProps} /> : <MobileTrackList {...playlistProps} />}
-					<Link
-						to={'/'}
-						className="pull-center"
-						style={{ margin: '30px auto', textTransform: 'uppercase', fontWeight: 700 }}
-					>
-						Back to Home
-					</Link>
-				</div>
+			<Container className="animated fadeIn" player={player.track}>
+				<input ref="upload" type="file" onChange={e => this.handleChangeImage(e)} />
+				<PlaylistHeader
+					playlist={playlist}
+					owner={user.display_name}
+					isPublic={this.state.isPublic}
+					onNamePlaylist={this.handleNamePlaylist}
+					onChangeStatus={this.handleChangeStatus}
+					onUploadImage={this.handleUploadImage}
+					onSavePlaylist={this.handleCreate}
+					onUpdatePlaylist={this.onUpdatePlaylist}
+					upload={upload}
+					savingPlaylist={savingPlaylist}
+				/>
+				{!isMobile ? <TrackList {...playlistProps} /> : <MobileTrackList {...playlistProps} />}
+				<Link
+					to={'/'}
+					className="pull-center"
+					style={{ margin: '30px auto', textTransform: 'uppercase', fontWeight: 700 }}
+				>
+					Back to Home
+				</Link>
 				<Modal
 					id="savePlaylistModal"
 					title="Add to Playlist"
@@ -228,20 +217,25 @@ class Playlist extends Component {
 					modal={this.props.modal}
 					close={this.props.actions.hideModal}
 				/>
-			</>
+			</Container>
 		);
 	};
 }
 
 Playlist.propTypes = {
 	actions: PropTypes.object,
+	user: PropTypes.object,
+	track: PropTypes.object,
 	tracks: PropTypes.array,
+	playlists: PropTypes.array,
+	player: PropTypes.object,
+	savingPlaylist: PropTypes.bool,
+	isMobile: PropTypes.bool,
 };
 
 function mapStateToProps(state) {
 	return {
 		user: state.reducers.user,
-		results: state.reducers.results,
 		track: state.reducers.track,
 		tracks: state.reducers.tracks,
 		playlists: state.reducers.playlists,

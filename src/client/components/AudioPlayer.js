@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
@@ -39,7 +40,7 @@ class AudioPlayer extends Component {
 			if (start) this.timeLapsed += 1000;
 		});
 
-		if (timeLapsed >= player.track && player.track.duration_ms) {
+		if (player.track && timeLapsed >= player.track.duration_ms) {
 			this.setState({ time: 0 });
 			this.props.actions.pauseTrack();
 			clearInterval(this.setTimer);
@@ -73,10 +74,11 @@ class AudioPlayer extends Component {
 	// Allow user to skip around track
 	seekTrack = (e, player) => {
 		e.stopPropagation();
-		let time = e.nativeEvent.offsetX;
-		let length = player.clientWidth;
+		console.log(player);
+		const time = e.nativeEvent.offsetX;
+		const length = player.clientWidth;
 
-		let timeLapsed = parseInt((time / length) * this.props.player.track.duration_ms);
+		const timeLapsed = parseInt((time / length) * this.props.player.track.duration_ms);
 		this.setState({ time: timeLapsed });
 
 		this.timeLapsed = timeLapsed;
@@ -84,7 +86,7 @@ class AudioPlayer extends Component {
 	};
 
 	displayTime = () => {
-		let time =
+		const time =
 			this.props.player &&
 			`${moment(this.state.time).format('mm:ss')} | ${moment(this.props.player.track.duration_ms).format(
 				'mm:ss'
@@ -97,11 +99,15 @@ class AudioPlayer extends Component {
 		const { player } = this.props;
 		const { playing, track, progress_ms } = player;
 
-		let fraction = player && player.track && this.state.time / player.track.duration_ms;
-		let toggleWidth = `${(fraction * 100).toFixed(4)}%`;
+		const fraction = player && player.track && this.state.time / player.track.duration_ms;
+		const toggleWidth = `${(fraction * 100).toFixed(4)}%`;
 
 		return player && player.track ? (
-			<div className="player-container" onClick={() => (window.location = `spotify://${player.track.uri}`)}>
+			<div
+				ref={i => (this.container = i)}
+				className="player-container"
+				onClick={() => (window.location = `spotify://${player.track.uri}`)}
+			>
 				<Row className="audio-player">
 					<Col md={1} xs={1} className="controls">
 						<FontAwesomeIcon icon={faBackward} onClick={this.prevTrack} />
@@ -136,17 +142,18 @@ class AudioPlayer extends Component {
 	}
 }
 
-function mapStateToProps(state) {
-	return {
-		player: state.reducers.player,
-	};
-}
+AudioPlayer.propTypes = {
+	actions: PropTypes.object,
+	player: PropTypes.object,
+};
 
-function mapDispatchToProps(dispatch) {
-	return {
-		actions: bindActionCreators({ ...spotifyActions }, dispatch),
-	};
-}
+const mapStateToProps = state => ({
+	player: state.reducers.player,
+});
+
+const mapDispatchToProps = dispatch => ({
+	actions: bindActionCreators({ ...spotifyActions }, dispatch),
+});
 
 export default connect(
 	mapStateToProps,

@@ -6,9 +6,11 @@ import { withRouter } from 'react-router-dom';
 
 import * as spotifyActions from '../../actions/spotifyActions';
 
+import Container from '../styled/Container';
 import ArtistHeader from './ArtistHeader';
 import ArtistList from './ArtistList';
-import Button from 'react-bootstrap/lib/Button';
+import SelectedArtistList from './SelectedArtistList';
+import Button from '../styled/Button';
 
 import find from 'lodash/find';
 import findIndex from 'lodash/findIndex';
@@ -24,26 +26,27 @@ class ArtistsPage extends Component {
 	state = { artists: [], selectedArtists: [] };
 
 	componentDidMount = () => {
-		let id = queryString.parse(location.search).artist;
-
-		this.props.actions.getArtist(id);
-		this.props.actions.getRelatedArtists(id);
+		const { artist } = queryString.parse(location.search);
+		this.props.actions.getArtist(artist);
+		this.props.actions.getRelatedArtists(artist);
 	};
 
 	componentWillReceiveProps = nextProps => {
 		if (nextProps.artist !== this.props.artist) {
-			let selectedArtists = [nextProps.artist];
+			const selectedArtists = [nextProps.artist];
 			this.setState({ selectedArtists });
 		}
 
 		if (nextProps.artists !== this.props.artists) {
-			let relatedArtists = nextProps.artists.filter(artist => {
+			const relatedArtists = nextProps.artists.filter(artist => {
+				/* Filter out artists already selected */
 				if (find(this.state.selectedArtists, { id: artist.id })) {
 					return false;
 				}
 				return artist;
 			});
-			let artists = [...this.state.artists, ...relatedArtists];
+
+			const artists = [...this.state.artists, ...relatedArtists];
 			this.setState({ artists: uniqBy(artists, 'id') });
 		}
 	};
@@ -51,7 +54,7 @@ class ArtistsPage extends Component {
 	handleAddArtist = id => {
 		let { artists, selectedArtists } = this.state;
 
-		let artistIdx = findIndex(artists, { id });
+		const artistIdx = findIndex(artists, { id });
 
 		selectedArtists = [].concat(artists.splice(artistIdx, 1), selectedArtists);
 
@@ -61,7 +64,7 @@ class ArtistsPage extends Component {
 	handleRemoveArtist = id => {
 		let { artists, selectedArtists } = this.state;
 
-		let artistIdx = findIndex(selectedArtists, { id });
+		const artistIdx = findIndex(selectedArtists, { id });
 
 		artists = [].concat(selectedArtists.splice(artistIdx, 1), artists);
 
@@ -73,45 +76,38 @@ class ArtistsPage extends Component {
 	};
 
 	render = () => {
-		let { artist, player, savingPlaylist } = this.props;
-		let { artists, selectedArtists } = this.state;
+		const { artist, player, savingPlaylist } = this.props;
+		const { artists, selectedArtists } = this.state;
 
 		return (
-			<div className="container" style={{ paddingBottom: player.track ? '60px' : '20px' }}>
-				<ArtistHeader
-					artist={artist}
-					selectedArtists={selectedArtists}
-					onClickRemove={this.handleRemoveArtist}
-					onClickCreate={this.createPlaylist}
-					savingPlaylist={savingPlaylist}
-				/>
+			<Container className="animated fadeIn" player={player.track}>
+				<ArtistHeader artist={artist} onClickCreate={this.createPlaylist} savingPlaylist={savingPlaylist} />
+				<SelectedArtistList artists={selectedArtists} parent={artist} onClickRemove={this.handleRemoveArtist} />
 				<ArtistList artists={artists} onClickAdd={this.handleAddArtist} />
 				{selectedArtists.length > 1 && (
 					<Button onClick={this.createPlaylist}>
 						{savingPlaylist ? 'Creating Playlist...' : 'Create Playlist'}
 					</Button>
 				)}
-			</div>
+			</Container>
 		);
 	};
 }
 
 ArtistsPage.propTypes = {
 	actions: PropTypes.object,
-	results: PropTypes.array,
 	artist: PropTypes.object,
-	artists: PropTypes.object,
-	player: PropTypes.player,
+	artists: PropTypes.array,
+	player: PropTypes.object,
 	savingPlaylist: PropTypes.bool,
 };
 
 function mapStateToProps(state) {
 	return {
-		results: state.reducers.results,
 		artist: state.reducers.artist,
 		artists: state.reducers.artists,
-		savingPlaylist: state.reducers.savingPlaylist,
 		player: state.reducers.player,
+		savingPlaylist: state.reducers.savingPlaylist,
 	};
 }
 

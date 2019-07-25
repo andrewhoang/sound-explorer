@@ -9,13 +9,6 @@ function getUserSuccess(user) {
 	};
 }
 
-// function getHeroImageSuccess(image) {
-// 	return {
-// 		type: types.GET_IMAGE_SUCCESS,
-// 		image,
-// 	};
-// }
-
 export function getUserProfile() {
 	return dispatch =>
 		userService
@@ -23,11 +16,3 @@ export function getUserProfile() {
 			.then(response => dispatch(getUserSuccess(response)))
 			.catch(err => console.error(err));
 }
-
-// export function getHeroImage() {
-// 	return dispatch =>
-// 		userService
-// 			.getHeroImage()
-// 			.then(response => dispatch(getHeroImageSuccess(response)))
-// 			.catch(err => console.error(err));
-// }
