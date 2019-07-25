@@ -3,7 +3,7 @@ import { Switch } from 'react-router-dom';
 
 import RouteComponent from './routes/Route';
 import MainRoute from './routes/MainRoute';
-import Login from './login/Login';
+import Login from './login/LoginPage';
 import ErrorWrapper from './ErrorWrapper';
 
 import querystring from 'query-string';
