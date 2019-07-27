@@ -258,7 +258,7 @@ export function updatePlaylist(id, tracks, upload, REDIRECT = true) {
 				dispatch(savingPlaylist());
 				REDIRECT && dispatch(push('/'));
 			})
-			.catch(err => err);
+			.catch(err => dispatch(savingPlaylist()));
 	};
 }
 

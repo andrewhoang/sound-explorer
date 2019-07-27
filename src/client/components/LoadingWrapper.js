@@ -14,7 +14,7 @@ const Loading = ({ rendered, children }) =>
 
 Loading.propTypes = {
 	rendered: PropTypes.bool,
-	children: PropTypes.array,
+	children: PropTypes.object,
 };
 
 export default Loading;

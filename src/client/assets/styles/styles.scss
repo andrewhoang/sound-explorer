@@ -145,12 +145,15 @@ svg {
 }
 
 .selected-row {
-	margin: -15px -15px 15px -15px;
+	margin: -15px -15px 15px 0px;
 	display: flex;
 	width: 100%;
-	// min-height: 45px;
 	overflow-x: auto;
 	list-style: none;
+	scroll-behavior: smooth;
+	&:empty {
+		min-height: 1px;
+	}
 	&::-webkit-scrollbar {
 		height: 5px !important;
 	}
@@ -252,6 +255,15 @@ input[type='file'] {
 				padding: 0 20px;
 				opacity: 0.5;
 			}
+		}
+	}
+}
+
+@media screen and (max-width: 400px) {
+	.flex.-row {
+		.btn {
+			padding: 15px 20px;
+			font-size: 12px !important;
 		}
 	}
 }

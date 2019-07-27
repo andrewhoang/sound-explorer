@@ -20,7 +20,7 @@ const Container = styled.div`
 		overflow-x: hidden;
 		padding-left: 0;
 		padding-right: 0;
-		padding-bottom: ${props => (props.player ? '60px' : '20px')};
+		padding-bottom: ${props => (props.player ? '50px' : '20px')};
 		-webkit-overflow-scrolling: touch;
 		h6 {
 			display: block !important;
