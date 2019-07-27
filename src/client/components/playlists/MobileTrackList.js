@@ -43,7 +43,7 @@ const MobileTrackList = ({
 					}}
 					actions={
 						<>
-							<FontAwesomeIcon icon={faPlus} onClick={() => onClickAdd(item.id)} />
+							<FontAwesomeIcon icon={faPlus} onClick={() => onClickAdd(item)} />
 							<FontAwesomeIcon icon={faTimes} onClick={() => onClickRemove(item.id)} />
 						</>
 					}

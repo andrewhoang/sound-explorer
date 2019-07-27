@@ -69,10 +69,18 @@ const Header = styled.div`
 		h1 {
 			display: flex;
 			align-items: center;
-			font-size: 2.5em !important;
+			font-size: 2.7em !important;
 		}
 		p {
 			right: 20px !important;
+		}
+	}
+
+	@media screen and (max-width: 400px) {
+		h1 {
+			display: flex;
+			align-items: center;
+			font-size: 2.5em !important;
 		}
 	}
 `;
