@@ -36,12 +36,10 @@ const NewReleasesList = ({
 
 	const togglePlayer = album => {
 		if (isPremium) {
-			playing && track !== album.uri
+			(playing && track !== album.uri) || !playing
 				? onClickPlay(album.uri, album.id)
 				: playing && track == album.uri
 				? onClickPause(album.uri)
-				: !playing
-				? onClickPlay(album.uri, album.id)
 				: null;
 		}
 	};
