@@ -7,7 +7,6 @@ import { Switch, withRouter } from 'react-router-dom';
 import * as userActions from '../../actions/userActions';
 
 import RouteComponent from './Route';
-import Container from '../styled/Container';
 import Home from '../Home';
 import ArtistsPage from '../artists/ArtistsPage';
 import PlaylistPage from '../playlists/PlaylistPage';

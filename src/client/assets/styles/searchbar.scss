@@ -8,19 +8,77 @@
 		width: 50%;
 		input {
 			border-radius: 10px;
-			padding: 15px !important;
+			padding-top: 15px !important;
+			padding-bottom: 15px !important;
 		}
 	}
 	.results {
-		z-index: 999999;
-		.image {
-			width: auto !important;
-		}
+		// grid-template-columns: repeat(2, 1fr);
+		grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+		position: relative;
+		background: transparent;
 		&.visible {
-			display: block;
+			display: grid !important;
 			position: relative !important;
 			margin: 10px auto;
+			border-radius: 10px !important;
 			width: 50%;
+			overflow: hidden;
+			&:after {
+				content: '';
+				position: absolute;
+				left: 0;
+				top: 0;
+				right: 0;
+				bottom: 0;
+				background: rgba(255, 255, 255, 0.9) !important;
+				z-index: -1;
+			}
+		}
+		.category {
+			display: flex !important;
+			background: transparent !important;
+			flex-direction: column;
+			.name {
+				// border-bottom: none !important;
+				padding: 20px 0px !important;
+				margin: 0 15px;
+				width: auto !important;
+				font-size: 1.2em !important;
+				font-family: 'Open Sans' !important;
+			}
+			.results {
+				border: none !important;
+				width: 100% !important;
+				background: transparent !important;
+				.result {
+					border-radius: 5px;
+					display: flex;
+					align-items: center;
+					.content {
+						overflow: hidden;
+						margin: 0;
+						.title,
+						.description {
+							font-family: 'Open Sans' !important;
+							margin-left: 15px;
+							text-overflow: ellipsis;
+							overflow: hidden;
+						}
+					}
+					.image {
+						width: auto !important;
+						overflow: visible;
+						img {
+							border-radius: 4px;
+						}
+					}
+					&:hover {
+						background: rgba(255, 255, 255, 0.3) !important;
+					}
+					border: none !important;
+				}
+			}
 		}
 		.content {
 			.description {
@@ -28,12 +86,6 @@
 				overflow: hidden;
 				text-overflow: ellipsis;
 				max-width: 100%;
-			}
-		}
-		.category {
-			display: table !important;
-			.results {
-				width: 100% !important;
 			}
 		}
 	}
@@ -44,9 +96,21 @@
 		width: 80% !important;
 	}
 	.results {
+		grid-template-columns: 1fr !important;
+		&.visible {
+			display: table !important;
+			position: relative !important;
+			margin: 10px auto;
+			width: 80% !important;
+		}
 		.result {
 			font-size: 0.9em !important;
 			width: 100% !important;
+			display: block !important;
+			.title,
+			.description {
+				margin-left: 0px !important;
+			}
 		}
 		.content {
 			margin: 0 !important;
@@ -56,12 +120,6 @@
 			object-fit: cover;
 			height: 40px;
 			width: 40px;
-		}
-		&.visible {
-			display: block;
-			position: relative !important;
-			margin: 10px auto;
-			width: 80% !important;
 		}
 		.category {
 			background: transparent;

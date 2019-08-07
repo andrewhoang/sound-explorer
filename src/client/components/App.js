@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { Component } from 'react';
 import { Switch } from 'react-router-dom';
+import { hot } from 'react-hot-loader/root';
 
 import RouteComponent from './routes/Route';
 import MainRoute from './routes/MainRoute';
@@ -9,12 +10,10 @@ import ErrorWrapper from './ErrorWrapper';
 import querystring from 'query-string';
 import Pullable from 'react-pullable';
 
-const App = () => {
-	const [isAuth, setAuth] = useState(
-		localStorage.getItem('access_token') && localStorage.getItem('refresh_token') ? true : false
-	);
+class App extends Component {
+	state = { isAuth: false };
 
-	useEffect(() => {
+	componentDidMount = () => {
 		const { access_token, refresh_token } = querystring.parse(location.search);
 
 		if (access_token && refresh_token) {
@@ -23,26 +22,29 @@ const App = () => {
 		}
 
 		const isAuth = localStorage.getItem('access_token') && localStorage.getItem('refresh_token') ? true : false;
-		setAuth(isAuth);
-	}, []);
+		this.setState({ isAuth });
+	};
 
-	const handleRefresh = () => {
+	handleRefresh = () => {
 		window.location.reload();
 	};
 
-	return (
-		<Pullable onRefresh={handleRefresh} spinnerColor="#FFFFFF">
-			<ErrorWrapper>
-				<Switch>
-					{isAuth ? (
-						<RouteComponent path="/" component={MainRoute} auth={isAuth} />
-					) : (
-						<RouteComponent exact path="/" component={Login} />
-					)}
-				</Switch>
-			</ErrorWrapper>
-		</Pullable>
-	);
-};
+	render() {
+		const { isAuth } = this.state;
+		return (
+			<Pullable onRefresh={this.handleRefresh} spinnerColor="#FFFFFF">
+				<ErrorWrapper>
+					<Switch>
+						{isAuth ? (
+							<RouteComponent path="/" component={MainRoute} auth={isAuth} />
+						) : (
+							<RouteComponent exact path="/" component={Login} />
+						)}
+					</Switch>
+				</ErrorWrapper>
+			</Pullable>
+		);
+	}
+}
 
-export default App;
+export default hot(App);

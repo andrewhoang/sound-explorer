@@ -31,6 +31,7 @@ app.use(
 		hot: true,
 		publicPath: webpackConfig.output.publicPath,
 		stats: 'errors-only',
+		logLevel: 'silent',
 	})
 );
 
@@ -51,6 +52,4 @@ setInterval(() => https.get('https://soundexplorer.herokuapp.com/'), 1800000);
 
 app.get('/*', (req, res) => res.sendFile(path.join(__dirname, '../index.html')));
 
-app.listen(process.env.PORT || 3000, () =>
-	console.log(`\nListening at http://localhost:${process.env.PORT || 3000}\n`)
-);
+app.listen(process.env.PORT || 3000, () => console.log(`\nListening on port ${process.env.PORT || 3000}\n`));

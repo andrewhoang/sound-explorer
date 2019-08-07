@@ -10,10 +10,10 @@ import * as spotifyActions from '../actions/spotifyActions';
 import 'semantic-ui-css/semantic.min.css';
 
 import Container from './styled/Container';
-import NewReleasesList from './NewReleasesList';
-import RecommendedList from './RecommendedList';
 import Loading from './LoadingWrapper';
 import Header from './styled/Header';
+import NewReleasesList from './NewReleasesList';
+import RecommendedList from './RecommendedList';
 import { Search } from 'semantic-ui-react';
 
 import uniqBy from 'lodash/uniqBy';
@@ -144,8 +144,9 @@ class Home extends Component {
 				<Container className="animated fadeIn" player={player.track}>
 					<Header className="home">
 						<Search
-							category
 							// open
+							input={{ icon: 'search', iconPosition: 'left' }}
+							category
 							loading={loading}
 							placeholder="Search by favorite artist or track"
 							onResultSelect={this.handleResultSelect}

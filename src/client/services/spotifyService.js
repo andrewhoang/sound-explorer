@@ -112,7 +112,7 @@ class SpotifyService {
 		return axios.get(url).then(response => response.data.items);
 	}
 
-	static createPlaylist(type, selection) {
+	static async createPlaylist(type, selection) {
 		switch (type) {
 			case 'artist':
 				/* Get 50 tracks from each selected artists and return promise */
@@ -138,14 +138,20 @@ class SpotifyService {
 
 			case 'track':
 				const url = `${endpoints.SPOTIFY_BASE_URL}${endpoints.TRACKS}/${selection}`;
-				return axios.get(url).then(response => {
-					let track = response.data;
-					let artists = track.artists.map(artist => artist.id).toString();
-					const url = `${endpoints.SPOTIFY_BASE_URL}${
-						endpoints.RECOMMENDATIONS
-					}?market=US&limit=50&seed_artists=${artists}&seed_tracks=${track.id}`;
-					return axios.get(url).then(response => [response.data.tracks]);
-				});
+				let trackResponse = await axios.get(url);
+				let track = trackResponse.data;
+				/* * * * * * * * * * * * * * * * * * * * * */
+				const featuresUrl = `${endpoints.SPOTIFY_BASE_URL}${endpoints.AUDIO_FEATURES}/${track.id}`;
+				let featuresResponse = await axios.get(featuresUrl);
+				let features = featuresResponse.data;
+				/* * * * * * * * * * * * * * * * * * * * * */
+				let artist = track.artists[0].id;
+				const recommendedUrl = `${endpoints.SPOTIFY_BASE_URL}${
+					endpoints.RECOMMENDATIONS
+				}?market=US&limit=50&seed_artists=${artist}&seed_tracks=${track.id}&target_danceability=${
+					features.danceability
+				}&target_energy=${features.energy}`;
+				return axios.get(recommendedUrl).then(response => [response.data.tracks]);
 		}
 	}
 

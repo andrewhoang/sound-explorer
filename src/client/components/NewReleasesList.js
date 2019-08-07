@@ -11,7 +11,6 @@ import { faHeart as faHeartEmpty } from '@fortawesome/free-regular-svg-icons';
 import minBy from 'lodash/minBy';
 import orderBy from 'lodash/orderBy';
 import uniqBy from 'lodash/uniqBy';
-import isEmpty from 'lodash/isEmpty';
 
 const NewReleasesList = ({
 	playing,
@@ -34,6 +33,10 @@ const NewReleasesList = ({
 			: setState(prevState => ({ ...prevState, itemsToShow: 5 }));
 	}, [isMobile]);
 
+	// useEffect(() => {
+	// 	setState(prevState => ({ ...prevState, itemsToShow: albums.length }));
+	// }, [albums]);
+
 	const togglePlayer = album => {
 		if (isPremium) {
 			(playing && track !== album.uri) || !playing
@@ -46,7 +49,7 @@ const NewReleasesList = ({
 
 	/* Mobile Only */
 	const toggleShow = () => {
-		state.itemsToShow === 5
+		itemsToShow === 5
 			? setState(prevState => ({ ...prevState, itemsToShow: albums.length, expanded: true }))
 			: setState(prevState => ({ ...prevState, itemsToShow: 5, expanded: false }));
 	};
@@ -63,52 +66,48 @@ const NewReleasesList = ({
 		return { isPlaying, isSaved, isAvailable };
 	};
 
+	const renderItems = () =>
+		uniqBy(orderBy(albums, 'release_date', 'desc'), 'name')
+			.slice(0, itemsToShow)
+			.map(album => {
+				const { isPlaying, isAvailable, isSaved } = getAlbumInfo(album);
+				return (
+					<Card
+						key={album.id}
+						image={minBy(album.images, 'height').url}
+						style={{ color: isPlaying ? '#1db954' : 'white' }}
+						title={album.name}
+						subtext={album.artists.map(artist => artist.name).join(', ')}
+						onClickCard={() => {
+							isAvailable
+								? togglePlayer(album)
+								: showError('error', 'This track is currently unavailable in your country.');
+						}}
+						actions={
+							<FontAwesomeIcon
+								icon={isSaved ? faHeart : faHeartEmpty}
+								onClick={() =>
+									isSaved
+										? showError('error', 'This album is already saved in your library.')
+										: isAvailable
+										? handleLike(album.uri)
+										: showError('error', 'This album is currently unavailable in your country.')
+								}
+							/>
+						}
+					/>
+				);
+			});
+
 	return (
 		<div id="new-releases">
 			<div className="heading">
 				<h2 className="flex">New Releases</h2>
 				<p>Based on artists you follow</p>
 			</div>
-			{!isEmpty(albums) ? (
+			{albums.length ? (
 				<List>
-					{uniqBy(orderBy(albums, 'release_date', 'desc'), 'name')
-						.slice(0, itemsToShow)
-						.map((album, i) => {
-							const { isPlaying, isAvailable, isSaved } = getAlbumInfo(album);
-
-							return (
-								<Card
-									key={i}
-									image={minBy(album.images, 'height').url}
-									style={{ color: isPlaying ? '#1db954' : 'white' }}
-									title={album.name}
-									subtext={album.artists.map(artist => artist.name).join(', ')}
-									onClickCard={() => {
-										isAvailable
-											? togglePlayer(album)
-											: showError(
-													'error',
-													'This track is currently unavailable in your country.'
-											  );
-									}}
-									actions={
-										<FontAwesomeIcon
-											icon={isSaved ? faHeart : faHeartEmpty}
-											onClick={() =>
-												isSaved
-													? showError('error', 'This album is already saved in your library.')
-													: isAvailable
-													? handleLike(album.uri)
-													: showError(
-															'error',
-															'This album is currently unavailable in your country.'
-													  )
-											}
-										/>
-									}
-								/>
-							);
-						})}
+					{renderItems()}
 					{isMobile && (
 						<p className="see-more" onClick={toggleShow}>
 							{expanded ? 'See less' : 'See more'}

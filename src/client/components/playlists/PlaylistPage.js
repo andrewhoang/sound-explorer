@@ -159,9 +159,10 @@ class Playlist extends Component {
 
 	handleSort = sorted => {
 		let { playlist } = this.state;
-		const direction = sorted[0].desc ? 'desc' : 'asc';
-		playlist = orderBy(playlist, sorted[0].id, direction);
-		this.setState({ playlist });
+		if (sorted) {
+			const direction = sorted[0].desc ? 'desc' : 'asc';
+			this.setState({ playlist: orderBy(playlist, sorted[0].id, direction) });
+		}
 	};
 
 	handleChangeImage = e => {
