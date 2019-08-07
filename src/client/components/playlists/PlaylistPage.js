@@ -19,6 +19,7 @@ import find from 'lodash/find';
 import isEmpty from 'lodash/isEmpty';
 import shuffle from 'lodash/shuffle';
 import uniqBy from 'lodash/uniqBy';
+import orderBy from 'lodash/orderBy';
 
 const PLAYLIST_SIZE = 20;
 
@@ -87,7 +88,7 @@ class Playlist extends Component {
 	};
 
 	handleMove = (direction, id) => {
-		const playlist = this.state.playlist;
+		const { playlist } = this.state;
 
 		const trackIdx = findIndex(playlist, { id: id });
 		const track = find(playlist, { id: id });
@@ -156,6 +157,14 @@ class Playlist extends Component {
 		});
 	};
 
+	handleSort = sorted => {
+		let { playlist } = this.state;
+		if (sorted) {
+			const direction = sorted[0].desc ? 'desc' : 'asc';
+			this.setState({ playlist: orderBy(playlist, sorted[0].id, direction) });
+		}
+	};
+
 	handleChangeImage = e => {
 		const file = e.target.files[0];
 		if (file.size <= 256000) {
@@ -185,6 +194,7 @@ class Playlist extends Component {
 			onClickAdd: this.onAddTrack,
 			onClickRemove: this.handleRemove,
 			onClickMove: this.handleMove,
+			onSortChange: this.handleSort,
 		};
 
 		return (

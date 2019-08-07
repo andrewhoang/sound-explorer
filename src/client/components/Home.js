@@ -10,10 +10,10 @@ import * as spotifyActions from '../actions/spotifyActions';
 import 'semantic-ui-css/semantic.min.css';
 
 import Container from './styled/Container';
-import NewReleasesList from './NewReleasesList';
-import RecommendedList from './RecommendedList';
 import Loading from './LoadingWrapper';
 import Header from './styled/Header';
+import NewReleasesList from './NewReleasesList';
+import RecommendedList from './RecommendedList';
 import { Search } from 'semantic-ui-react';
 
 import uniqBy from 'lodash/uniqBy';
@@ -24,6 +24,7 @@ class Home extends Component {
 
 	componentDidMount = () => {
 		const { user } = this.props;
+
 		if (user && user.following) {
 			const artists = user.following.map(artist => artist.id);
 			this.props.actions.getNewReleases(artists);
@@ -47,20 +48,6 @@ class Home extends Component {
 
 	resetComponent = () => this.setState({ loading: false, results: false, value: '' });
 
-	handleResultSelect = (e, { result }) => {
-		this.setState({ value: result.title, selected: result });
-		switch (result.type) {
-			case 'artist':
-				this.props.history.push(`/search?${result.type}=${result.id}`);
-				break;
-			case 'track':
-				this.props.history.push(`/playlist`);
-				this.props.actions.getTrack(result.id);
-				this.props.actions.createPlaylist('track', result.id);
-				break;
-		}
-	};
-
 	handleSearchChange = (e, { value }) => {
 		value && this.props.actions.search(['artist', 'track'], value);
 		this.setState({ loading: true, value });
@@ -76,10 +63,7 @@ class Home extends Component {
 						id: artist.id,
 						title: artist.name,
 						image: minBy(artist.images, 'height').url,
-						description: artist.genres
-							.slice(0, 3)
-							.map((genre, i) => (i == 0 ? `${genre}` : ` ${genre}`))
-							.toString(),
+						description: artist.genres.slice(0, 3).join(', '),
 					})),
 				'title'
 			);
@@ -92,9 +76,7 @@ class Home extends Component {
 						id: track.id,
 						title: track.name,
 						image: minBy(track.album.images, 'height').url,
-						description: track.artists
-							.map((artist, i) => (i == 0 ? artist.name : ` ${artist.name}`))
-							.toString(),
+						description: track.artists.map(artist => artist.name).join(', '),
 					})),
 				'title'
 			);
@@ -118,7 +100,21 @@ class Home extends Component {
 		}, 800);
 	};
 
+	handleResultSelect = (e, { result }) => {
+		switch (result.type) {
+			case 'artist':
+				this.props.history.push(`/search?artist=${result.id}`);
+				break;
+			case 'track':
+				this.props.history.push(`/playlist`);
+				this.props.actions.getTrack(result.id);
+				this.props.actions.createPlaylist('track', result.id);
+				break;
+		}
+	};
+
 	handlePlay = (track, id) => {
+		/* If track is current track, set current time, else set to 0 */
 		let progress_ms = track == this.state.track ? this.state.progress_ms : 0;
 		this.setState({ track });
 		this.props.actions.playTrack(track, id, progress_ms);
@@ -138,7 +134,7 @@ class Home extends Component {
 			onClickPause: this.handlePause,
 			onClickLike: this.props.actions.addToLibrary,
 			showError: this.props.actions.showAlert,
-			track: track,
+			track,
 			playing: player.playing,
 			isPremium: user.product == 'premium',
 		};
@@ -148,8 +144,9 @@ class Home extends Component {
 				<Container className="animated fadeIn" player={player.track}>
 					<Header className="home">
 						<Search
+							// open
+							input={{ icon: 'search', iconPosition: 'left' }}
 							category
-							// open={true}
 							loading={loading}
 							placeholder="Search by favorite artist or track"
 							onResultSelect={this.handleResultSelect}

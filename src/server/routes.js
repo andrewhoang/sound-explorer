@@ -44,7 +44,6 @@ function routes(app) {
 			json: true,
 		};
 		request.post(authOptions, (error, response, body) => {
-			console.log(body);
 			const access_token = body.access_token;
 			const refresh_token = body.refresh_token;
 			const uri = process.env.FRONTEND_URI || 'http://localhost:3000/';

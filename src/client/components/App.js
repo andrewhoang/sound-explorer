@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Switch } from 'react-router-dom';
+import { hot } from 'react-hot-loader/root';
 
 import RouteComponent from './routes/Route';
 import MainRoute from './routes/MainRoute';
@@ -28,9 +29,8 @@ class App extends Component {
 		window.location.reload();
 	};
 
-	render = () => {
+	render() {
 		const { isAuth } = this.state;
-
 		return (
 			<Pullable onRefresh={this.handleRefresh} spinnerColor="#FFFFFF">
 				<ErrorWrapper>
@@ -44,7 +44,7 @@ class App extends Component {
 				</ErrorWrapper>
 			</Pullable>
 		);
-	};
+	}
 }
 
-export default App;
+export default hot(App);

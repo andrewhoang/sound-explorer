@@ -20,7 +20,7 @@ module.exports = merge(common, {
 		publicPath: '/',
 	},
 	plugins: [
-		new webpack.HotModuleReplacementPlugin({ multiStep: true }),
+		new webpack.HotModuleReplacementPlugin(),
 		// new BundleAnalyzerPlugin()
 	],
 });

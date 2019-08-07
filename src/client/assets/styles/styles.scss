@@ -13,6 +13,7 @@ html {
 }
 
 body {
+	background: $theme_black;
 	-webkit-user-select: none;
 	-webkit-tap-highlight-color: transparent;
 	-webkit-touch-callout: none;
@@ -145,7 +146,7 @@ svg {
 }
 
 .selected-row {
-	margin: -15px -15px 15px 0px;
+	margin: -15px -15px 15px -15px;
 	display: flex;
 	width: 100%;
 	overflow-x: auto;
@@ -168,6 +169,9 @@ svg {
 				cursor: pointer;
 			}
 		}
+	}
+	@media screen and (max-width: 989px) {
+		margin: -15px -15px 15px 0px !important;
 	}
 }
 

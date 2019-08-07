@@ -9,9 +9,7 @@ import Card from './common/Card';
 import List from './styled/List';
 
 import minBy from 'lodash/minBy';
-import orderBy from 'lodash/orderBy';
 import uniqBy from 'lodash/uniqBy';
-import isEmpty from 'lodash/isEmpty';
 
 const RecommendedList = ({ playing, track, tracks, isPremium, onClickPlay, onClickPause, onClickLike, showError }) => {
 	const [state, setState] = useState({});
@@ -34,12 +32,38 @@ const RecommendedList = ({ playing, track, tracks, isPremium, onClickPlay, onCli
 	};
 
 	const getTrackInfo = recommendedTrack => {
-		const isPlaying = playing && track == recommendedTrack.album.uri;
+		const isPlaying = playing && track == recommendedTrack.uri;
 		const isSaved = state[recommendedTrack.uri] || recommendedTrack.is_saved;
 		return { isPlaying, isSaved };
 	};
 
-	const listenedArtists = tracks[0] ? tracks[0].seed.join(', ') : false;
+	const renderItems = () =>
+		uniqBy(tracks, 'uri').map(track => {
+			const { isPlaying, isSaved } = getTrackInfo(track);
+
+			return (
+				<Card
+					key={track.id}
+					image={minBy(track.album.images, 'height').url}
+					style={{ color: isPlaying ? '#1db954' : 'white' }}
+					title={track.name}
+					subtext={track.artists.map(artist => artist.name).join(', ')}
+					onClickCard={() => handlePlayer(track)}
+					actions={
+						<FontAwesomeIcon
+							icon={isSaved ? faHeart : faHeartEmpty}
+							onClick={() =>
+								isSaved
+									? showError('error', 'This track is already saved in your library.')
+									: handleLike(track.uri)
+							}
+						/>
+					}
+				/>
+			);
+		});
+
+	const listenedArtists = tracks[0] && tracks[0].seed.join(', ');
 
 	return (
 		<div id="recommended">
@@ -47,36 +71,7 @@ const RecommendedList = ({ playing, track, tracks, isPremium, onClickPlay, onCli
 				<h2 className="flex">Recommended for You</h2>
 				{listenedArtists && <p>Because you listened to {listenedArtists}</p>}
 			</div>
-			{!isEmpty(tracks) ? (
-				<List>
-					{uniqBy(orderBy(tracks, 'release_date', 'desc'), 'name').map((track, i) => {
-						const { isPlaying, isSaved } = getTrackInfo(track);
-
-						return (
-							<Card
-								key={i}
-								image={minBy(track.album.images, 'height').url}
-								style={{ color: isPlaying ? '#1db954' : 'white' }}
-								title={track.name}
-								subtext={track.artists.map(artist => artist.name).join(', ')}
-								onClickCard={() => handlePlayer(track)}
-								actions={
-									<FontAwesomeIcon
-										icon={isSaved ? faHeart : faHeartEmpty}
-										onClick={() =>
-											isSaved
-												? showError('error', 'This track is already saved in your library.')
-												: handleLike(track.uri)
-										}
-									/>
-								}
-							/>
-						);
-					})}
-				</List>
-			) : (
-				<h3 className="vertical-center">No recommended tracks</h3>
-			)}
+			{tracks.length ? <List>{renderItems()}</List> : <h3 className="vertical-center">No recommended tracks</h3>}
 		</div>
 	);
 };

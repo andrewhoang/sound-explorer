@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 
 import ReactTable from 'react-table';
@@ -20,6 +20,7 @@ const TrackList = ({
 	onClickAdd,
 	onClickRemove,
 	onClickMove,
+	onSortChange,
 }) => {
 	const columns = [
 		{
@@ -105,6 +106,7 @@ const TrackList = ({
 			data={playlist}
 			columns={columns}
 			showPagination={false}
+			onSortedChange={onSortChange}
 			resizable={false}
 			draggable="true"
 			{...playingProps}

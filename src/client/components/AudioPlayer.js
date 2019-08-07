@@ -42,7 +42,7 @@ class AudioPlayer extends Component {
 
 		if (player.track && timeLapsed >= player.track.duration_ms) {
 			this.setState({ time: 0 });
-			this.props.actions.pauseTrack();
+			this.props.actions.getPlayer();
 			clearInterval(this.setTimer);
 		}
 
@@ -74,7 +74,7 @@ class AudioPlayer extends Component {
 	// Allow user to skip around track
 	seekTrack = (e, player) => {
 		e.stopPropagation();
-		console.log(player);
+
 		const time = e.nativeEvent.offsetX;
 		const length = player.clientWidth;
 

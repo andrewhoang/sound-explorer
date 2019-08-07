@@ -48,9 +48,7 @@ const ArtistHeader = ({ artist, onClickCreate, savingPlaylist }) => {
 									</p>
 								</span>
 							);
-						case 'exiting':
-							return <span />;
-						case 'exited':
+						default:
 							return <span />;
 					}
 				}}
