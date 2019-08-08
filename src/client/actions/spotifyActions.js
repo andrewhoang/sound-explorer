@@ -211,7 +211,7 @@ export function addToLibrary(uri) {
 			.addToLibrary(uri)
 			.then(response => {
 				let type = uri.split(':')[1];
-				dispatch(showAlert('success', `${capitalize(type)} was successfully added to library.`));
+				dispatch(showAlert('success', `${capitalize(type)} was successfully added to your library.`));
 			})
 			.catch(err => err);
 	};

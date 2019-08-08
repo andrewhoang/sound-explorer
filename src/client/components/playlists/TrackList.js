@@ -57,7 +57,7 @@ const TrackList = ({
 			Header: 'Duration',
 			accessor: 'duration_ms',
 			maxWidth: 100,
-			Cell: row => moment(row.value).format('mm:ss'),
+			Cell: row => moment(row.value).format('m:ss'),
 		},
 		{
 			accessor: 'id',

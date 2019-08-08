@@ -61,9 +61,3 @@ const AppWrapper = () => (
 );
 
 ReactDOM.render(<AppWrapper />, document.getElementById('app'));
-console.log(module);
-if (module.hot) {
-	module.hot.accept('./components/App', () => {
-		ReactDOM.render(<AppWrapper />, document.getElementById('app'));
-	});
-}
