@@ -13,20 +13,12 @@ class ArtistList extends Component {
 		return (
 			<div style={{ position: 'relative' }}>
 				{artists.length ? (
-					<List
-						duration={700}
-						delay={150}
-						staggerDurationBy={15}
-						staggerDelayBy={20}
-						easing="ease"
-						enterAnimation="elevator"
-						leaveAnimation="elevator"
-					>
+					<List duration={500} delay={200} easing="ease" enterAnimation="elevator" leaveAnimation="elevator">
 						{artists
 							.filter(artist => artist.images.length > 0)
-							.map((artist, i) => (
+							.map(artist => (
 								<Card
-									key={i}
+									key={artist.id}
 									image={maxBy(artist.images, 'height').url}
 									title={artist.name}
 									subtext={artist.genres.slice(0, 3).join(', ')}

@@ -1,5 +1,5 @@
 export const SIGN_IN_SUCCESS = 'SIGN_IN_SUCCESS';
-export const USER_SUCCESS = 'USER_SUCCESS';
+export const GET_USER_SUCCESS = 'GET_USER_SUCCESS';
 export const FETCH_ARTIST = 'FETCH_ARTIST';
 export const FETCH_ARTISTS = 'FETCH_ARTISTS';
 export const RECEIVE_ARTIST = 'RECEIVE_ARTIST';

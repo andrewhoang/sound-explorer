@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faHeart } from '@fortawesome/free-solid-svg-icons';
+import { faHeart, faSyncAlt } from '@fortawesome/free-solid-svg-icons';
 import { faHeart as faHeartEmpty } from '@fortawesome/free-regular-svg-icons';
 
 import Card from './common/Card';
@@ -11,7 +11,17 @@ import List from './styled/List';
 import minBy from 'lodash/minBy';
 import uniqBy from 'lodash/uniqBy';
 
-const RecommendedList = ({ playing, track, tracks, isPremium, onClickPlay, onClickPause, onClickLike, showError }) => {
+const RecommendedList = ({
+	playing,
+	track,
+	tracks,
+	isPremium,
+	onClickPlay,
+	onClickPause,
+	onClickLike,
+	onClickRefresh,
+	showError,
+}) => {
 	const [state, setState] = useState({});
 
 	const handlePlayer = recommendedTrack => {
@@ -67,9 +77,12 @@ const RecommendedList = ({ playing, track, tracks, isPremium, onClickPlay, onCli
 
 	return (
 		<div id="recommended">
-			<div className="heading">
-				<h2 className="flex">Recommended for You</h2>
-				{listenedArtists && <p>Because you listened to {listenedArtists}</p>}
+			<div className="heading flex">
+				<span>
+					<h2>Recommended for You</h2>
+					{listenedArtists && <p>Because you listened to {listenedArtists}</p>}
+				</span>
+				<FontAwesomeIcon icon={faSyncAlt} onClick={onClickRefresh} />
 			</div>
 			{tracks.length ? <List>{renderItems()}</List> : <h3 className="vertical-center">No recommended tracks</h3>}
 		</div>

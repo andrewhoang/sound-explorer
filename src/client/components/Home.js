@@ -133,6 +133,7 @@ class Home extends Component {
 			onClickPlay: this.handlePlay,
 			onClickPause: this.handlePause,
 			onClickLike: this.props.actions.addToLibrary,
+			onClickRefresh: this.props.actions.getRecommendedTracks,
 			showError: this.props.actions.showAlert,
 			track,
 			playing: player.playing,

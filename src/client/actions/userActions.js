@@ -2,7 +2,7 @@ import * as types from '../constants/ActionTypes';
 import userService from '../services/userService';
 
 const getUserSuccess = user => ({
-	type: types.USER_SUCCESS,
+	type: types.GET_USER_SUCCESS,
 	user,
 });
 

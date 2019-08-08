@@ -88,9 +88,7 @@ class AudioPlayer extends Component {
 	displayTime = () => {
 		const time =
 			this.props.player &&
-			`${moment(this.state.time).format('mm:ss')} | ${moment(this.props.player.track.duration_ms).format(
-				'mm:ss'
-			)}`;
+			`${moment(this.state.time).format('m:ss')} | ${moment(this.props.player.track.duration_ms).format('m:ss')}`;
 
 		return time;
 	};
